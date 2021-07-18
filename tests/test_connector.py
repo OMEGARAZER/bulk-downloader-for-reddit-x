@@ -45,6 +45,15 @@ def assert_all_results_are_submissions(result_limit: int, results: list[Iterator
     return results
 
 
+def assert_all_results_are_submissions_or_comments(result_limit: int, results: list[Iterator]) -> list:
+    results = [sub for res in results for sub in res]
+    assert all([isinstance(res, praw.models.Submission) or isinstance(res, praw.models.Comment) for res in results])
+    assert not any([isinstance(m, MagicMock) for m in results])
+    if result_limit is not None:
+        assert len(results) == result_limit
+    return results
+
+
 def test_determine_directories(tmp_path: Path, downloader_mock: MagicMock):
     downloader_mock.args.directory = tmp_path / 'test'
     downloader_mock.config_directories.user_config_dir = tmp_path
@@ -297,7 +306,7 @@ def test_get_user_authenticated_lists(
     downloader_mock.sort_filter = RedditTypes.SortType.HOT
     downloader_mock.args.user = [RedditConnector.resolve_user_name(downloader_mock, 'me')]
     results = RedditConnector.get_user_data(downloader_mock)
-    assert_all_results_are_submissions(10, results)
+    assert_all_results_are_submissions_or_comments(10, results)
 
 
 @pytest.mark.parametrize(('test_name', 'expected'), (
