@@ -65,11 +65,11 @@ def test_get_data_album(test_url: str, expected_gen_dict: dict, expected_image_d
         {'hash': 'dLk3FGY', 'title': '', 'ext': '.mp4', 'animated': True}
     ),
     (
-        'https://imgur.com/BuzvZwb.gifv',
+        'https://imgur.com/65FqTpT.gifv',
         {
-            'hash': 'BuzvZwb',
+            'hash': '65FqTpT',
             'title': '',
-            'description': 'Akron Glass Works',
+            'description': '',
             'animated': True,
             'mimetype': 'video/mp4'
         },
