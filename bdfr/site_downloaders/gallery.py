@@ -21,7 +21,7 @@ class Gallery(BaseDownloader):
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         try:
             image_urls = self._get_links(self.post.gallery_data['items'])
-        except AttributeError:
+        except (AttributeError, TypeError):
             try:
                 image_urls = self._get_links(self.post.crosspost_parent_list[0]['gallery_data']['items'])
             except (AttributeError, IndexError, TypeError):

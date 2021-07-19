@@ -4,6 +4,7 @@
 import praw
 import pytest
 
+from bdfr.exceptions import SiteDownloaderError
 from bdfr.site_downloaders.gallery import Gallery
 
 
@@ -68,3 +69,13 @@ def test_gallery_download(test_submission_id: str, expected_hashes: set[str], re
     [res.download(120) for res in results]
     hashes = [res.hash.hexdigest() for res in results]
     assert set(hashes) == expected_hashes
+
+
+@pytest.mark.parametrize('test_id', (
+    'n0pyzp',
+))
+def test_gallery_download_raises_right_error(test_id: str, reddit_instance: praw.Reddit):
+    test_submission = reddit_instance.submission(id=test_id)
+    gallery = Gallery(test_submission)
+    with pytest.raises(SiteDownloaderError):
+        gallery.find_resources()
