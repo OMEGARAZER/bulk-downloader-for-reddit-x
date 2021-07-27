@@ -53,10 +53,6 @@ def test_gallery_get_links(test_ids: list[dict], expected: set[str]):
         '808c35267f44acb523ce03bfa5687404',
         'ec8b65bdb7f1279c4b3af0ea2bbb30c3',
     }),
-    ('nxyahw', {
-        'b89a3f41feb73ec1136ec4ffa7353eb1',
-        'cabb76fd6fd11ae6e115a2039eb09f04',
-    }),
     ('obkflw', {
         '65163f685fb28c5b776e0e77122718be',
         '2a337eb5b13c34d3ca3f51b5db7c13e9',
@@ -73,6 +69,7 @@ def test_gallery_download(test_submission_id: str, expected_hashes: set[str], re
 
 @pytest.mark.parametrize('test_id', (
     'n0pyzp',
+    'nxyahw',
 ))
 def test_gallery_download_raises_right_error(test_id: str, reddit_instance: praw.Reddit):
     test_submission = reddit_instance.submission(id=test_id)
