@@ -6,6 +6,7 @@ import logging
 import re
 import time
 import urllib.parse
+from collections import namedtuple
 from typing import Callable, Optional
 
 import _hashlib
@@ -29,7 +30,9 @@ class Resource:
             self.extension = self._determine_extension()
 
     @staticmethod
-    def retry_download(url: str, max_wait_time: int) -> Callable:
+    def retry_download(url: str) -> Callable:
+        max_wait_time = 300
+
         def http_download() -> Optional[bytes]:
             current_wait_time = 60
             while True:

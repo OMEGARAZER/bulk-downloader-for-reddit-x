@@ -33,7 +33,7 @@ class Imgur(BaseDownloader):
 
     def _compute_image_url(self, image: dict) -> Resource:
         image_url = 'https://i.imgur.com/' + image['hash'] + self._validate_extension(image['ext'])
-        return Resource(self.post, image_url, Resource.retry_download(image_url, 300))
+        return Resource(self.post, image_url, Resource.retry_download(image_url))
 
     @staticmethod
     def _get_data(link: str) -> dict:
