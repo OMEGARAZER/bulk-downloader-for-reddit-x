@@ -21,7 +21,7 @@ from bdfr.resource import Resource
     ('https://www.test.com/test/test2/example.png?random=test#thing', '.png'),
 ))
 def test_resource_get_extension(test_url: str, expected: str):
-    test_resource = Resource(MagicMock(), test_url)
+    test_resource = Resource(MagicMock(), test_url, lambda: None)
     result = test_resource._determine_extension()
     assert result == expected
 
@@ -31,6 +31,6 @@ def test_resource_get_extension(test_url: str, expected: str):
     ('https://www.iana.org/_img/2013.1/iana-logo-header.svg', '426b3ac01d3584c820f3b7f5985d6623'),
 ))
 def test_download_online_resource(test_url: str, expected_hash: str):
-    test_resource = Resource(MagicMock(), test_url)
-    test_resource.download(120)
+    test_resource = Resource(MagicMock(), test_url, Resource.retry_download(test_url, 60))
+    test_resource.download()
     assert test_resource.hash.hexdigest() == expected_hash
