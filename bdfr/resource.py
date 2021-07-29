@@ -6,7 +6,6 @@ import logging
 import re
 import time
 import urllib.parse
-from collections import namedtuple
 from typing import Callable, Optional
 
 import _hashlib
@@ -33,8 +32,12 @@ class Resource:
     def retry_download(url: str) -> Callable:
         max_wait_time = 300
 
-        def http_download() -> Optional[bytes]:
+        def http_download(download_parameters: dict) -> Optional[bytes]:
             current_wait_time = 60
+            if 'max_wait_time' in download_parameters:
+                max_wait_time = download_parameters['max_wait_time']
+            else:
+                max_wait_time = 300
             while True:
                 try:
                     response = requests.get(url)
@@ -55,10 +58,12 @@ class Resource:
                         raise
         return http_download
 
-    def download(self):
+    def download(self, download_parameters: Optional[dict] = None):
+        if download_parameters is None:
+            download_parameters = {}
         if not self.content:
             try:
-                content = self.download_function()
+                content = self.download_function(download_parameters)
             except requests.exceptions.ConnectionError as e:
                 raise BulkDownloaderException(f'Could not download resource: {e}')
             except BulkDownloaderException:
