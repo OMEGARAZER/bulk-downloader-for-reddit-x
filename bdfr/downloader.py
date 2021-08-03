@@ -82,7 +82,7 @@ class RedditDownloader(RedditConnector):
                 logger.debug(f'Download filter removed {submission.id} file with URL {submission.url}')
                 continue
             try:
-                res.download(self.args.max_wait_time)
+                res.download({'max_wait_time': self.args.max_wait_time})
             except errors.BulkDownloaderException as e:
                 logger.error(f'Failed to download resource {res.url} in submission {submission.id} '
                              f'with downloader {downloader_class.__name__}: {e}')

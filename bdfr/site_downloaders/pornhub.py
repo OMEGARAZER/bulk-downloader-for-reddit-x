@@ -22,5 +22,10 @@ class PornHub(Youtube):
             'format': 'best',
             'nooverwrites': True,
         }
-        out = self._download_video(ytdl_options)
+        out = Resource(
+            self.post,
+            self.post.url,
+            super()._download_video(ytdl_options),
+            super().get_video_attributes(self.post.url)['ext'],
+        )
         return [out]

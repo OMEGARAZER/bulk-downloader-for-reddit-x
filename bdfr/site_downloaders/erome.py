@@ -29,7 +29,7 @@ class Erome(BaseDownloader):
         for link in links:
             if not re.match(r'https?://.*', link):
                 link = 'https://' + link
-            out.append(Resource(self.post, link))
+            out.append(Resource(self.post, link, Resource.retry_download(link)))
         return out
 
     @staticmethod

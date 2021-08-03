@@ -21,5 +21,5 @@ def test_find_resources_good(test_url: str, expected_hash: str):
     resources = downloader.find_resources()
     assert len(resources) == 1
     assert isinstance(resources[0], Resource)
-    resources[0].download(120)
+    resources[0].download()
     assert resources[0].hash.hexdigest() == expected_hash
