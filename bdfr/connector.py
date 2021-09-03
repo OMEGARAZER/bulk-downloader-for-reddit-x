@@ -184,8 +184,9 @@ class RedditConnector(metaclass=ABCMeta):
                 logger.debug(f'Loading configuration from {path}')
                 break
         if not self.config_location:
-            self.config_location = list(importlib.resources.path('bdfr', 'default_config.cfg').gen)[0]
-            shutil.copy(self.config_location, Path(self.config_directory, 'default_config.cfg'))
+            with importlib.resources.path('bdfr', 'default_config.cfg') as path:
+                self.config_location = path
+                shutil.copy(self.config_location, Path(self.config_directory, 'default_config.cfg'))
         if not self.config_location:
             raise errors.BulkDownloaderException('Could not find a configuration file to load')
         self.cfg_parser.read(self.config_location)
