@@ -45,6 +45,7 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
     ['-s', 'trollxchromosomes', '-L', 1, '--sort', 'new'],
     ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--sort', 'new'],
     ['-s', 'trollxchromosomes', '-L', 1, '--search', 'women'],
+    ['-s', 'hentai', '-L', 10, '--search', 'red'],
     ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--search', 'women'],
     ['-s', 'trollxchromosomes', '-L', 1, '--sort', 'new', '--search', 'women'],
     ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--sort', 'new', '--search', 'women'],
@@ -55,6 +56,7 @@ def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
     result = runner.invoke(cli, test_args)
     assert result.exit_code == 0
     assert 'Added submissions from subreddit ' in result.output
+    assert 'Downloaded submission' in result.output
 
 
 @pytest.mark.online
