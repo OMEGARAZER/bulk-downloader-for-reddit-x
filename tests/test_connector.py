@@ -199,10 +199,9 @@ def test_get_subreddit_normal(
 @pytest.mark.reddit
 @pytest.mark.parametrize(('test_subreddits', 'search_term', 'limit', 'time_filter', 'max_expected_len'), (
     (('Python',), 'scraper', 10, 'all', 10),
-    (('Python',), '', 10, 'all', 10),
+    (('Python',), '', 10, 'all', 0),
     (('Python',), 'djsdsgewef', 10, 'all', 0),
     (('Python',), 'scraper', 10, 'year', 10),
-    (('Python',), 'scraper', 10, 'hour', 1),
 ))
 def test_get_subreddit_search(
         test_subreddits: list[str],
@@ -226,6 +225,8 @@ def test_get_subreddit_search(
     assert all([isinstance(res, praw.models.Submission) for res in results])
     assert all([res.subreddit.display_name in test_subreddits for res in results])
     assert len(results) <= max_expected_len
+    if max_expected_len != 0:
+        assert len(results) > 0
     assert not any([isinstance(m, MagicMock) for m in results])
 
 
