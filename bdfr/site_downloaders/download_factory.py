@@ -16,6 +16,7 @@ from bdfr.site_downloaders.imgur import Imgur
 from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
+from bdfr.site_downloaders.vidble import Vidble
 from bdfr.site_downloaders.youtube import Youtube
 
 
@@ -46,11 +47,12 @@ class DownloadFactory:
             return Direct
         elif re.match(r'pornhub\.com.*', sanitised_url):
             return PornHub
+        elif re.match(r'vidble\.com', sanitised_url):
+            return Vidble
         elif YoutubeDlFallback.can_handle_link(sanitised_url):
             return YoutubeDlFallback
         else:
-            raise NotADownloadableLinkError(
-                f'No downloader module exists for url {url}')
+            raise NotADownloadableLinkError(f'No downloader module exists for url {url}')
 
     @staticmethod
     def sanitise_url(url: str) -> str:
