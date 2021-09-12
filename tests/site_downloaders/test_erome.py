@@ -14,13 +14,13 @@ from bdfr.site_downloaders.erome import Erome
         'https://s11.erome.com/365/vqtPuLXh/KH2qBT99_480p.mp4',
     )),
     ('https://www.erome.com/a/ORhX0FZz', (
-        'https://s4.erome.com/355/ORhX0FZz/9IYQocM9_480p.mp4',
-        'https://s4.erome.com/355/ORhX0FZz/9eEDc8xm_480p.mp4',
-        'https://s4.erome.com/355/ORhX0FZz/EvApC7Rp_480p.mp4',
-        'https://s4.erome.com/355/ORhX0FZz/LruobtMs_480p.mp4',
-        'https://s4.erome.com/355/ORhX0FZz/TJNmSUU5_480p.mp4',
-        'https://s4.erome.com/355/ORhX0FZz/X11Skh6Z_480p.mp4',
-        'https://s4.erome.com/355/ORhX0FZz/bjlTkpn7_480p.mp4'
+        'https://s15.erome.com/355/ORhX0FZz/9IYQocM9_480p.mp4',
+        'https://s15.erome.com/355/ORhX0FZz/9eEDc8xm_480p.mp4',
+        'https://s15.erome.com/355/ORhX0FZz/EvApC7Rp_480p.mp4',
+        'https://s15.erome.com/355/ORhX0FZz/LruobtMs_480p.mp4',
+        'https://s15.erome.com/355/ORhX0FZz/TJNmSUU5_480p.mp4',
+        'https://s15.erome.com/355/ORhX0FZz/X11Skh6Z_480p.mp4',
+        'https://s15.erome.com/355/ORhX0FZz/bjlTkpn7_480p.mp4'
     )),
 ))
 def test_get_link(test_url: str, expected_urls: tuple[str]):
@@ -49,6 +49,6 @@ def test_download_resource(test_url: str, expected_hashes: tuple[str]):
     mock_submission.url = test_url
     test_site = Erome(mock_submission)
     resources = test_site.find_resources()
-    [res.download(120) for res in resources]
+    [res.download() for res in resources]
     resource_hashes = [res.hash.hexdigest() for res in resources]
     assert len(resource_hashes) == len(expected_hashes)

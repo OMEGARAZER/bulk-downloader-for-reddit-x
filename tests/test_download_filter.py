@@ -46,7 +46,7 @@ def test_filter_domain(test_url: str, expected: bool, download_filter: DownloadF
     ('http://reddit.com/test.gif', False),
 ))
 def test_filter_all(test_url: str, expected: bool, download_filter: DownloadFilter):
-    test_resource = Resource(MagicMock(), test_url)
+    test_resource = Resource(MagicMock(), test_url, lambda: None)
     result = download_filter.check_resource(test_resource)
     assert result == expected
 
@@ -59,6 +59,6 @@ def test_filter_all(test_url: str, expected: bool, download_filter: DownloadFilt
 ))
 def test_filter_empty_filter(test_url: str):
     download_filter = DownloadFilter()
-    test_resource = Resource(MagicMock(), test_url)
+    test_resource = Resource(MagicMock(), test_url, lambda: None)
     result = download_filter.check_resource(test_resource)
     assert result is True

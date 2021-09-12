@@ -76,17 +76,17 @@ class Archiver(RedditConnector):
         logger.info(f'Record for entry item {praw_item.id} written to disk')
 
     def _write_entry_json(self, entry: BaseArchiveEntry):
-        resource = Resource(entry.source, '', '.json')
+        resource = Resource(entry.source, '', lambda: None, '.json')
         content = json.dumps(entry.compile())
         self._write_content_to_disk(resource, content)
 
     def _write_entry_xml(self, entry: BaseArchiveEntry):
-        resource = Resource(entry.source, '', '.xml')
+        resource = Resource(entry.source, '', lambda: None, '.xml')
         content = dict2xml.dict2xml(entry.compile(), wrap='root')
         self._write_content_to_disk(resource, content)
 
     def _write_entry_yaml(self, entry: BaseArchiveEntry):
-        resource = Resource(entry.source, '', '.yaml')
+        resource = Resource(entry.source, '', lambda: None, '.yaml')
         content = yaml.dump(entry.compile())
         self._write_content_to_disk(resource, content)
 

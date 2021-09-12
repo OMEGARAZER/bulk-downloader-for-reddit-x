@@ -21,7 +21,7 @@ class Gallery(BaseDownloader):
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         try:
             image_urls = self._get_links(self.post.gallery_data['items'])
-        except AttributeError:
+        except (AttributeError, TypeError):
             try:
                 image_urls = self._get_links(self.post.crosspost_parent_list[0]['gallery_data']['items'])
             except (AttributeError, IndexError, TypeError):
@@ -31,7 +31,7 @@ class Gallery(BaseDownloader):
 
         if not image_urls:
             raise SiteDownloaderError('No images found in Reddit gallery')
-        return [Resource(self.post, url) for url in image_urls]
+        return [Resource(self.post, url, Resource.retry_download(url)) for url in image_urls]
 
     @ staticmethod
     def _get_links(id_dict: list[dict]) -> list[str]:

@@ -119,7 +119,7 @@ def test_format_full(
         format_string_file: str,
         expected: str,
         reddit_submission: praw.models.Submission):
-    test_resource = Resource(reddit_submission, 'i.reddit.com/blabla.png')
+    test_resource = Resource(reddit_submission, 'i.reddit.com/blabla.png', lambda: None)
     test_formatter = FileNameFormatter(format_string_file, format_string_directory, 'ISO')
     result = test_formatter.format_path(test_resource, Path('test'))
     assert do_test_path_equality(result, expected)
@@ -136,7 +136,7 @@ def test_format_full_conform(
         format_string_directory: str,
         format_string_file: str,
         reddit_submission: praw.models.Submission):
-    test_resource = Resource(reddit_submission, 'i.reddit.com/blabla.png')
+    test_resource = Resource(reddit_submission, 'i.reddit.com/blabla.png', lambda: None)
     test_formatter = FileNameFormatter(format_string_file, format_string_directory, 'ISO')
     test_formatter.format_path(test_resource, Path('test'))
 
@@ -156,7 +156,7 @@ def test_format_full_with_index_suffix(
         expected: str,
         reddit_submission: praw.models.Submission,
 ):
-    test_resource = Resource(reddit_submission, 'i.reddit.com/blabla.png')
+    test_resource = Resource(reddit_submission, 'i.reddit.com/blabla.png', lambda: None)
     test_formatter = FileNameFormatter(format_string_file, format_string_directory, 'ISO')
     result = test_formatter.format_path(test_resource, Path('test'), index)
     assert do_test_path_equality(result, expected)
@@ -216,7 +216,7 @@ def test_shorten_filenames(submission: MagicMock, tmp_path: Path):
     submission.author.name = 'test'
     submission.subreddit.display_name = 'test'
     submission.id = 'BBBBBB'
-    test_resource = Resource(submission, 'www.example.com/empty', '.jpeg')
+    test_resource = Resource(submission, 'www.example.com/empty', lambda: None, '.jpeg')
     test_formatter = FileNameFormatter('{REDDITOR}_{TITLE}_{POSTID}', '{SUBREDDIT}', 'ISO')
     result = test_formatter.format_path(test_resource, tmp_path)
     result.parent.mkdir(parents=True)
@@ -296,7 +296,7 @@ def test_format_archive_entry_comment(
 ):
     test_comment = reddit_instance.comment(id=test_comment_id)
     test_formatter = FileNameFormatter(test_file_scheme, test_folder_scheme, 'ISO')
-    test_entry = Resource(test_comment, '', '.json')
+    test_entry = Resource(test_comment, '', lambda: None, '.json')
     result = test_formatter.format_path(test_entry, tmp_path)
     assert do_test_string_equality(result, expected_name)
 

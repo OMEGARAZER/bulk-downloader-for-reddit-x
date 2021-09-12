@@ -13,8 +13,6 @@ from bdfr.site_downloaders.gfycat import Gfycat
 @pytest.mark.parametrize(('test_url', 'expected_url'), (
     ('https://gfycat.com/definitivecaninecrayfish', 'https://giant.gfycat.com/DefinitiveCanineCrayfish.mp4'),
     ('https://gfycat.com/dazzlingsilkyiguana', 'https://giant.gfycat.com/DazzlingSilkyIguana.mp4'),
-    ('https://gfycat.com/webbedimpurebutterfly', 'https://thumbs2.redgifs.com/WebbedImpureButterfly.mp4'),
-    ('https://gfycat.com/CornyLoathsomeHarrierhawk', 'https://thumbs2.redgifs.com/CornyLoathsomeHarrierhawk.mp4')
 ))
 def test_get_link(test_url: str, expected_url: str):
     result = Gfycat._get_link(test_url)
@@ -33,5 +31,5 @@ def test_download_resource(test_url: str, expected_hash: str):
     resources = test_site.find_resources()
     assert len(resources) == 1
     assert isinstance(resources[0], Resource)
-    resources[0].download(120)
+    resources[0].download()
     assert resources[0].hash.hexdigest() == expected_hash
