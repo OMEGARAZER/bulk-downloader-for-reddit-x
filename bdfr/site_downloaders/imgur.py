@@ -32,7 +32,11 @@ class Imgur(BaseDownloader):
         return out
 
     def _compute_image_url(self, image: dict) -> Resource:
-        image_url = 'https://i.imgur.com/' + image['hash'] + self._validate_extension(image['ext'])
+        ext = self._validate_extension(image['ext'])
+        if image.get('prefer_video', False):
+            ext = '.mp4'
+
+        image_url = 'https://i.imgur.com/' + image['hash'] + ext
         return Resource(self.post, image_url, Resource.retry_download(image_url))
 
     @staticmethod
