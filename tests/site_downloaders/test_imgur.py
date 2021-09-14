@@ -111,7 +111,7 @@ def test_imgur_extension_validation_bad(test_extension: str):
     ),
     (
         'https://imgur.com/gallery/IjJJdlC',
-        ('7227d4312a9779b74302724a0cfa9081',),
+        ('740b006cf9ec9d6f734b6e8f5130bdab',),
     ),
     (
         'https://imgur.com/a/dcc84Gt',
@@ -141,6 +141,14 @@ def test_imgur_extension_validation_bad(test_extension: str):
     (
         'https://imgur.com/ubYwpbk.GIFV',
         ('d4a774aac1667783f9ed3a1bd02fac0c',),
+    ),
+    (
+        'https://i.imgur.com/j1CNCZY.gifv',
+        ('58e7e6d972058c18b7ecde910ca147e3',),
+    ),
+    (
+        'https://i.imgur.com/uTvtQsw.gifv',
+        ('46c86533aa60fc0e09f2a758513e3ac2',),
     ),
 ))
 def test_find_resources(test_url: str, expected_hashes: list[str]):
