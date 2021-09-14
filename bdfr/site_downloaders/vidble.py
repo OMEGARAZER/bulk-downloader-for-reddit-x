@@ -22,7 +22,10 @@ class Vidble(BaseDownloader):
         super().__init__(post)
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
-        res = self.get_links(self.post.url)
+        try:
+            res = self.get_links(self.post.url)
+        except AttributeError:
+            raise SiteDownloaderError(f'Could not read page at {self.post.url}')
         if not res:
             raise SiteDownloaderError(rf'No resources found at {self.post.url}')
         res = [Resource(self.post, r, Resource.retry_download(r)) for r in res]
@@ -30,6 +33,9 @@ class Vidble(BaseDownloader):
 
     @staticmethod
     def get_links(url: str) -> set[str]:
+        if not re.search(r'vidble.com/(show/|album/|watch\?v)', url):
+            url = re.sub(r'/(\w*?)$', r'/show/\1', url)
+
         page = requests.get(url)
         soup = bs4.BeautifulSoup(page.text, 'html.parser')
         content_div = soup.find('div', attrs={'id': 'ContentPlaceHolder1_divContent'})

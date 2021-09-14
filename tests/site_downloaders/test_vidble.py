@@ -33,6 +33,9 @@ def test_change_med_url(test_url: str, expected: str):
     ('https://vidble.com/watch?v=0q4nWakqM6kzQWxlePD8N62Dsflev0N9', {
         'https://www.vidble.com/0q4nWakqM6kzQWxlePD8N62Dsflev0N9.mp4',
     }),
+    ('https://www.vidble.com/pHuwWkOcEb', {
+        'https://www.vidble.com/pHuwWkOcEb.jpg',
+    }),
 ))
 def test_get_links(test_url: str, expected: set[str]):
     results = Vidble.get_links(test_url)
@@ -40,21 +43,24 @@ def test_get_links(test_url: str, expected: set[str]):
 
 
 @pytest.mark.parametrize(('test_url', 'expected_hashes'), (
-        ('https://www.vidble.com/show/UxsvAssYe5', {
-            '0ef2f8e0e0b45936d2fb3e6fbdf67e28',
-        }),
-        ('https://vidble.com/show/RDFbznUvcN', {
-            'c2dd30a71e32369c50eed86f86efff58',
-        }),
-        ('https://vidble.com/album/h0jTLs6B', {
-            '3b3cba02e01c91f9858a95240b942c71',
-            'dd6ecf5fc9e936f9fb614eb6a0537f99',
-            'b31a942cd8cdda218ed547bbc04c3a27',
-            '6f77c570b451eef4222804bd52267481',
-        }),
-        ('https://vidble.com/watch?v=0q4nWakqM6kzQWxlePD8N62Dsflev0N9', {
-            'cebe9d5f24dba3b0443e5097f160ca83',
-        }),
+    ('https://www.vidble.com/show/UxsvAssYe5', {
+        '0ef2f8e0e0b45936d2fb3e6fbdf67e28',
+    }),
+    ('https://vidble.com/show/RDFbznUvcN', {
+        'c2dd30a71e32369c50eed86f86efff58',
+    }),
+    ('https://vidble.com/album/h0jTLs6B', {
+        '3b3cba02e01c91f9858a95240b942c71',
+        'dd6ecf5fc9e936f9fb614eb6a0537f99',
+        'b31a942cd8cdda218ed547bbc04c3a27',
+        '6f77c570b451eef4222804bd52267481',
+    }),
+    ('https://vidble.com/watch?v=0q4nWakqM6kzQWxlePD8N62Dsflev0N9', {
+        'cebe9d5f24dba3b0443e5097f160ca83',
+    }),
+    ('https://www.vidble.com/pHuwWkOcEb', {
+        '585f486dd0b2f23a57bddbd5bf185bc7',
+    }),
 ))
 def test_find_resources(test_url: str, expected_hashes: set[str]):
     mock_download = Mock()
