@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 from typing import Callable, Optional
 
-import youtube_dl
+import yt_dlp
 from praw.models import Submission
 
 from bdfr.exceptions import NotADownloadableLinkError, SiteDownloaderError
@@ -45,9 +45,9 @@ class Youtube(BaseDownloader):
                 download_path = Path(temp_dir).resolve()
                 ytdl_options['outtmpl'] = str(download_path) + '/' + 'test.%(ext)s'
                 try:
-                    with youtube_dl.YoutubeDL(ytdl_options) as ydl:
+                    with yt_dlp.YoutubeDL(ytdl_options) as ydl:
                         ydl.download([self.post.url])
-                except youtube_dl.DownloadError as e:
+                except yt_dlp.DownloadError as e:
                     raise SiteDownloaderError(f'Youtube download failed: {e}')
 
                 downloaded_files = list(download_path.iterdir())
@@ -64,7 +64,7 @@ class Youtube(BaseDownloader):
     def get_video_attributes(url: str) -> dict:
         yt_logger = logging.getLogger('youtube-dl')
         yt_logger.setLevel(logging.CRITICAL)
-        with youtube_dl.YoutubeDL({'logger': yt_logger, }) as ydl:
+        with yt_dlp.YoutubeDL({'logger': yt_logger, }) as ydl:
             try:
                 result = ydl.extract_info(url, download=False)
                 return result
