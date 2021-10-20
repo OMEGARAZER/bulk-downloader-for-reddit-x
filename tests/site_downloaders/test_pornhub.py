@@ -12,7 +12,7 @@ from bdfr.site_downloaders.pornhub import PornHub
 @pytest.mark.online
 @pytest.mark.slow
 @pytest.mark.parametrize(('test_url', 'expected_hash'), (
-    ('https://www.pornhub.com/view_video.php?viewkey=ph5a2ee0461a8d0', '5f5294b9b97dbb7cb9cf8df278515621'),
+    ('https://www.pornhub.com/view_video.php?viewkey=ph6074c59798497', 'd9b99e4ebecf2d8d67efe5e70d2acf8a'),
 ))
 def test_find_resources_good(test_url: str, expected_hash: str):
     test_submission = MagicMock()

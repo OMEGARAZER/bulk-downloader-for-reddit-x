@@ -30,33 +30,7 @@ class Resource:
 
     @staticmethod
     def retry_download(url: str) -> Callable:
-        max_wait_time = 300
-
-        def http_download(download_parameters: dict) -> Optional[bytes]:
-            current_wait_time = 60
-            if 'max_wait_time' in download_parameters:
-                max_wait_time = download_parameters['max_wait_time']
-            else:
-                max_wait_time = 300
-            while True:
-                try:
-                    response = requests.get(url)
-                    if re.match(r'^2\d{2}', str(response.status_code)) and response.content:
-                        return response.content
-                    elif response.status_code in (408, 429):
-                        raise requests.exceptions.ConnectionError(f'Response code {response.status_code}')
-                    else:
-                        raise BulkDownloaderException(
-                            f'Unrecoverable error requesting resource: HTTP Code {response.status_code}')
-                except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
-                    logger.warning(f'Error occured downloading from {url}, waiting {current_wait_time} seconds: {e}')
-                    time.sleep(current_wait_time)
-                    if current_wait_time < max_wait_time:
-                        current_wait_time += 60
-                    else:
-                        logger.error(f'Max wait time exceeded for resource at url {url}')
-                        raise
-        return http_download
+        return lambda global_params: Resource.http_download(url, global_params)
 
     def download(self, download_parameters: Optional[dict] = None):
         if download_parameters is None:
@@ -82,3 +56,30 @@ class Resource:
         match = re.search(extension_pattern, stripped_url)
         if match:
             return match.group(1)
+
+    @staticmethod
+    def http_download(url: str, download_parameters: dict) -> Optional[bytes]:
+        headers = download_parameters.get('headers')
+        current_wait_time = 60
+        if 'max_wait_time' in download_parameters:
+            max_wait_time = download_parameters['max_wait_time']
+        else:
+            max_wait_time = 300
+        while True:
+            try:
+                response = requests.get(url, headers=headers)
+                if re.match(r'^2\d{2}', str(response.status_code)) and response.content:
+                    return response.content
+                elif response.status_code in (408, 429):
+                    raise requests.exceptions.ConnectionError(f'Response code {response.status_code}')
+                else:
+                    raise BulkDownloaderException(
+                        f'Unrecoverable error requesting resource: HTTP Code {response.status_code}')
+            except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
+                logger.warning(f'Error occured downloading from {url}, waiting {current_wait_time} seconds: {e}')
+                time.sleep(current_wait_time)
+                if current_wait_time < max_wait_time:
+                    current_wait_time += 60
+                else:
+                    logger.error(f'Max wait time exceeded for resource at url {url}')
+                    raise
