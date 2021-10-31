@@ -17,5 +17,7 @@ class RedditCloner(RedditDownloader, Archiver):
     def download(self):
         for generator in self.reddit_lists:
             for submission in generator:
+                if submission.author.name in self.args.ignore_user:
+                    continue
                 self._download_submission(submission)
                 self.write_entry(submission)
