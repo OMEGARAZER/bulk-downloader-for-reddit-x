@@ -78,7 +78,7 @@ The following options are common between both the `archive` and `download` comma
   - Can be specified multiple times
   - Disables certain modules from being used
   - See [Disabling Modules](#disabling-modules) for more information and a list of module names
-- `--ignore`
+- `--ignore-user`
   - This will add a user to ignore
   - Can be specified multiple times
 - `--include-id-file`
