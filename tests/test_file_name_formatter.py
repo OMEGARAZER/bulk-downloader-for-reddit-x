@@ -13,6 +13,9 @@ import pytest
 
 from bdfr.file_name_formatter import FileNameFormatter
 from bdfr.resource import Resource
+from bdfr.site_downloaders.base_downloader import BaseDownloader
+from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
+from bdfr.site_downloaders.youtube import Youtube
 
 
 @pytest.fixture()
@@ -380,3 +383,23 @@ def test_windows_max_path(tmp_path: Path):
             result = FileNameFormatter._limit_file_name_length('test' * 100, '_1.png', tmp_path)
             assert len(str(result)) <= 260
             assert len(result.name) <= (260 - len(str(tmp_path)))
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_reddit_id', 'test_downloader', 'expected_names'), (
+    ('gphmnr', YoutubeDlFallback, {'He has a lot to say today.mp4'}),
+    ('d0oir2', YoutubeDlFallback, {"Crunk's finest moment. Welcome to the new subreddit!.mp4"}),
+))
+def test_name_submission(
+        test_reddit_id: str,
+        test_downloader: type(BaseDownloader),
+        expected_names: set[str],
+        reddit_instance: praw.reddit.Reddit,
+):
+    test_submission = reddit_instance.submission(id=test_reddit_id)
+    test_resources = test_downloader(test_submission).find_resources()
+    test_formatter = FileNameFormatter('{TITLE}', '', '')
+    results = test_formatter.format_resource_paths(test_resources, Path('.'))
+    results = set([r[0].name for r in results])
+    assert expected_names == results
