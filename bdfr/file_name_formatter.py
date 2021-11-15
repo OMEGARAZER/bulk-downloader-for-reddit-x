@@ -111,19 +111,19 @@ class FileNameFormatter:
         if not resource.extension:
             raise BulkDownloaderException(f'Resource from {resource.url} has no extension')
         file_name = str(self._format_name(resource.source_submission, self.file_format_string))
-        if not re.match(r'.*\.$',file_name) and not re.match(r'^\..*',resource.extension):
+        if not re.match(r'.*\.$', file_name) and not re.match(r'^\..*', resource.extension):
             ending = index + '.' + resource.extension
         else:
             ending = index + resource.extension
 
         try:
-            file_path = self._limit_file_name_length(file_name, ending, subfolder)
+            file_path = self.limit_file_name_length(file_name, ending, subfolder)
         except TypeError:
             raise BulkDownloaderException(f'Could not determine path name: {subfolder}, {index}, {resource.extension}')
         return file_path
 
     @staticmethod
-    def _limit_file_name_length(filename: str, ending: str, root: Path) -> Path:
+    def limit_file_name_length(filename: str, ending: str, root: Path) -> Path:
         root = root.resolve().expanduser()
         possible_id = re.search(r'((?:_\w{6})?$)', filename)
         if possible_id:
@@ -133,9 +133,9 @@ class FileNameFormatter:
         max_length_chars = 255 - len(ending)
         max_length_bytes = 255 - len(ending.encode('utf-8'))
         max_path_length = max_path - len(ending) - len(str(root)) - 1
-        while len(filename) > max_length_chars or \
-                len(filename.encode('utf-8')) > max_length_bytes or \
-                len(filename) > max_path_length:
+        while any([len(filename) > max_length_chars,
+                   len(filename.encode('utf-8')) > max_length_bytes,
+                   len(filename) > max_path_length]):
             filename = filename[:-1]
         return Path(root, filename + ending)
 
