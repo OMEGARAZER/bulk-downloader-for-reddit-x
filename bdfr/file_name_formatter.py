@@ -130,14 +130,19 @@ class FileNameFormatter:
             ending = possible_id.group(1) + ending
             filename = filename[:possible_id.start()]
         max_path = FileNameFormatter.find_max_path_length()
-        max_length_chars = 255 - len(ending)
-        max_length_bytes = 255 - len(ending.encode('utf-8'))
+        max_file_part_length_chars = 255 - len(ending)
+        max_file_part_length_bytes = 255 - len(ending.encode('utf-8'))
         max_path_length = max_path - len(ending) - len(str(root)) - 1
-        while any([len(filename) > max_length_chars,
-                   len(filename.encode('utf-8')) > max_length_bytes,
-                   len(filename) > max_path_length]):
+
+        out = Path(root, filename + ending)
+        while any([len(filename) > max_file_part_length_chars,
+                   len(filename.encode('utf-8')) > max_file_part_length_bytes,
+                   len(str(out)) > max_path_length,
+                   ]):
             filename = filename[:-1]
-        return Path(root, filename + ending)
+            out = Path(root, filename + ending)
+
+        return out
 
     @staticmethod
     def find_max_path_length() -> int:
