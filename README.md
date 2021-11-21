@@ -336,6 +336,10 @@ Running scenarios concurrently (at the same time) however, is more complicated. 
 
 The way to fix this is to use the `--log` option to manually specify where the logfile is to be stored. If the given location is unique to each instance of the BDFR, then it will run fine.
 
+## Manipulating Logfiles
+
+The logfiles that the BDFR outputs are consistent and quite detailed and in a format that is amenable to regex. To this end, a number of bash scripts have been [included here](./scripts). They show examples for how to extract successfully downloaded IDs, failed IDs, and more besides.
+
 ## List of currently supported sources
 
   - Direct links (links leading to a file)
