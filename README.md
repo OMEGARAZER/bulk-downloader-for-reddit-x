@@ -7,6 +7,8 @@ This is a tool to download submissions or submission data from Reddit. It can be
 
 If you wish to open an issue, please read [the guide on opening issues](docs/CONTRIBUTING.md#opening-an-issue) to ensure that your issue is clear and contains everything it needs to for the developers to investigate.
 
+Included in this README are a few example Bash tricks to get certain behaviour. For that, see [Common Command Tricks](#common-command-tricks).
+
 ## Installation
 *Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it as such:
 ```bash
@@ -207,6 +209,16 @@ The following options are for the `archive` command specifically.
 ### Cloner Options
 
 The `clone` command can take all the options listed above for both the `archive` and `download` commands since it performs the functions of both.
+
+## Common Command Tricks
+
+A common use case is for subreddits/users to be loaded from a file. The BDFR doesn't support this directly but it is simple enough to do through the command-line. Consider a list of usernames to download; they can be passed through to the BDFR with the following command, assuming that the usernames are in a text file:
+
+```bash
+cat users.txt | xargs -L 1 echo --user | xargs -L 50 python3 -m bdfr download <ARGS>
+```
+
+The part `-L 50` is to make sure that the character limit for a single line isn't exceeded, but may not be necessary. This can also be used to load subreddits from a file, simply exchange `--user` with `--subreddit` and so on.
 
 ## Authentication and Security
 
