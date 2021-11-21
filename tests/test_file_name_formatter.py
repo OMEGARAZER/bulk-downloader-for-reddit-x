@@ -15,7 +15,6 @@ from bdfr.file_name_formatter import FileNameFormatter
 from bdfr.resource import Resource
 from bdfr.site_downloaders.base_downloader import BaseDownloader
 from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
-from bdfr.site_downloaders.youtube import Youtube
 
 
 @pytest.fixture()
