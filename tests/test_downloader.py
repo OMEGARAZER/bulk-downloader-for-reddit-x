@@ -200,20 +200,3 @@ def test_download_submission(
     RedditDownloader._download_submission(downloader_mock, submission)
     folder_contents = list(tmp_path.iterdir())
     assert len(folder_contents) == expected_files_len
-
-
-@pytest.mark.parametrize('test_ignore_user', (
-    'alice',
-))
-def test_download_ignores_user(
-        test_ignore_user: str,
-        mock_function: MagicMock,
-        downloader_mock: MagicMock,
-):
-    downloader_mock.args.ignore_user = test_ignore_user
-    submission = downloader_mock.reddit_instance.submission(id='m1hqw6')
-    mock_function.return_value = MagicMock()
-    mock_function.return_value.__name__ = 'test'
-    submission.author.name = test_ignore_user
-    RedditDownloader._download_submission(downloader_mock, submission)
-    assert mock_function.call_count == 0
