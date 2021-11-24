@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import platform
+import sys
 import unittest.mock
 from datetime import datetime
 from pathlib import Path
@@ -213,6 +214,7 @@ def test_preserve_id_append_when_shortening(test_filename: str, test_ending: str
     assert len(str(result)) <= FileNameFormatter.find_max_path_length()
 
 
+@pytest.mark.skipif(sys.platform == 'win32', reason='Test broken on windows github')
 def test_shorten_filename_real(submission: MagicMock, tmp_path: Path):
     submission.title = 'A' * 500
     submission.author.name = 'test'
