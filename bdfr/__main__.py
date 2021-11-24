@@ -17,6 +17,7 @@ _common_options = [
     click.option('--authenticate', is_flag=True, default=None),
     click.option('--config', type=str, default=None),
     click.option('--disable-module', multiple=True, default=None, type=str),
+    click.option('--ignore-user', type=str, multiple=True, default=None),
     click.option('--include-id-file', multiple=True, default=None),
     click.option('--log', type=str, default=None),
     click.option('--saved', is_flag=True, default=None),

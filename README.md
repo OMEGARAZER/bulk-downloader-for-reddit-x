@@ -7,6 +7,8 @@ This is a tool to download submissions or submission data from Reddit. It can be
 
 If you wish to open an issue, please read [the guide on opening issues](docs/CONTRIBUTING.md#opening-an-issue) to ensure that your issue is clear and contains everything it needs to for the developers to investigate.
 
+Included in this README are a few example Bash tricks to get certain behaviour. For that, see [Common Command Tricks](#common-command-tricks).
+
 ## Installation
 *Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it as such:
 ```bash
@@ -76,6 +78,9 @@ The following options are common between both the `archive` and `download` comma
   - Can be specified multiple times
   - Disables certain modules from being used
   - See [Disabling Modules](#disabling-modules) for more information and a list of module names
+- `--ignore-user`
+  - This will add a user to ignore
+  - Can be specified multiple times
 - `--include-id-file`
   - This will add any submission with the IDs in the files provided
   - Can be specified multiple times
@@ -208,6 +213,16 @@ The following options are for the `archive` command specifically.
 
 The `clone` command can take all the options listed above for both the `archive` and `download` commands since it performs the functions of both.
 
+## Common Command Tricks
+
+A common use case is for subreddits/users to be loaded from a file. The BDFR doesn't support this directly but it is simple enough to do through the command-line. Consider a list of usernames to download; they can be passed through to the BDFR with the following command, assuming that the usernames are in a text file:
+
+```bash
+cat users.txt | xargs -L 1 echo --user | xargs -L 50 python3 -m bdfr download <ARGS>
+```
+
+The part `-L 50` is to make sure that the character limit for a single line isn't exceeded, but may not be necessary. This can also be used to load subreddits from a file, simply exchange `--user` with `--subreddit` and so on.
+
 ## Authentication and Security
 
 The BDFR uses OAuth2 authentication to connect to Reddit if authentication is required. This means that it is a secure, token-based system for making requests. This also means that the BDFR only has access to specific parts of the account authenticated, by default only saved posts, upvoted posts, and the identity of the authenticated account. Note that authentication is not required unless accessing private things like upvoted posts, saved posts, and private multireddits.
@@ -320,9 +335,13 @@ The BDFR can be run in multiple instances with multiple configurations, either c
 
 Running these scenarios consecutively is done easily, like any single run. Configuration files that differ may be specified with the `--config` option to switch between tokens, for example. Otherwise, almost all configuration for data sources can be specified per-run through the command line.
 
-Running scenarious concurrently (at the same time) however, is more complicated. The BDFR will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of the BDFR running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
+Running scenarios concurrently (at the same time) however, is more complicated. The BDFR will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of the BDFR running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
 
 The way to fix this is to use the `--log` option to manually specify where the logfile is to be stored. If the given location is unique to each instance of the BDFR, then it will run fine.
+
+## Manipulating Logfiles
+
+The logfiles that the BDFR outputs are consistent and quite detailed and in a format that is amenable to regex. To this end, a number of bash scripts have been [included here](./scripts). They show examples for how to extract successfully downloaded IDs, failed IDs, and more besides.
 
 ## List of currently supported sources
 

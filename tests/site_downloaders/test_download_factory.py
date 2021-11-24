@@ -9,7 +9,7 @@ from bdfr.site_downloaders.base_downloader import BaseDownloader
 from bdfr.site_downloaders.direct import Direct
 from bdfr.site_downloaders.download_factory import DownloadFactory
 from bdfr.site_downloaders.erome import Erome
-from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
+from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 from bdfr.site_downloaders.gallery import Gallery
 from bdfr.site_downloaders.gfycat import Gfycat
 from bdfr.site_downloaders.imgur import Imgur
@@ -30,6 +30,7 @@ from bdfr.site_downloaders.youtube import Youtube
     ('https://imgur.com/BuzvZwb.gifv', Imgur),
     ('https://i.imgur.com/6fNdLst.gif', Direct),
     ('https://imgur.com/a/MkxAzeg', Imgur),
+    ('https://i.imgur.com/OGeVuAe.giff', Imgur),
     ('https://www.reddit.com/gallery/lu93m7', Gallery),
     ('https://gfycat.com/concretecheerfulfinwhale', Gfycat),
     ('https://www.erome.com/a/NWGw0F09', Erome),
@@ -41,10 +42,10 @@ from bdfr.site_downloaders.youtube import Youtube
     ('https://i.imgur.com/3SKrQfK.jpg?1', Direct),
     ('https://dynasty-scans.com/system/images_images/000/017/819/original/80215103_p0.png?1612232781', Direct),
     ('https://m.imgur.com/a/py3RW0j', Imgur),
-    ('https://v.redd.it/9z1dnk3xr5k61', YoutubeDlFallback),
-    ('https://streamable.com/dt46y', YoutubeDlFallback),
-    ('https://vimeo.com/channels/31259/53576664', YoutubeDlFallback),
-    ('http://video.pbs.org/viralplayer/2365173446/', YoutubeDlFallback),
+    ('https://v.redd.it/9z1dnk3xr5k61', YtdlpFallback),
+    ('https://streamable.com/dt46y', YtdlpFallback),
+    ('https://vimeo.com/channels/31259/53576664', YtdlpFallback),
+    ('http://video.pbs.org/viralplayer/2365173446/', YtdlpFallback),
     ('https://www.pornhub.com/view_video.php?viewkey=ph5a2ee0461a8d0', PornHub),
 ))
 def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownloader, reddit_instance: praw.Reddit):

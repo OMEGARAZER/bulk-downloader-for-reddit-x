@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import platform
+import sys
 import unittest.mock
 from datetime import datetime
 from pathlib import Path
@@ -13,6 +14,8 @@ import pytest
 
 from bdfr.file_name_formatter import FileNameFormatter
 from bdfr.resource import Resource
+from bdfr.site_downloaders.base_downloader import BaseDownloader
+from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 
 
 @pytest.fixture()
@@ -185,7 +188,7 @@ def test_format_multiple_resources():
     ('😍💕✨' * 100, '_1.png'),
 ))
 def test_limit_filename_length(test_filename: str, test_ending: str):
-    result = FileNameFormatter._limit_file_name_length(test_filename, test_ending, Path('.'))
+    result = FileNameFormatter.limit_file_name_length(test_filename, test_ending, Path('.'))
     assert len(result.name) <= 255
     assert len(result.name.encode('utf-8')) <= 255
     assert len(str(result)) <= FileNameFormatter.find_max_path_length()
@@ -204,15 +207,16 @@ def test_limit_filename_length(test_filename: str, test_ending: str):
     ('😍💕✨' * 100 + '_aaa1aa', '_1.png', '_aaa1aa_1.png'),
 ))
 def test_preserve_id_append_when_shortening(test_filename: str, test_ending: str, expected_end: str):
-    result = FileNameFormatter._limit_file_name_length(test_filename, test_ending, Path('.'))
+    result = FileNameFormatter.limit_file_name_length(test_filename, test_ending, Path('.'))
     assert len(result.name) <= 255
     assert len(result.name.encode('utf-8')) <= 255
     assert result.name.endswith(expected_end)
     assert len(str(result)) <= FileNameFormatter.find_max_path_length()
 
 
-def test_shorten_filenames(submission: MagicMock, tmp_path: Path):
-    submission.title = 'A' * 300
+@pytest.mark.skipif(sys.platform == 'win32', reason='Test broken on windows github')
+def test_shorten_filename_real(submission: MagicMock, tmp_path: Path):
+    submission.title = 'A' * 500
     submission.author.name = 'test'
     submission.subreddit.display_name = 'test'
     submission.id = 'BBBBBB'
@@ -221,6 +225,21 @@ def test_shorten_filenames(submission: MagicMock, tmp_path: Path):
     result = test_formatter.format_path(test_resource, tmp_path)
     result.parent.mkdir(parents=True)
     result.touch()
+
+
+@pytest.mark.parametrize(('test_name', 'test_ending'), (
+    ('a', 'b'),
+    ('a', '_bbbbbb.jpg'),
+    ('a' * 20, '_bbbbbb.jpg'),
+    ('a' * 50, '_bbbbbb.jpg'),
+    ('a' * 500, '_bbbbbb.jpg'),
+))
+def test_shorten_path(test_name: str, test_ending: str, tmp_path: Path):
+    result = FileNameFormatter.limit_file_name_length(test_name, test_ending, tmp_path)
+    assert len(str(result.name)) <= 255
+    assert len(str(result.name).encode('UTF-8')) <= 255
+    assert len(str(result.name).encode('cp1252')) <= 255
+    assert len(str(result)) <= FileNameFormatter.find_max_path_length()
 
 
 @pytest.mark.parametrize(('test_string', 'expected'), (
@@ -377,6 +396,26 @@ def test_get_max_path_length():
 def test_windows_max_path(tmp_path: Path):
     with unittest.mock.patch('platform.system', return_value='Windows'):
         with unittest.mock.patch('bdfr.file_name_formatter.FileNameFormatter.find_max_path_length', return_value=260):
-            result = FileNameFormatter._limit_file_name_length('test' * 100, '_1.png', tmp_path)
+            result = FileNameFormatter.limit_file_name_length('test' * 100, '_1.png', tmp_path)
             assert len(str(result)) <= 260
             assert len(result.name) <= (260 - len(str(tmp_path)))
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_reddit_id', 'test_downloader', 'expected_names'), (
+    ('gphmnr', YtdlpFallback, {'He has a lot to say today.mp4'}),
+    ('d0oir2', YtdlpFallback, {"Crunk's finest moment. Welcome to the new subreddit!.mp4"}),
+))
+def test_name_submission(
+        test_reddit_id: str,
+        test_downloader: type(BaseDownloader),
+        expected_names: set[str],
+        reddit_instance: praw.reddit.Reddit,
+):
+    test_submission = reddit_instance.submission(id=test_reddit_id)
+    test_resources = test_downloader(test_submission).find_resources()
+    test_formatter = FileNameFormatter('{TITLE}', '', '')
+    results = test_formatter.format_resource_paths(test_resources, Path('.'))
+    results = set([r[0].name for r in results])
+    assert expected_names == results

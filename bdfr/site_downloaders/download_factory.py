@@ -9,7 +9,7 @@ from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.site_downloaders.base_downloader import BaseDownloader
 from bdfr.site_downloaders.direct import Direct
 from bdfr.site_downloaders.erome import Erome
-from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
+from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 from bdfr.site_downloaders.gallery import Gallery
 from bdfr.site_downloaders.gfycat import Gfycat
 from bdfr.site_downloaders.imgur import Imgur
@@ -24,7 +24,7 @@ class DownloadFactory:
     @staticmethod
     def pull_lever(url: str) -> Type[BaseDownloader]:
         sanitised_url = DownloadFactory.sanitise_url(url)
-        if re.match(r'(i\.)?imgur.*\.gifv$', sanitised_url):
+        if re.match(r'(i\.)?imgur.*\.gif.+$', sanitised_url):
             return Imgur
         elif re.match(r'.*/.*\.\w{3,4}(\?[\w;&=]*)?$', sanitised_url) and \
                 not DownloadFactory.is_web_resource(sanitised_url):
@@ -49,8 +49,8 @@ class DownloadFactory:
             return PornHub
         elif re.match(r'vidble\.com', sanitised_url):
             return Vidble
-        elif YoutubeDlFallback.can_handle_link(sanitised_url):
-            return YoutubeDlFallback
+        elif YtdlpFallback.can_handle_link(sanitised_url):
+            return YtdlpFallback
         else:
             raise NotADownloadableLinkError(f'No downloader module exists for url {url}')
 
