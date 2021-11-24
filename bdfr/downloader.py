@@ -53,7 +53,8 @@ class RedditDownloader(RedditConnector):
             return
         elif submission.author.name in self.args.ignore_user:
             logger.debug(
-                f'Submission {submission.id} in {submission.subreddit.display_name} by {submission.author.name} an ignored user')
+                f'Submission {submission.id} in {submission.subreddit.display_name} skipped'
+                f' due to {submission.author.name} being an ignored user')
             return
         elif not isinstance(submission, praw.models.Submission):
             logger.warning(f'{submission.id} is not a submission')
