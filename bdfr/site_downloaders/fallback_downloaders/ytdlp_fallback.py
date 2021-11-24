@@ -15,9 +15,9 @@ from bdfr.site_downloaders.youtube import Youtube
 logger = logging.getLogger(__name__)
 
 
-class YoutubeDlFallback(BaseFallbackDownloader, Youtube):
+class YtdlpFallback(BaseFallbackDownloader, Youtube):
     def __init__(self, post: Submission):
-        super(YoutubeDlFallback, self).__init__(post)
+        super(YtdlpFallback, self).__init__(post)
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         out = Resource(
@@ -31,7 +31,7 @@ class YoutubeDlFallback(BaseFallbackDownloader, Youtube):
     @staticmethod
     def can_handle_link(url: str) -> bool:
         try:
-            attributes = YoutubeDlFallback.get_video_attributes(url)
+            attributes = YtdlpFallback.get_video_attributes(url)
         except NotADownloadableLinkError:
             return False
         if attributes:

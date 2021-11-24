@@ -6,7 +6,7 @@ import pytest
 
 from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.resource import Resource
-from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
+from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 
 
 @pytest.mark.online
@@ -17,7 +17,7 @@ from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import Youtub
     ('https://milesmatrix.bandcamp.com/album/la-boum/', False),
 ))
 def test_can_handle_link(test_url: str, expected: bool):
-    result = YoutubeDlFallback.can_handle_link(test_url)
+    result = YtdlpFallback.can_handle_link(test_url)
     assert result == expected
 
 
@@ -27,7 +27,7 @@ def test_can_handle_link(test_url: str, expected: bool):
 ))
 def test_info_extraction_bad(test_url: str):
     with pytest.raises(NotADownloadableLinkError):
-        YoutubeDlFallback.get_video_attributes(test_url)
+        YtdlpFallback.get_video_attributes(test_url)
 
 
 @pytest.mark.online
@@ -41,7 +41,7 @@ def test_info_extraction_bad(test_url: str):
 def test_find_resources(test_url: str, expected_hash: str):
     test_submission = MagicMock()
     test_submission.url = test_url
-    downloader = YoutubeDlFallback(test_submission)
+    downloader = YtdlpFallback(test_submission)
     resources = downloader.find_resources()
     assert len(resources) == 1
     assert isinstance(resources[0], Resource)
