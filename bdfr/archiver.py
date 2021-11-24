@@ -29,6 +29,9 @@ class Archiver(RedditConnector):
         for generator in self.reddit_lists:
             for submission in generator:
                 if submission.author.name in self.args.ignore_user:
+                    logger.debug(
+                        f'Submission {submission.id} in {submission.subreddit.display_name} skipped'
+                        f' due to {submission.author.name} being an ignored user')
                     continue
                 logger.debug(f'Attempting to archive submission {submission.id}')
                 self.write_entry(submission)
