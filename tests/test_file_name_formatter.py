@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import platform
+import sys
 import unittest.mock
 from datetime import datetime
 from pathlib import Path
@@ -14,7 +15,7 @@ import pytest
 from bdfr.file_name_formatter import FileNameFormatter
 from bdfr.resource import Resource
 from bdfr.site_downloaders.base_downloader import BaseDownloader
-from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
+from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 
 
 @pytest.fixture()
@@ -213,6 +214,7 @@ def test_preserve_id_append_when_shortening(test_filename: str, test_ending: str
     assert len(str(result)) <= FileNameFormatter.find_max_path_length()
 
 
+@pytest.mark.skipif(sys.platform == 'win32', reason='Test broken on windows github')
 def test_shorten_filename_real(submission: MagicMock, tmp_path: Path):
     submission.title = 'A' * 500
     submission.author.name = 'test'
@@ -402,8 +404,8 @@ def test_windows_max_path(tmp_path: Path):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.parametrize(('test_reddit_id', 'test_downloader', 'expected_names'), (
-    ('gphmnr', YoutubeDlFallback, {'He has a lot to say today.mp4'}),
-    ('d0oir2', YoutubeDlFallback, {"Crunk's finest moment. Welcome to the new subreddit!.mp4"}),
+    ('gphmnr', YtdlpFallback, {'He has a lot to say today.mp4'}),
+    ('d0oir2', YtdlpFallback, {"Crunk's finest moment. Welcome to the new subreddit!.mp4"}),
 ))
 def test_name_submission(
         test_reddit_id: str,
