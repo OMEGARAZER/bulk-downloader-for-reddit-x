@@ -24,7 +24,7 @@ class Gallery(BaseDownloader):
         except (AttributeError, TypeError):
             try:
                 image_urls = self._get_links(self.post.crosspost_parent_list[0]['gallery_data']['items'])
-            except (AttributeError, IndexError, TypeError):
+            except (AttributeError, IndexError, TypeError, KeyError):
                 logger.error(f'Could not find gallery data in submission {self.post.id}')
                 logger.exception('Gallery image find failure')
                 raise SiteDownloaderError('No images found in Reddit gallery')
