@@ -57,6 +57,14 @@ def test_gallery_get_links(test_ids: list[dict], expected: set[str]):
         '65163f685fb28c5b776e0e77122718be',
         '2a337eb5b13c34d3ca3f51b5db7c13e9',
     }),
+    ('rb3ub6', {  # patreon post
+        '748a976c6cedf7ea85b6f90e7cb685c7',
+        '839796d7745e88ced6355504e1f74508',
+        'bcdb740367d0f19f97a77e614b48a42d',
+        '0f230b8c4e5d103d35a773fab9814ec3',
+        'e5192d6cb4f84c4f4a658355310bf0f9',
+        '91cbe172cd8ccbcf049fcea4204eb979',
+    })
 ))
 def test_gallery_download(test_submission_id: str, expected_hashes: set[str], reddit_instance: praw.Reddit):
     test_submission = reddit_instance.submission(id=test_submission_id)

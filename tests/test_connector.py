@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding=utf-8
-
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterator
 from unittest.mock import MagicMock
@@ -193,6 +193,39 @@ def test_get_subreddit_normal(
     assert all([res.subreddit.display_name in test_subreddits for res in results])
     assert len(results) <= max_expected_len
     assert not any([isinstance(m, MagicMock) for m in results])
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_time', 'test_delta'), (
+    ('hour', timedelta(hours=1)),
+    ('day', timedelta(days=1)),
+    ('week', timedelta(days=7)),
+    ('month', timedelta(days=31)),
+    ('year', timedelta(days=365)),
+))
+def test_get_subreddit_time_verification(
+        test_time: str,
+        test_delta: timedelta,
+        downloader_mock: MagicMock,
+        reddit_instance: praw.Reddit,
+):
+    downloader_mock.args.limit = 10
+    downloader_mock.args.sort = 'top'
+    downloader_mock.args.time = test_time
+    downloader_mock.time_filter = RedditConnector.create_time_filter(downloader_mock)
+    downloader_mock.sort_filter = RedditConnector.create_sort_filter(downloader_mock)
+    downloader_mock.determine_sort_function.return_value = RedditConnector.determine_sort_function(downloader_mock)
+    downloader_mock.args.subreddit = ['all']
+    downloader_mock.reddit_instance = reddit_instance
+    results = RedditConnector.get_subreddits(downloader_mock)
+    results = [sub for res1 in results for sub in res1]
+    assert all([isinstance(res1, praw.models.Submission) for res1 in results])
+    nowtime = datetime.now()
+    for r in results:
+        result_time = datetime.fromtimestamp(r.created_utc)
+        time_diff = nowtime - result_time
+        assert time_diff < test_delta
 
 
 @pytest.mark.online

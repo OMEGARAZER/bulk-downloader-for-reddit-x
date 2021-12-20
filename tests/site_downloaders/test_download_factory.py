@@ -47,6 +47,7 @@ from bdfr.site_downloaders.youtube import Youtube
     ('https://vimeo.com/channels/31259/53576664', YtdlpFallback),
     ('http://video.pbs.org/viralplayer/2365173446/', YtdlpFallback),
     ('https://www.pornhub.com/view_video.php?viewkey=ph5a2ee0461a8d0', PornHub),
+    ('https://www.patreon.com/posts/minecart-track-59346560', Gallery),
 ))
 def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownloader, reddit_instance: praw.Reddit):
     result = DownloadFactory.pull_lever(test_submission_url)

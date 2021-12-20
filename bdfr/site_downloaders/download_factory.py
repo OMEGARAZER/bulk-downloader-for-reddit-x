@@ -33,6 +33,8 @@ class DownloadFactory:
             return Erome
         elif re.match(r'reddit\.com/gallery/.*', sanitised_url):
             return Gallery
+        elif re.match(r'patreon\.com.*', sanitised_url):
+            return Gallery
         elif re.match(r'gfycat\.', sanitised_url):
             return Gfycat
         elif re.match(r'(m\.)?imgur.*', sanitised_url):
