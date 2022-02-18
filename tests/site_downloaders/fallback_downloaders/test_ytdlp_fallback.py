@@ -35,8 +35,8 @@ def test_info_extraction_bad(test_url: str):
 @pytest.mark.parametrize(('test_url', 'expected_hash'), (
     ('https://streamable.com/dt46y', 'b7e465adaade5f2b6d8c2b4b7d0a2878'),
     ('https://streamable.com/t8sem', '49b2d1220c485455548f1edbc05d4ecf'),
-    ('https://www.reddit.com/r/specializedtools/comments/n2nw5m/bamboo_splitter/', '21968d3d92161ea5e0abdcaf6311b06c'),
-    ('https://v.redd.it/9z1dnk3xr5k61', '351a2b57e888df5ccbc508056511f38d'),
+    ('https://www.reddit.com/r/specializedtools/comments/n2nw5m/bamboo_splitter/', '0a406f3d2e09b3d3ba43bf97185b83e3'),
+    ('https://v.redd.it/9z1dnk3xr5k61', 'c7765c33972549465c87dcbd59eb3d5d'),
 ))
 def test_find_resources(test_url: str, expected_hash: str):
     test_submission = MagicMock()
