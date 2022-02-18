@@ -17,6 +17,8 @@ _common_options = [
     click.option('--authenticate', is_flag=True, default=None),
     click.option('--config', type=str, default=None),
     click.option('--disable-module', multiple=True, default=None, type=str),
+    click.option('--file-scheme', default=None, type=str),
+    click.option('--folder-scheme', default=None, type=str),
     click.option('--ignore-user', type=str, multiple=True, default=None),
     click.option('--include-id-file', multiple=True, default=None),
     click.option('--log', type=str, default=None),
@@ -38,8 +40,6 @@ _common_options = [
 ]
 
 _downloader_options = [
-    click.option('--file-scheme', default=None, type=str),
-    click.option('--folder-scheme', default=None, type=str),
     click.option('--make-hard-links', is_flag=True, default=None),
     click.option('--max-wait-time', type=int, default=None),
     click.option('--no-dupes', is_flag=True, default=None),
