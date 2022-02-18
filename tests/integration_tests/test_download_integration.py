@@ -31,23 +31,23 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-s', 'Mindustry', '-L', 1],
-    ['-s', 'r/Mindustry', '-L', 1],
-    ['-s', 'r/mindustry', '-L', 1],
-    ['-s', 'mindustry', '-L', 1],
-    ['-s', 'https://www.reddit.com/r/TrollXChromosomes/', '-L', 1],
-    ['-s', 'r/TrollXChromosomes/', '-L', 1],
-    ['-s', 'TrollXChromosomes/', '-L', 1],
-    ['-s', 'trollxchromosomes', '-L', 1],
-    ['-s', 'trollxchromosomes,mindustry,python', '-L', 1],
-    ['-s', 'trollxchromosomes, mindustry, python', '-L', 1],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--sort', 'new'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--sort', 'new'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--search', 'women'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--search', 'women'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--sort', 'new', '--search', 'women'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--sort', 'new', '--search', 'women'],
+    ['-s', 'Mindustry', '-L', 3],
+    ['-s', 'r/Mindustry', '-L', 3],
+    ['-s', 'r/mindustry', '-L', 3],
+    ['-s', 'mindustry', '-L', 3],
+    ['-s', 'https://www.reddit.com/r/TrollXChromosomes/', '-L', 3],
+    ['-s', 'r/TrollXChromosomes/', '-L', 3],
+    ['-s', 'TrollXChromosomes/', '-L', 3],
+    ['-s', 'trollxchromosomes', '-L', 3],
+    ['-s', 'trollxchromosomes,mindustry,python', '-L', 3],
+    ['-s', 'trollxchromosomes, mindustry, python', '-L', 3],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--sort', 'new'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day', '--sort', 'new'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--search', 'women'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day', '--search', 'women'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--sort', 'new', '--search', 'women'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day', '--sort', 'new', '--search', 'women'],
 ))
 def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -64,6 +64,7 @@ def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
     ['-s', 'hentai', '-L', 10, '--search', 'red', '--authenticate'],
+    ['--authenticate', '--subscribed', '-L', 10],
 ))
 def test_cli_download_search_subreddits_authenticated(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
