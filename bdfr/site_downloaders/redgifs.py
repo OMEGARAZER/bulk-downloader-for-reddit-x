@@ -18,7 +18,7 @@ class Redgifs(BaseDownloader):
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         media_urls = self._get_link(self.post.url)
-        return [Resource(self.post, m, Resource.retry_download(m), '.mp4') for m in media_urls]
+        return [Resource(self.post, m, Resource.retry_download(m), None) for m in media_urls]
 
     @staticmethod
     def _get_link(url: str) -> set[str]:
