@@ -53,6 +53,12 @@ However, these commands are not enough. You should chain parameters in [Options]
 python3 -m bdfr download ./path/to/output --subreddit Python -L 10
 ```
 ```bash
+python3 -m bdfr download ./path/to/output --user reddituser --submitted -L 100
+```
+```bash
+python3 -m bdfr download ./path/to/output --user reddituser --submitted --all-comments --comment-context
+```
+```bash
 python3 -m bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
 ```
 ```bash
