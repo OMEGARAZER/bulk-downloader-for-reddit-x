@@ -1,9 +1,9 @@
 skip: [mp4, avi, mov]
-file-scheme: "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}"
+file_scheme: "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}"
 limit: 10
 sort: top
 time: all
-no-dupes: true
+no_dupes: true
 subreddit:
   - EarthPorn
   - CityPorn
