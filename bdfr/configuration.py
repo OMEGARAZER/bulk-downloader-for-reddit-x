@@ -53,7 +53,7 @@ class Configuration(Namespace):
         self.comment_context: bool = False
 
     def process_click_arguments(self, context: click.Context):
-        if context.params['opts'] is not None:
+        if context.params.get('opts') is not None:
             with open(context.params['opts']) as f:
                 opts = yaml.load(f, Loader=yaml.FullLoader)
             for arg_key, val in opts.items():
