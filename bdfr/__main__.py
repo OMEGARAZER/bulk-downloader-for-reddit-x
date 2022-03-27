@@ -16,6 +16,7 @@ _common_options = [
     click.argument('directory', type=str),
     click.option('--authenticate', is_flag=True, default=None),
     click.option('--config', type=str, default=None),
+    click.option('--opts', type=str, default=None),
     click.option('--disable-module', multiple=True, default=None, type=str),
     click.option('--exclude-id', default=None, multiple=True),
     click.option('--exclude-id-file', default=None, multiple=True),

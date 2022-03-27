@@ -5,6 +5,7 @@ from argparse import Namespace
 from typing import Optional
 
 import click
+import yaml
 
 
 class Configuration(Namespace):
@@ -12,6 +13,7 @@ class Configuration(Namespace):
         super(Configuration, self).__init__()
         self.authenticate = False
         self.config = None
+        self.opts: Optional[str] = None
         self.directory: str = '.'
         self.disable_module: list[str] = []
         self.exclude_id = []
@@ -49,6 +51,14 @@ class Configuration(Namespace):
         self.comment_context: bool = False
 
     def process_click_arguments(self, context: click.Context):
+        if context.params['opts'] is not None:
+            with open(context.params['opts']) as f:
+                opts = yaml.load(f, Loader=yaml.FullLoader)
+            for arg_key, v in opts.items():
+                vars(self)[arg_key] = v
         for arg_key in context.params.keys():
-            if arg_key in vars(self) and context.params[arg_key] is not None:
-                vars(self)[arg_key] = context.params[arg_key]
+            if arg_key not in vars(self):
+                continue
+            if context.params[arg_key] is None or context.params[arg_key] == ():
+                continue
+            vars(self)[arg_key] = context.params[arg_key]
