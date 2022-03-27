@@ -3,10 +3,12 @@
 
 from argparse import Namespace
 from typing import Optional
+import logging
 
 import click
 import yaml
 
+logger = logging.getLogger(__name__)
 
 class Configuration(Namespace):
     def __init__(self):
@@ -54,11 +56,17 @@ class Configuration(Namespace):
         if context.params['opts'] is not None:
             with open(context.params['opts']) as f:
                 opts = yaml.load(f, Loader=yaml.FullLoader)
-            for arg_key, v in opts.items():
-                vars(self)[arg_key] = v
+            for arg_key, val in opts.items():
+                if not hasattr(self, arg_key):
+                    logger.error(f'Ignoring an unknown YAML argument: {arg_key}')
+                    continue
+                setattr(self, arg_key, val)
         for arg_key in context.params.keys():
-            if arg_key not in vars(self):
+            if not hasattr(self, arg_key):
+                logger.warning(f'Ignoring an unknown CLI argument: {arg_key}')
                 continue
-            if context.params[arg_key] is None or context.params[arg_key] == ():
+            val = context.params[arg_key]
+            if val is None or val == ():
+                # don't overwrite with an empty value
                 continue
-            vars(self)[arg_key] = context.params[arg_key]
+            setattr(self, arg_key, val)
