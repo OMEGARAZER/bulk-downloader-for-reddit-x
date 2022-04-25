@@ -18,7 +18,7 @@ from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
 from bdfr.site_downloaders.vidble import Vidble
 from bdfr.site_downloaders.youtube import Youtube
-from bdfr.site_downloaders.vreddit import  vreddit
+from bdfr.site_downloaders.vreddit import  Vreddit
 
 
 class DownloadFactory:
@@ -49,7 +49,7 @@ class DownloadFactory:
         elif re.match(r'i\.redd\.it.*', sanitised_url):
             return Direct
         elif re.match(r'v\.redd\.it.*', sanitised_url):
-            return vreddit
+            return Vreddit
         elif re.match(r'pornhub\.com.*', sanitised_url):
             return PornHub
         elif re.match(r'vidble\.com', sanitised_url):

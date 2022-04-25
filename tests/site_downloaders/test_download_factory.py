@@ -17,6 +17,7 @@ from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
 from bdfr.site_downloaders.youtube import Youtube
+from bdfr.site_downloaders.vreddit import Vreddit
 
 
 @pytest.mark.online
@@ -48,6 +49,7 @@ from bdfr.site_downloaders.youtube import Youtube
     ('http://video.pbs.org/viralplayer/2365173446/', YtdlpFallback),
     ('https://www.pornhub.com/view_video.php?viewkey=ph5a2ee0461a8d0', PornHub),
     ('https://www.patreon.com/posts/minecart-track-59346560', Gallery),
+    ('https://v.redd.it/9z1dnk3xr5k61', Vreddit)
 ))
 def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownloader, reddit_instance: praw.Reddit):
     result = DownloadFactory.pull_lever(test_submission_url)
