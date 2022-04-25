@@ -43,7 +43,7 @@ from bdfr.site_downloaders.vreddit import Vreddit
     ('https://i.imgur.com/3SKrQfK.jpg?1', Direct),
     ('https://dynasty-scans.com/system/images_images/000/017/819/original/80215103_p0.png?1612232781', Direct),
     ('https://m.imgur.com/a/py3RW0j', Imgur),
-    ('https://v.redd.it/9z1dnk3xr5k61', YtdlpFallback),
+    ('https://v.redd.it/9z1dnk3xr5k61', Vreddit),
     ('https://streamable.com/dt46y', YtdlpFallback),
     ('https://vimeo.com/channels/31259/53576664', YtdlpFallback),
     ('http://video.pbs.org/viralplayer/2365173446/', YtdlpFallback),
