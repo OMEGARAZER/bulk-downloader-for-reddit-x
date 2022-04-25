@@ -2,7 +2,7 @@
 
 import logging
 import re
-from typing import Optional
+from typing import Callable, Optional
 
 import bs4
 from praw.models import Submission
@@ -29,7 +29,7 @@ class Erome(BaseDownloader):
         for link in links:
             if not re.match(r'https?://.*', link):
                 link = 'https://' + link
-            out.append(Resource(self.post, link))
+            out.append(Resource(self.post, link, self.erome_download(link)))
         return out
 
     @staticmethod
@@ -43,3 +43,14 @@ class Erome(BaseDownloader):
         out.extend([vid.get('src') for vid in videos])
 
         return set(out)
+
+    @staticmethod
+    def erome_download(url: str) -> Callable:
+        download_parameters = {
+            'headers': {
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'
+                              ' Chrome/88.0.4324.104 Safari/537.36',
+                'Referer': 'https://www.erome.com/',
+            },
+        }
+        return lambda global_params: Resource.http_download(url, global_params | download_parameters)

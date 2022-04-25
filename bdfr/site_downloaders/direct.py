@@ -14,4 +14,4 @@ class Direct(BaseDownloader):
         super().__init__(post)
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
-        return [Resource(self.post, self.post.url)]
+        return [Resource(self.post, self.post.url, Resource.retry_download(self.post.url))]

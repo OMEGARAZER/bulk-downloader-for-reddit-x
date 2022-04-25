@@ -65,11 +65,11 @@ def test_get_data_album(test_url: str, expected_gen_dict: dict, expected_image_d
         {'hash': 'dLk3FGY', 'title': '', 'ext': '.mp4', 'animated': True}
     ),
     (
-        'https://imgur.com/BuzvZwb.gifv',
+        'https://imgur.com/65FqTpT.gifv',
         {
-            'hash': 'BuzvZwb',
+            'hash': '65FqTpT',
             'title': '',
-            'description': 'Akron Glass Works',
+            'description': '',
             'animated': True,
             'mimetype': 'video/mp4'
         },
@@ -111,7 +111,7 @@ def test_imgur_extension_validation_bad(test_extension: str):
     ),
     (
         'https://imgur.com/gallery/IjJJdlC',
-        ('7227d4312a9779b74302724a0cfa9081',),
+        ('740b006cf9ec9d6f734b6e8f5130bdab',),
     ),
     (
         'https://imgur.com/a/dcc84Gt',
@@ -122,6 +122,42 @@ def test_imgur_extension_validation_bad(test_extension: str):
             '029c475ce01b58fdf1269d8771d33913',
         ),
     ),
+    (
+        'https://imgur.com/a/eemHCCK',
+        (
+            '9cb757fd8f055e7ef7aa88addc9d9fa5',
+            'b6cb6c918e2544e96fb7c07d828774b5',
+            'fb6c913d721c0bbb96aa65d7f560d385',
+        ),
+    ),
+    (
+        'https://i.imgur.com/lFJai6i.gifv',
+        ('01a6e79a30bec0e644e5da12365d5071',),
+    ),
+    (
+        'https://i.imgur.com/ywSyILa.gifv?',
+        ('56d4afc32d2966017c38d98568709b45',),
+    ),
+    (
+        'https://imgur.com/ubYwpbk.GIFV',
+        ('d4a774aac1667783f9ed3a1bd02fac0c',),
+    ),
+    (
+        'https://i.imgur.com/j1CNCZY.gifv',
+        ('58e7e6d972058c18b7ecde910ca147e3',),
+    ),
+    (
+        'https://i.imgur.com/uTvtQsw.gifv',
+        ('46c86533aa60fc0e09f2a758513e3ac2',),
+    ),
+    (
+        'https://i.imgur.com/OGeVuAe.giff',
+        ('77389679084d381336f168538793f218',)
+    ),
+    (
+        'https://i.imgur.com/OGeVuAe.gift',
+        ('77389679084d381336f168538793f218',)
+    ),
 ))
 def test_find_resources(test_url: str, expected_hashes: list[str]):
     mock_download = Mock()
@@ -129,7 +165,6 @@ def test_find_resources(test_url: str, expected_hashes: list[str]):
     downloader = Imgur(mock_download)
     results = downloader.find_resources()
     assert all([isinstance(res, Resource) for res in results])
-    [res.download(120) for res in results]
+    [res.download() for res in results]
     hashes = set([res.hash.hexdigest() for res in results])
-    assert len(results) == len(expected_hashes)
     assert hashes == set(expected_hashes)

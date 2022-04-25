@@ -14,24 +14,30 @@ from bdfr.archive_entry.base_archive_entry import BaseArchiveEntry
 from bdfr.archive_entry.comment_archive_entry import CommentArchiveEntry
 from bdfr.archive_entry.submission_archive_entry import SubmissionArchiveEntry
 from bdfr.configuration import Configuration
-from bdfr.downloader import RedditDownloader
+from bdfr.connector import RedditConnector
 from bdfr.exceptions import ArchiverError
 from bdfr.resource import Resource
 
 logger = logging.getLogger(__name__)
 
 
-class Archiver(RedditDownloader):
+class Archiver(RedditConnector):
     def __init__(self, args: Configuration):
         super(Archiver, self).__init__(args)
 
     def download(self):
         for generator in self.reddit_lists:
             for submission in generator:
+                if (submission.author and submission.author.name in self.args.ignore_user) or \
+                        (submission.author is None and 'DELETED' in self.args.ignore_user):
+                    logger.debug(
+                        f'Submission {submission.id} in {submission.subreddit.display_name} skipped'
+                        f' due to {submission.author.name if submission.author else "DELETED"} being an ignored user')
+                    continue
                 logger.debug(f'Attempting to archive submission {submission.id}')
-                self._write_entry(submission)
+                self.write_entry(submission)
 
-    def _get_submissions_from_link(self) -> list[list[praw.models.Submission]]:
+    def get_submissions_from_link(self) -> list[list[praw.models.Submission]]:
         supplied_submissions = []
         for sub_id in self.args.link:
             if len(sub_id) == 6:
@@ -42,12 +48,13 @@ class Archiver(RedditDownloader):
                 supplied_submissions.append(self.reddit_instance.submission(url=sub_id))
         return [supplied_submissions]
 
-    def _get_user_data(self) -> list[Iterator]:
-        results = super(Archiver, self)._get_user_data()
+    def get_user_data(self) -> list[Iterator]:
+        results = super(Archiver, self).get_user_data()
         if self.args.user and self.args.all_comments:
-            sort = self._determine_sort_function()
-            logger.debug(f'Retrieving comments of user {self.args.user}')
-            results.append(sort(self.reddit_instance.redditor(self.args.user).comments, limit=self.args.limit))
+            sort = self.determine_sort_function()
+            for user in self.args.user:
+                logger.debug(f'Retrieving comments of user {user}')
+                results.append(sort(self.reddit_instance.redditor(user).comments, limit=self.args.limit))
         return results
 
     @staticmethod
@@ -59,7 +66,10 @@ class Archiver(RedditDownloader):
         else:
             raise ArchiverError(f'Factory failed to classify item of type {type(praw_item).__name__}')
 
-    def _write_entry(self, praw_item: (praw.models.Submission, praw.models.Comment)):
+    def write_entry(self, praw_item: (praw.models.Submission, praw.models.Comment)):
+        if self.args.comment_context and isinstance(praw_item, praw.models.Comment):
+            logger.debug(f'Converting comment {praw_item.id} to submission {praw_item.submission.id}')
+            praw_item = praw_item.submission
         archive_entry = self._pull_lever_entry_factory(praw_item)
         if self.args.format == 'json':
             self._write_entry_json(archive_entry)
@@ -72,17 +82,17 @@ class Archiver(RedditDownloader):
         logger.info(f'Record for entry item {praw_item.id} written to disk')
 
     def _write_entry_json(self, entry: BaseArchiveEntry):
-        resource = Resource(entry.source, '', '.json')
+        resource = Resource(entry.source, '', lambda: None, '.json')
         content = json.dumps(entry.compile())
         self._write_content_to_disk(resource, content)
 
     def _write_entry_xml(self, entry: BaseArchiveEntry):
-        resource = Resource(entry.source, '', '.xml')
+        resource = Resource(entry.source, '', lambda: None, '.xml')
         content = dict2xml.dict2xml(entry.compile(), wrap='root')
         self._write_content_to_disk(resource, content)
 
     def _write_entry_yaml(self, entry: BaseArchiveEntry):
-        resource = Resource(entry.source, '', '.yaml')
+        resource = Resource(entry.source, '', lambda: None, '.yaml')
         content = yaml.dump(entry.compile())
         self._write_content_to_disk(resource, content)
 

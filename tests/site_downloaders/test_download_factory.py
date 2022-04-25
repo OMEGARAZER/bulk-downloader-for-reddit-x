@@ -9,10 +9,11 @@ from bdfr.site_downloaders.base_downloader import BaseDownloader
 from bdfr.site_downloaders.direct import Direct
 from bdfr.site_downloaders.download_factory import DownloadFactory
 from bdfr.site_downloaders.erome import Erome
-from bdfr.site_downloaders.fallback_downloaders.youtubedl_fallback import YoutubeDlFallback
+from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 from bdfr.site_downloaders.gallery import Gallery
 from bdfr.site_downloaders.gfycat import Gfycat
 from bdfr.site_downloaders.imgur import Imgur
+from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
 from bdfr.site_downloaders.youtube import Youtube
@@ -29,6 +30,7 @@ from bdfr.site_downloaders.youtube import Youtube
     ('https://imgur.com/BuzvZwb.gifv', Imgur),
     ('https://i.imgur.com/6fNdLst.gif', Direct),
     ('https://imgur.com/a/MkxAzeg', Imgur),
+    ('https://i.imgur.com/OGeVuAe.giff', Imgur),
     ('https://www.reddit.com/gallery/lu93m7', Gallery),
     ('https://gfycat.com/concretecheerfulfinwhale', Gfycat),
     ('https://www.erome.com/a/NWGw0F09', Erome),
@@ -40,10 +42,12 @@ from bdfr.site_downloaders.youtube import Youtube
     ('https://i.imgur.com/3SKrQfK.jpg?1', Direct),
     ('https://dynasty-scans.com/system/images_images/000/017/819/original/80215103_p0.png?1612232781', Direct),
     ('https://m.imgur.com/a/py3RW0j', Imgur),
-    ('https://v.redd.it/9z1dnk3xr5k61', YoutubeDlFallback),
-    ('https://streamable.com/dt46y', YoutubeDlFallback),
-    ('https://vimeo.com/channels/31259/53576664', YoutubeDlFallback),
-    ('http://video.pbs.org/viralplayer/2365173446/', YoutubeDlFallback),
+    ('https://v.redd.it/9z1dnk3xr5k61', YtdlpFallback),
+    ('https://streamable.com/dt46y', YtdlpFallback),
+    ('https://vimeo.com/channels/31259/53576664', YtdlpFallback),
+    ('http://video.pbs.org/viralplayer/2365173446/', YtdlpFallback),
+    ('https://www.pornhub.com/view_video.php?viewkey=ph5a2ee0461a8d0', PornHub),
+    ('https://www.patreon.com/posts/minecart-track-59346560', Gallery),
 ))
 def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownloader, reddit_instance: praw.Reddit):
     result = DownloadFactory.pull_lever(test_submission_url)
@@ -69,6 +73,19 @@ def test_factory_lever_bad(test_url: str):
     ('https://youtube.com/watch?v=Gv8Wz74FjVA', 'youtube.com/watch'),
     ('https://i.imgur.com/BuzvZwb.gifv', 'i.imgur.com/BuzvZwb.gifv'),
 ))
-def test_sanitise_urll(test_url: str, expected: str):
-    result = DownloadFactory._sanitise_url(test_url)
+def test_sanitise_url(test_url: str, expected: str):
+    result = DownloadFactory.sanitise_url(test_url)
+    assert result == expected
+
+
+@pytest.mark.parametrize(('test_url', 'expected'), (
+    ('www.example.com/test.asp', True),
+    ('www.example.com/test.html', True),
+    ('www.example.com/test.js', True),
+    ('www.example.com/test.xhtml', True),
+    ('www.example.com/test.mp4', False),
+    ('www.example.com/test.png', False),
+))
+def test_is_web_resource(test_url: str, expected: bool):
+    result = DownloadFactory.is_web_resource(test_url)
     assert result == expected

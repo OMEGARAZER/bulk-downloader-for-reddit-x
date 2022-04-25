@@ -32,14 +32,19 @@ class Imgur(BaseDownloader):
         return out
 
     def _compute_image_url(self, image: dict) -> Resource:
-        image_url = 'https://i.imgur.com/' + image['hash'] + self._validate_extension(image['ext'])
-        return Resource(self.post, image_url)
+        ext = self._validate_extension(image['ext'])
+        if image.get('prefer_video', False):
+            ext = '.mp4'
+
+        image_url = 'https://i.imgur.com/' + image['hash'] + ext
+        return Resource(self.post, image_url, Resource.retry_download(image_url))
 
     @staticmethod
     def _get_data(link: str) -> dict:
-        if re.match(r'.*\.gifv$', link):
+        link = link.rstrip('?')
+        if re.match(r'(?i).*\.gif.+$', link):
             link = link.replace('i.imgur', 'imgur')
-            link = link.rstrip('.gifv')
+            link = re.sub('(?i)\\.gif.+$', '', link)
 
         res = Imgur.retrieve_url(link, cookies={'over18': '1', 'postpagebeta': '0'})
 
@@ -71,6 +76,7 @@ class Imgur(BaseDownloader):
 
     @staticmethod
     def _validate_extension(extension_suffix: str) -> str:
+        extension_suffix = extension_suffix.strip('?1')
         possible_extensions = ('.jpg', '.png', '.mp4', '.gif')
         selection = [ext for ext in possible_extensions if ext == extension_suffix]
         if len(selection) == 1:

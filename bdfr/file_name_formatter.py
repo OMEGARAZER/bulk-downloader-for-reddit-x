@@ -4,6 +4,7 @@ import datetime
 import logging
 import platform
 import re
+import subprocess
 from pathlib import Path
 from typing import Optional
 
@@ -104,32 +105,54 @@ class FileNameFormatter:
     ) -> Path:
         subfolder = Path(
             destination_directory,
-            *[self._format_name(resource.source_submission, part) for part in self.directory_format_string]
+            *[self._format_name(resource.source_submission, part) for part in self.directory_format_string],
         )
         index = f'_{str(index)}' if index else ''
         if not resource.extension:
             raise BulkDownloaderException(f'Resource from {resource.url} has no extension')
-        ending = index + resource.extension
         file_name = str(self._format_name(resource.source_submission, self.file_format_string))
-        file_name = self._limit_file_name_length(file_name, ending)
+        if not re.match(r'.*\.$', file_name) and not re.match(r'^\..*', resource.extension):
+            ending = index + '.' + resource.extension
+        else:
+            ending = index + resource.extension
 
         try:
-            file_path = Path(subfolder, file_name)
+            file_path = self.limit_file_name_length(file_name, ending, subfolder)
         except TypeError:
             raise BulkDownloaderException(f'Could not determine path name: {subfolder}, {index}, {resource.extension}')
         return file_path
 
     @staticmethod
-    def _limit_file_name_length(filename: str, ending: str) -> str:
+    def limit_file_name_length(filename: str, ending: str, root: Path) -> Path:
+        root = root.resolve().expanduser()
         possible_id = re.search(r'((?:_\w{6})?$)', filename)
         if possible_id:
             ending = possible_id.group(1) + ending
             filename = filename[:possible_id.start()]
-        max_length_chars = 255 - len(ending)
-        max_length_bytes = 255 - len(ending.encode('utf-8'))
-        while len(filename) > max_length_chars or len(filename.encode('utf-8')) > max_length_bytes:
+        max_path = FileNameFormatter.find_max_path_length()
+        max_file_part_length_chars = 255 - len(ending)
+        max_file_part_length_bytes = 255 - len(ending.encode('utf-8'))
+        max_path_length = max_path - len(ending) - len(str(root)) - 1
+
+        out = Path(root, filename + ending)
+        while any([len(filename) > max_file_part_length_chars,
+                   len(filename.encode('utf-8')) > max_file_part_length_bytes,
+                   len(str(out)) > max_path_length,
+                   ]):
             filename = filename[:-1]
-        return filename + ending
+            out = Path(root, filename + ending)
+
+        return out
+
+    @staticmethod
+    def find_max_path_length() -> int:
+        try:
+            return int(subprocess.check_output(['getconf', 'PATH_MAX', '/']))
+        except (ValueError, subprocess.CalledProcessError, OSError):
+            if platform.system() == 'Windows':
+                return 260
+            else:
+                return 4096
 
     def format_resource_paths(
             self,

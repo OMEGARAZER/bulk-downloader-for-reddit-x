@@ -1,10 +1,13 @@
 # Bulk Downloader for Reddit
-[![Python Test](https://github.com/aliparlakci/bulk-downloader-for-reddit/actions/workflows/test.yml/badge.svg?branch=v2)](https://github.com/aliparlakci/bulk-downloader-for-reddit/actions/workflows/test.yml)
-[![PyPI version](https://badge.fury.io/py/bdfr.svg)](https://badge.fury.io/py/bdfr)
+[![PyPI version](https://img.shields.io/pypi/v/bdfr.svg)](https://pypi.python.org/pypi/bdfr)
+[![PyPI downloads](https://img.shields.io/pypi/dm/bdfr)](https://pypi.python.org/pypi/bdfr)
+[![Python Test](https://github.com/aliparlakci/bulk-downloader-for-reddit/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/aliparlakci/bulk-downloader-for-reddit/actions/workflows/test.yml)
 
 This is a tool to download submissions or submission data from Reddit. It can be used to archive data or even crawl Reddit to gather research data. The BDFR is flexible and can be used in scripts if needed through an extensive command-line interface. [List of currently supported sources](#list-of-currently-supported-sources)
 
 If you wish to open an issue, please read [the guide on opening issues](docs/CONTRIBUTING.md#opening-an-issue) to ensure that your issue is clear and contains everything it needs to for the developers to investigate.
+
+Included in this README are a few example Bash tricks to get certain behaviour. For that, see [Common Command Tricks](#common-command-tricks).
 
 ## Installation
 *Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it as such:
@@ -26,14 +29,22 @@ If you want to use the source code or make contributions, refer to [CONTRIBUTING
 
 The BDFR works by taking submissions from a variety of "sources" from Reddit and then parsing them to download. These sources might be a subreddit, multireddit, a user list, or individual links. These sources are combined and downloaded to disk, according to a naming and organisational scheme defined by the user.
 
-There are two modes to the BDFR: download, and archive. Each one has a command that performs similar but distinct functions. The `download` command will download the resource linked in the Reddit submission, such as the images, video, etc. The `archive` command will download the submission data itself and store it, such as the submission details, upvotes, text, statistics, as and all the comments on that submission. These can then be saved in a data markup language form, such as JSON, XML, or YAML.
+There are three modes to the BDFR: download, archive, and clone. Each one has a command that performs similar but distinct functions. The `download` command will download the resource linked in the Reddit submission, such as the images, video, etc. The `archive` command will download the submission data itself and store it, such as the submission details, upvotes, text, statistics, as and all the comments on that submission. These can then be saved in a data markup language form, such as JSON, XML, or YAML. Lastly, the `clone` command will perform both functions of the previous commands at once and is more efficient than running those commands sequentially.
+
+Note that the `clone` command is not a true, failthful clone of Reddit. It simply retrieves much of the raw data that Reddit provides. To get a true clone of Reddit, another tool such as HTTrack should be used.
 
 After installation, run the program from any directory as shown below:
+
 ```bash
 python3 -m bdfr download
 ```
+
 ```bash
 python3 -m bdfr archive
+```
+
+```bash
+python3 -m bdfr clone
 ```
 
 However, these commands are not enough. You should chain parameters in [Options](#options) according to your use case. Don't forget that some parameters can be provided multiple times. Some quick reference commands are:
@@ -63,6 +74,17 @@ The following options are common between both the `archive` and `download` comma
 - `--config`
   - If the path to a configuration file is supplied with this option, the BDFR will use the specified config
   - See [Configuration Files](#configuration) for more details
+- `--disable-module`
+  - Can be specified multiple times
+  - Disables certain modules from being used
+  - See [Disabling Modules](#disabling-modules) for more information and a list of module names
+- `--ignore-user`
+  - This will add a user to ignore
+  - Can be specified multiple times
+- `--include-id-file`
+  - This will add any submission with the IDs in the files provided
+  - Can be specified multiple times
+  - Format is one ID per line
 - `--log`
   - This allows one to specify the location of the logfile
   - This must be done when running multiple instances of the BDFR, see [Multiple Instances](#multiple-instances) below
@@ -123,6 +145,8 @@ The following options are common between both the `archive` and `download` comma
 - `-u, --user`
   - This specifies the user to scrape in concert with other options
   - When using `--authenticate`, `--user me` can be used to refer to the authenticated user
+  - Can be specified multiple times for multiple users
+    - If downloading a multireddit, only one user can be specified
 - `-v, --verbose`
   - Increases the verbosity of the program
   - Can be specified multiple times
@@ -131,13 +155,6 @@ The following options are common between both the `archive` and `download` comma
 
 The following options apply only to the `download` command. This command downloads the files and resources linked to in the submission, or a text submission itself, to the disk in the specified directory.
 
-- `--exclude-id`
-  - This will skip the download of any submission with the ID provided
-  - Can be specified multiple times
-- `--exclude-id-file`
-  - This will skip the download of any submission with any of the IDs in the files provided
-  - Can be specified multiple times
-  - Format is one ID per line
 - `--make-hard-links`
   - This flag will create hard links to an existing file when a duplicate is downloaded
   - This will make the file appear in multiple directories while only taking the space of a single instance
@@ -158,6 +175,13 @@ The following options apply only to the `download` command. This command downloa
   - Sets the scheme for folders
   - Default is `{SUBREDDIT}`
   - See [Folder and File Name Schemes](#folder-and-file-name-schemes) for more details
+- `--exclude-id`
+  - This will skip the download of any submission with the ID provided
+  - Can be specified multiple times
+- `--exclude-id-file`
+  - This will skip the download of any submission with any of the IDs in the files provided
+  - Can be specified multiple times
+  - Format is one ID per line
 - `--skip-domain`
   - This adds domains to the download filter i.e. submissions coming from these domains will not be downloaded
   - Can be specified multiple times
@@ -181,6 +205,23 @@ The following options are for the `archive` command specifically.
     - `json` (default)
     - `xml`
     - `yaml`
+- `--comment-context`
+  - This option will, instead of downloading an individual comment, download the submission that comment is a part of
+  - May result in a longer run time as it retrieves much more data
+
+### Cloner Options
+
+The `clone` command can take all the options listed above for both the `archive` and `download` commands since it performs the functions of both.
+
+## Common Command Tricks
+
+A common use case is for subreddits/users to be loaded from a file. The BDFR doesn't support this directly but it is simple enough to do through the command-line. Consider a list of usernames to download; they can be passed through to the BDFR with the following command, assuming that the usernames are in a text file:
+
+```bash
+cat users.txt | xargs -L 1 echo --user | xargs -L 50 python3 -m bdfr download <ARGS>
+```
+
+The part `-L 50` is to make sure that the character limit for a single line isn't exceeded, but may not be necessary. This can also be used to load subreddits from a file, simply exchange `--user` with `--subreddit` and so on.
 
 ## Authentication and Security
 
@@ -252,6 +293,7 @@ The following keys are optional, and defaults will be used if they cannot be fou
   - `backup_log_count`
   - `max_wait_time`
   - `time_format`
+  - `disabled_modules`
 
 All of these should not be modified unless you know what you're doing, as the default values will enable the BDFR to function just fine. A configuration is included in the BDFR when it is installed, and this will be placed in the configuration directory as the default.
 
@@ -262,6 +304,22 @@ Most of these values have to do with OAuth2 configuration and authorisation. The
 The option `time_format` will specify the format of the timestamp that replaces `{DATE}` in filename and folder name schemes. By default, this is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format which is highly recommended due to its standardised nature. If you don't **need** to change it, it is recommended that you do not. However, you can specify it to anything required with this option. The `--time-format` option supersedes any specification in the configuration file
 
 The format can be specified through the [format codes](https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior) that are standard in the Python `datetime` library.
+
+#### Disabling Modules
+
+The individual modules of the BDFR, used to download submissions from websites, can be disabled. This is helpful especially in the case of the fallback downloaders, since the `--skip-domain` option cannot be effectively used in these cases. For example, the Youtube-DL downloader can retrieve data from hundreds of websites and domains; thus the only way to fully disable it is via the `--disable-module` option.
+
+Modules can be disabled through the command line interface for the BDFR or more permanently in the configuration file via the `disabled_modules` option. The list of downloaders that can be disabled are the following. Note that they are case-insensitive.
+
+- `Direct`
+- `Erome`
+- `Gallery` (Reddit Image Galleries)
+- `Gfycat`
+- `Imgur`
+- `Redgifs`
+- `SelfPost` (Reddit Text Post)
+- `Youtube`
+- `YoutubeDlFallback`
 
 ### Rate Limiting
 
@@ -277,9 +335,13 @@ The BDFR can be run in multiple instances with multiple configurations, either c
 
 Running these scenarios consecutively is done easily, like any single run. Configuration files that differ may be specified with the `--config` option to switch between tokens, for example. Otherwise, almost all configuration for data sources can be specified per-run through the command line.
 
-Running scenarious concurrently (at the same time) however, is more complicated. The BDFR will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of the BDFR running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
+Running scenarios concurrently (at the same time) however, is more complicated. The BDFR will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of the BDFR running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
 
 The way to fix this is to use the `--log` option to manually specify where the logfile is to be stored. If the given location is unique to each instance of the BDFR, then it will run fine.
+
+## Manipulating Logfiles
+
+The logfiles that the BDFR outputs are consistent and quite detailed and in a format that is amenable to regex. To this end, a number of bash scripts have been [included here](./scripts). They show examples for how to extract successfully downloaded IDs, failed IDs, and more besides.
 
 ## List of currently supported sources
 

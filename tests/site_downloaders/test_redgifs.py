@@ -15,10 +15,8 @@ from bdfr.site_downloaders.redgifs import Redgifs
      'https://thumbs2.redgifs.com/FrighteningVictoriousSalamander.mp4'),
     ('https://redgifs.com/watch/springgreendecisivetaruca',
      'https://thumbs2.redgifs.com/SpringgreenDecisiveTaruca.mp4'),
-    ('https://www.gifdeliverynetwork.com/regalshoddyhorsechestnutleafminer',
-     'https://thumbs2.redgifs.com/RegalShoddyHorsechestnutleafminer.mp4'),
-    ('https://www.gifdeliverynetwork.com/maturenexthippopotamus',
-     'https://thumbs2.redgifs.com/MatureNextHippopotamus.mp4'),
+    ('https://www.redgifs.com/watch/palegoldenrodrawhalibut',
+     'https://thumbs2.redgifs.com/PalegoldenrodRawHalibut.mp4'),
 ))
 def test_get_link(test_url: str, expected: str):
     result = Redgifs._get_link(test_url)
@@ -29,8 +27,8 @@ def test_get_link(test_url: str, expected: str):
 @pytest.mark.parametrize(('test_url', 'expected_hash'), (
     ('https://redgifs.com/watch/frighteningvictorioussalamander', '4007c35d9e1f4b67091b5f12cffda00a'),
     ('https://redgifs.com/watch/springgreendecisivetaruca', '8dac487ac49a1f18cc1b4dabe23f0869'),
-    ('https://www.gifdeliverynetwork.com/maturenexthippopotamus', '9bec0a9e4163a43781368ed5d70471df'),
-    ('https://www.gifdeliverynetwork.com/regalshoddyhorsechestnutleafminer', '8afb4e2c090a87140230f2352bf8beba'),
+    ('https://redgifs.com/watch/leafysaltydungbeetle', '076792c660b9c024c0471ef4759af8bd'),
+    ('https://www.redgifs.com/watch/palegoldenrodrawhalibut', '46d5aa77fe80c6407de1ecc92801c10e'),
 ))
 def test_download_resource(test_url: str, expected_hash: str):
     mock_submission = Mock()
@@ -39,5 +37,5 @@ def test_download_resource(test_url: str, expected_hash: str):
     resources = test_site.find_resources()
     assert len(resources) == 1
     assert isinstance(resources[0], Resource)
-    resources[0].download(120)
+    resources[0].download()
     assert resources[0].hash.hexdigest() == expected_hash

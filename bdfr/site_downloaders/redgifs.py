@@ -4,7 +4,6 @@ import json
 import re
 from typing import Optional
 
-from bs4 import BeautifulSoup
 from praw.models import Submission
 
 from bdfr.exceptions import SiteDownloaderError
@@ -19,7 +18,7 @@ class Redgifs(BaseDownloader):
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         media_url = self._get_link(self.post.url)
-        return [Resource(self.post, media_url, '.mp4')]
+        return [Resource(self.post, media_url, Resource.retry_download(media_url), '.mp4')]
 
     @staticmethod
     def _get_link(url: str) -> str:
