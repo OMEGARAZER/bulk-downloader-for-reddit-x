@@ -227,6 +227,15 @@ The following options apply only to the `download` command. This command downloa
   - This skips all submissions from the specified subreddit
   - Can be specified multiple times
   - Also accepts CSV subreddit names
+- `--min-score`
+  - This skips all submissions which have fewer than specified upvotes
+- `--max-score`
+  - This skips all submissions which have more than specified upvotes
+- `--min-score-ratio`
+  - This skips all submissions which have lower than specified upvote ratio
+- `--max-score-ratio`
+  - This skips all submissions which have higher than specified upvote ratio
+
 
 ### Archiver Options
 
