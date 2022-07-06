@@ -35,7 +35,7 @@ class Configuration(Namespace):
         self.skip_subreddit: list[str] = []
         self.sort: str = 'hot'
         self.submitted: bool = False
-        self.subscribed: bool = True
+        self.subscribed: bool = False
         self.subreddit: list[str] = []
         self.time: str = 'all'
         self.time_format = None
