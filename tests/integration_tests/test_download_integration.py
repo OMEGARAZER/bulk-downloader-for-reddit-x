@@ -97,7 +97,6 @@ def test_cli_download_user_specific_subreddits(test_args: list[str], tmp_path: P
     ['-l', 'm2601g'],
     ['-l', 'https://www.reddit.com/r/TrollXChromosomes/comments/m2601g/its_a_step_in_the_right_direction/'],
     ['-l', 'm3hxzd'],  # Really long title used to overflow filename limit
-    ['-l', 'm3kua3'],  # Has a deleted user
     ['-l', 'm5bqkf'],  # Resource leading to a 404
 ))
 def test_cli_download_links(test_args: list[str], tmp_path: Path):
@@ -313,9 +312,8 @@ def test_cli_download_file_scheme_warning(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--disable-module', 'Direct'],
-    ['-l', 'nnb9vs', '--disable-module', 'YoutubeDlFallback'],
-    ['-l', 'nnb9vs', '--disable-module', 'youtubedlfallback'],
+    ['-l', 'm2601g', '--disable-module', 'SelfPost'],
+    ['-l', 'nnb9vs', '--disable-module', 'YtdlpFallback'],
 ))
 def test_cli_download_disable_modules(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
