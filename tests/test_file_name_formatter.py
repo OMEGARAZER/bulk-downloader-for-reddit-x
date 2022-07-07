@@ -407,7 +407,7 @@ def test_windows_max_path(tmp_path: Path):
 @pytest.mark.parametrize(('test_reddit_id', 'test_downloader', 'expected_names'), (
     ('gphmnr', YtdlpFallback, {'He has a lot to say today.mp4'}),
     ('d0oir2', YtdlpFallback, {"Crunk's finest moment. Welcome to the new subreddit!.mp4"}),
-    ('jiecu', SelfPost, {'Reston, VA Some info regarding shelters in the area..txt'}),
+    ('jiecu', SelfPost, {'[deleted by user].txt'}),
     ('gui1i', SelfPost, {'The "Beer and Ear offer for those who need help in the \'burbs of North Dallas....txt'}),
 ))
 def test_name_submission(
