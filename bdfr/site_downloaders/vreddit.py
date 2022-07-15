@@ -16,7 +16,7 @@ from bdfr.site_downloaders.base_downloader import BaseDownloader
 logger = logging.getLogger(__name__)
 
 
-class Vreddit(BaseDownloader):
+class VReddit(BaseDownloader):
     def __init__(self, post: Submission):
         super().__init__(post)
 

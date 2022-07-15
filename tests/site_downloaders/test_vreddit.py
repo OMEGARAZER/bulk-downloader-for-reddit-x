@@ -7,7 +7,7 @@ import pytest
 
 from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.resource import Resource
-from bdfr.site_downloaders.vreddit import Vreddit
+from bdfr.site_downloaders.vreddit import VReddit
 
 
 @pytest.mark.online
@@ -18,7 +18,7 @@ from bdfr.site_downloaders.vreddit import Vreddit
 def test_find_resources_good(test_url: str, expected_hash: str):
     test_submission = MagicMock()
     test_submission.url = test_url
-    downloader = Vreddit(test_submission)
+    downloader = VReddit(test_submission)
     resources = downloader.find_resources()
     assert len(resources) == 1
     assert isinstance(resources[0], Resource)
@@ -34,6 +34,6 @@ def test_find_resources_good(test_url: str, expected_hash: str):
 def test_find_resources_bad(test_url: str):
     test_submission = MagicMock()
     test_submission.url = test_url
-    downloader = Vreddit(test_submission)
+    downloader = VReddit(test_submission)
     with pytest.raises(NotADownloadableLinkError):
         downloader.find_resources()
