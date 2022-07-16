@@ -447,7 +447,7 @@ def test_check_user_existence_banned(
 @pytest.mark.reddit
 @pytest.mark.parametrize(('test_subreddit_name', 'expected_message'), (
     ('donaldtrump', 'cannot be found'),
-    ('submitters', 'private and cannot be scraped')
+    ('submitters', 'private and cannot be scraped'),
     ('lhnhfkuhwreolo', 'does not exist')
 ))
 def test_check_subreddit_status_bad(test_subreddit_name: str, expected_message: str, reddit_instance: praw.Reddit):
