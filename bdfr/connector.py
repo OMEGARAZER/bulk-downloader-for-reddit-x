@@ -414,7 +414,9 @@ class RedditConnector(metaclass=ABCMeta):
         try:
             assert subreddit.id
         except prawcore.NotFound:
-            raise errors.BulkDownloaderException(f'Source {subreddit.display_name} does not exist or cannot be found')
+            raise errors.BulkDownloaderException(f"Source {subreddit.display_name} cannot be found")
+        except prawcore.Redirect:
+            raise errors.BulkDownloaderException(f"Source {subreddit.display_name} does not exist")
         except prawcore.Forbidden:
             raise errors.BulkDownloaderException(f'Source {subreddit.display_name} is private and cannot be scraped')
 
