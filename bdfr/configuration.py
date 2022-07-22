@@ -2,6 +2,7 @@
 # coding=utf-8
 
 from argparse import Namespace
+from pathlib import Path
 from typing import Optional
 import logging
 
@@ -54,13 +55,7 @@ class Configuration(Namespace):
 
     def process_click_arguments(self, context: click.Context):
         if context.params.get('opts') is not None:
-            with open(context.params['opts']) as f:
-                opts = yaml.load(f, Loader=yaml.FullLoader)
-            for arg_key, val in opts.items():
-                if not hasattr(self, arg_key):
-                    logger.error(f'Ignoring an unknown YAML argument: {arg_key}')
-                    continue
-                setattr(self, arg_key, val)
+            self.parse_yaml_options(context.params['opts'])
         for arg_key in context.params.keys():
             if not hasattr(self, arg_key):
                 logger.warning(f'Ignoring an unknown CLI argument: {arg_key}')
@@ -68,5 +63,22 @@ class Configuration(Namespace):
             val = context.params[arg_key]
             if val is None or val == ():
                 # don't overwrite with an empty value
+                continue
+            setattr(self, arg_key, val)
+
+    def parse_yaml_options(self, file_path: str):
+        yaml_file_loc = Path(file_path)
+        if not yaml_file_loc.exists():
+            logger.error(f'No YAML file found at {yaml_file_loc}')
+            return
+        with open(yaml_file_loc) as f:
+            try:
+                opts = yaml.load(f, Loader=yaml.FullLoader)
+            except yaml.YAMLError as e:
+                logger.error(f'Could not parse YAML options file: {e}')
+                return
+        for arg_key, val in opts.items():
+            if not hasattr(self, arg_key):
+                logger.error(f'Ignoring an unknown YAML argument: {arg_key}')
                 continue
             setattr(self, arg_key, val)
