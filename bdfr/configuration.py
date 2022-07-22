@@ -79,6 +79,6 @@ class Configuration(Namespace):
                 return
         for arg_key, val in opts.items():
             if not hasattr(self, arg_key):
-                logger.error(f'Ignoring an unknown YAML argument: {arg_key}')
+                logger.warning(f'Ignoring an unknown YAML argument: {arg_key}')
                 continue
             setattr(self, arg_key, val)
