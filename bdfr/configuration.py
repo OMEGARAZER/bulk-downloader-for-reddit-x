@@ -71,9 +71,9 @@ class Configuration(Namespace):
         if not yaml_file_loc.exists():
             logger.error(f'No YAML file found at {yaml_file_loc}')
             return
-        with open(yaml_file_loc) as f:
+        with open(yaml_file_loc) as file:
             try:
-                opts = yaml.load(f, Loader=yaml.FullLoader)
+                opts = yaml.load(file, Loader=yaml.FullLoader)
             except yaml.YAMLError as e:
                 logger.error(f'Could not parse YAML options file: {e}')
                 return
