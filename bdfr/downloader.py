@@ -58,10 +58,12 @@ class RedditDownloader(RedditConnector):
                 f' due to {submission.author.name if submission.author else "DELETED"} being an ignored user')
             return
         elif self.args.min_score and submission.score < self.args.min_score:
-            logger.debug(f"Submission {submission.id} filtered due to score {submission.score} < [{self.args.min_score}]")
+            logger.debug(
+                f"Submission {submission.id} filtered due to score {submission.score} < [{self.args.min_score}]")
             return
         elif self.args.max_score and self.args.max_score < submission.score:
-            logger.debug(f"Submission {submission.id} filtered due to score [{self.args.max_score}] < {submission.score}")
+            logger.debug(
+                f"Submission {submission.id} filtered due to score [{self.args.max_score}] < {submission.score}")
             return
         elif (self.args.min_score_ratio and submission.upvote_ratio < self.args.min_score_ratio) or (
             self.args.max_score_ratio and self.args.max_score_ratio < submission.upvote_ratio
