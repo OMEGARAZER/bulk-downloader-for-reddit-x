@@ -9,11 +9,11 @@ from click.testing import CliRunner
 
 from bdfr.__main__ import cli
 
-does_test_config_exist = Path('../test_config.cfg').exists()
+does_test_config_exist = Path('./tests/test_config.cfg').exists()
 
 
 def copy_test_config(run_path: Path):
-    shutil.copy(Path('../test_config.cfg'), Path(run_path, '../test_config.cfg'))
+    shutil.copy(Path('./tests/test_config.cfg'), Path(run_path, 'test_config.cfg'))
 
 
 def create_basic_args_for_cloner_runner(test_args: list[str], tmp_path: Path):
