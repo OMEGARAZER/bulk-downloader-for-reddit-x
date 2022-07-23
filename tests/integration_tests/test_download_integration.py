@@ -351,3 +351,20 @@ def test_cli_download_ignore_user(test_args: list[str], tmp_path: Path):
     assert result.exit_code == 0
     assert 'Downloaded submission' not in result.output
     assert 'being an ignored user' in result.output
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
+@pytest.mark.parametrize(('test_args', 'was_filtered'), (
+    (['-l', 'ljyy27', '--min-score', '50'], True),
+    (['-l', 'ljyy27', '--min-score', '1'], False),
+    (['-l', 'ljyy27', '--max-score', '1'], True),
+    (['-l', 'ljyy27', '--max-score', '100'], False),
+))
+def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_download_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert ('filtered due to score' in result.output) == was_filtered

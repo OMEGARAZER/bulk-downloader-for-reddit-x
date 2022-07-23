@@ -13,4 +13,5 @@ fi
     grep 'Download filter' "$file" | awk '{ print $(NF-3) }' ;
     grep 'already exists, continuing' "$file" | awk '{ print $(NF-3) }' ;
     grep 'Hard link made' "$file" | awk '{ print $(NF) }' ;
+    grep 'filtered due to score' "$file" | awk '{ print $9 }'
 }

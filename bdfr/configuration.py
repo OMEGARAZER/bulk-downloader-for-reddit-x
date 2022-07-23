@@ -38,6 +38,10 @@ class Configuration(Namespace):
         self.skip: list[str] = []
         self.skip_domain: list[str] = []
         self.skip_subreddit: list[str] = []
+        self.min_score = None
+        self.max_score = None
+        self.min_score_ratio = None
+        self.max_score_ratio = None
         self.sort: str = 'hot'
         self.submitted: bool = False
         self.subscribed: bool = False

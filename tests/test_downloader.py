@@ -200,3 +200,107 @@ def test_download_submission(
     RedditDownloader._download_submission(downloader_mock, submission)
     folder_contents = list(tmp_path.iterdir())
     assert len(folder_contents) == expected_files_len
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_submission_id', 'min_score'), (
+    ('ljyy27', 1),
+))
+def test_download_submission_min_score_above(
+        test_submission_id: str,
+        min_score: int,
+        downloader_mock: MagicMock,
+        reddit_instance: praw.Reddit,
+        tmp_path: Path,
+        capsys: pytest.CaptureFixture,
+):
+    setup_logging(3)
+    downloader_mock.reddit_instance = reddit_instance
+    downloader_mock.download_filter.check_url.return_value = True
+    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.min_score = min_score
+    downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
+    downloader_mock.download_directory = tmp_path
+    submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
+    RedditDownloader._download_submission(downloader_mock, submission)
+    output = capsys.readouterr()
+    assert 'filtered due to score' not in output.out
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_submission_id', 'min_score'), (
+    ('ljyy27', 25),
+))
+def test_download_submission_min_score_below(
+        test_submission_id: str,
+        min_score: int,
+        downloader_mock: MagicMock,
+        reddit_instance: praw.Reddit,
+        tmp_path: Path,
+        capsys: pytest.CaptureFixture,
+):
+    setup_logging(3)
+    downloader_mock.reddit_instance = reddit_instance
+    downloader_mock.download_filter.check_url.return_value = True
+    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.min_score = min_score
+    downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
+    downloader_mock.download_directory = tmp_path
+    submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
+    RedditDownloader._download_submission(downloader_mock, submission)
+    output = capsys.readouterr()
+    assert 'filtered due to score' in output.out
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_submission_id', 'max_score'), (
+    ('ljyy27', 25),
+))
+def test_download_submission_max_score_below(
+        test_submission_id: str,
+        max_score: int,
+        downloader_mock: MagicMock,
+        reddit_instance: praw.Reddit,
+        tmp_path: Path,
+        capsys: pytest.CaptureFixture,
+):
+    setup_logging(3)
+    downloader_mock.reddit_instance = reddit_instance
+    downloader_mock.download_filter.check_url.return_value = True
+    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.max_score = max_score
+    downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
+    downloader_mock.download_directory = tmp_path
+    submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
+    RedditDownloader._download_submission(downloader_mock, submission)
+    output = capsys.readouterr()
+    assert 'filtered due to score' not in output.out
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.parametrize(('test_submission_id', 'max_score'), (
+    ('ljyy27', 1),
+))
+def test_download_submission_max_score_above(
+        test_submission_id: str,
+        max_score: int,
+        downloader_mock: MagicMock,
+        reddit_instance: praw.Reddit,
+        tmp_path: Path,
+        capsys: pytest.CaptureFixture,
+):
+    setup_logging(3)
+    downloader_mock.reddit_instance = reddit_instance
+    downloader_mock.download_filter.check_url.return_value = True
+    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.max_score = max_score
+    downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
+    downloader_mock.download_directory = tmp_path
+    submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
+    RedditDownloader._download_submission(downloader_mock, submission)
+    output = capsys.readouterr()
+    assert 'filtered due to score' in output.out
