@@ -355,6 +355,7 @@ def test_cli_download_ignore_user(test_args: list[str], tmp_path: Path):
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize(('test_args', 'was_filtered'), (
     (['-l', 'ljyy27', '--min-score', '50'], True),
     (['-l', 'ljyy27', '--min-score', '1'], False),
