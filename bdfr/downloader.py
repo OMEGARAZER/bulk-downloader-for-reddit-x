@@ -63,7 +63,7 @@ class RedditDownloader(RedditConnector):
             return
         elif self.args.max_score and self.args.max_score < submission.score:
             logger.debug(
-                f"Submission {submission.id} filtered due to score [{self.args.max_score}] < {submission.score}")
+                f"Submission {submission.id} filtered due to score {submission.score} > [{self.args.max_score}]")
             return
         elif (self.args.min_score_ratio and submission.upvote_ratio < self.args.min_score_ratio) or (
             self.args.max_score_ratio and self.args.max_score_ratio < submission.upvote_ratio
