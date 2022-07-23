@@ -25,7 +25,7 @@ def test_process_click_context(arg_dict: dict):
 
 
 def test_yaml_file_read():
-    file = './yaml_test_configuration.yaml'
+    file = './tests/yaml_test_configuration.yaml'
     test_config = Configuration()
     test_config.parse_yaml_options(file)
     assert test_config.subreddit == ['EarthPorn', 'TwoXChromosomes', 'Mindustry']
