@@ -41,3 +41,10 @@ teardown() {
     assert [ "$( wc -l 'successful.txt' | awk '{ print $1 }' )" -eq "1" ];
     assert [ "$( grep -Ecv '\w{6,7}' 'successful.txt' )" -eq "0" ];
 }
+
+@test "success score filter" {
+    run ../extract_successful_ids.sh ./example_logfiles/succeed_score_filter.txt
+    echo "$output" > successful.txt
+    assert [ "$( wc -l 'successful.txt' | awk '{ print $1 }' )" -eq "2" ];
+    assert [ "$( grep -Ecv '\w{6,7}' 'successful.txt' )" -eq "0" ];
+}
