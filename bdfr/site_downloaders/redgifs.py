@@ -2,6 +2,7 @@
 
 import json
 import re
+import urllib.parse
 from typing import Optional
 
 from praw.models import Submission
@@ -61,4 +62,14 @@ class Redgifs(BaseDownloader):
         except (KeyError, AttributeError):
             raise SiteDownloaderError('Failed to find JSON data in page')
 
+        # returned domain seems to be being phased out
+        out = {re.sub('thumbs2', 'thumbs3', link) for link in out}
+        out = {Redgifs._clean_thumbs4_link(link) for link in out}
+        return out
+
+    @staticmethod
+    def _clean_thumbs4_link(url: str) -> str:
+        split_url = urllib.parse.urlsplit(url)
+        out = split_url.scheme + '://' + split_url.netloc + split_url.path
+        out = re.sub('thumbs4', 'thumbs3', out)
         return out

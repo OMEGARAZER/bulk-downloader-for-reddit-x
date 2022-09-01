@@ -12,20 +12,20 @@ from bdfr.site_downloaders.redgifs import Redgifs
 @pytest.mark.online
 @pytest.mark.parametrize(('test_url', 'expected'), (
     ('https://redgifs.com/watch/frighteningvictorioussalamander',
-     {'https://thumbs2.redgifs.com/FrighteningVictoriousSalamander.mp4'}),
+     {'https://thumbs3.redgifs.com/FrighteningVictoriousSalamander.mp4'}),
     ('https://redgifs.com/watch/springgreendecisivetaruca',
-     {'https://thumbs2.redgifs.com/SpringgreenDecisiveTaruca.mp4'}),
+     {'https://thumbs3.redgifs.com/SpringgreenDecisiveTaruca.mp4'}),
     ('https://www.redgifs.com/watch/palegoldenrodrawhalibut',
-     {'https://thumbs2.redgifs.com/PalegoldenrodRawHalibut.mp4'}),
+     {'https://thumbs3.redgifs.com/PalegoldenrodRawHalibut.mp4'}),
     ('https://redgifs.com/watch/hollowintentsnowyowl',
-     {'https://thumbs2.redgifs.com/HollowIntentSnowyowl-large.jpg'}),
+     {'https://thumbs3.redgifs.com/HollowIntentSnowyowl-large.jpg'}),
     ('https://www.redgifs.com/watch/lustrousstickywaxwing',
-     {'https://thumbs2.redgifs.com/EntireEnchantingHypsilophodon-large.jpg',
-      'https://thumbs2.redgifs.com/FancyMagnificentAdamsstaghornedbeetle-large.jpg',
-      'https://thumbs2.redgifs.com/LustrousStickyWaxwing-large.jpg',
-      'https://thumbs2.redgifs.com/ParchedWindyArmyworm-large.jpg',
-      'https://thumbs2.redgifs.com/ThunderousColorlessErmine-large.jpg',
-      'https://thumbs2.redgifs.com/UnripeUnkemptWoodpecker-large.jpg'}),
+     {'https://thumbs3.redgifs.com/EntireEnchantingHypsilophodon-large.jpg',
+      'https://thumbs3.redgifs.com/FancyMagnificentAdamsstaghornedbeetle-large.jpg',
+      'https://thumbs3.redgifs.com/LustrousStickyWaxwing-large.jpg',
+      'https://thumbs3.redgifs.com/ParchedWindyArmyworm-large.jpg',
+      'https://thumbs3.redgifs.com/ThunderousColorlessErmine-large.jpg',
+      'https://thumbs3.redgifs.com/UnripeUnkemptWoodpecker-large.jpg'}),
 ))
 def test_get_link(test_url: str, expected: set[str]):
     result = Redgifs._get_link(test_url)
