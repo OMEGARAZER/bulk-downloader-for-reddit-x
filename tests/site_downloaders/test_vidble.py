@@ -39,6 +39,7 @@ def test_get_links(test_url: str, expected: set[str]):
     assert results == expected
 
 
+@pytest.mark.online
 @pytest.mark.parametrize(('test_url', 'expected_hashes'), (
     ('https://www.vidble.com/show/UxsvAssYe5', {
         '0ef2f8e0e0b45936d2fb3e6fbdf67e28',
