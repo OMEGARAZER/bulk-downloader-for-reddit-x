@@ -30,9 +30,6 @@ def test_change_med_url(test_url: str, expected: str):
         'https://www.vidble.com/VWuNsnLJMD.jpg',
         'https://www.vidble.com/sMmM8O650W.jpg',
     }),
-    ('https://www.vidble.com/watch?v=joC6b7cgs2Tnucx7dhDoyqKPbr7TQUA5', {
-        'https://www.vidble.com/joC6b7cgs2Tnucx7dhDoyqKPbr7TQUA5.mp4',
-    }),
     ('https://www.vidble.com/pHuwWkOcEb', {
         'https://www.vidble.com/pHuwWkOcEb.jpg',
     }),
