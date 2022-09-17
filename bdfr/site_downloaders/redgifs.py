@@ -24,7 +24,7 @@ class Redgifs(BaseDownloader):
     @staticmethod
     def _get_link(url: str) -> set[str]:
         try:
-            redgif_id = re.match(r'.*/(.*?)/?$', url).group(1)
+            redgif_id = re.match(r'.*/(.*?)(\..{3,})?$', url).group(1)
         except AttributeError:
             raise SiteDownloaderError(f'Could not extract Redgifs ID from {url}')
 
@@ -55,4 +55,7 @@ class Redgifs(BaseDownloader):
         except (KeyError, AttributeError):
             raise SiteDownloaderError('Failed to find JSON data in page')
 
+        # Update subdomain if old one is returned
+        out = {re.sub('thumbs2', 'thumbs3', link) for link in out}
+        out = {re.sub('thumbs3', 'thumbs4', link) for link in out}
         return out
