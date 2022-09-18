@@ -41,11 +41,10 @@ class Imgur(BaseDownloader):
 
     @staticmethod
     def _get_data(link: str) -> dict:
-        try:
-            imgur_id = re.match(r'.*/(.*?)(\..{0,})?$', link).group(1)
-            link = f'https://imgur.com/a/{imgur_id}'
-        except AttributeError:
-            raise SiteDownloaderError(f'Could not extract Imgur ID from {link}')
+        link = link.rstrip('?')
+        if re.match(r'(?i).*\.gif.+$', link):
+            link = link.replace('i.imgur', 'imgur')
+            link = re.sub('(?i)\\.gif.+$', '', link)
 
         res = Imgur.retrieve_url(link, cookies={'over18': '1', 'postpagebeta': '0'})
 
