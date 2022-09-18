@@ -24,7 +24,7 @@ class Redgifs(BaseDownloader):
     @staticmethod
     def _get_link(url: str) -> set[str]:
         try:
-            redgif_id = re.match(r'.*/(.*?)(\..{3,})?$', url).group(1)
+            redgif_id = re.match(r'.*/(.*?)(\..{0,})?$', url).group(1)
         except AttributeError:
             raise SiteDownloaderError(f'Could not extract Redgifs ID from {url}')
 
