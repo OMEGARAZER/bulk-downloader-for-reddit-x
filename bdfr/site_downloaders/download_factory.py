@@ -40,10 +40,6 @@ class DownloadFactory:
             return Gallery
         elif re.match(r'gfycat\.', sanitised_url):
             return Gfycat
-        elif re.match(r'(redgifs|gifdeliverynetwork)', sanitised_url):
-            return Redgifs
-        elif re.match(r'(m\.)?imgur.*', sanitised_url):
-            return Imgur
         elif re.match(r'reddit\.com/r/', sanitised_url):
             return SelfPost
         elif re.match(r'(m\.)?youtu\.?be', sanitised_url):
