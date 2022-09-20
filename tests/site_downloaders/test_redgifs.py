@@ -2,6 +2,7 @@
 # coding=utf-8
 
 from unittest.mock import Mock
+import re
 
 import pytest
 
@@ -12,24 +13,26 @@ from bdfr.site_downloaders.redgifs import Redgifs
 @pytest.mark.online
 @pytest.mark.parametrize(('test_url', 'expected'), (
     ('https://redgifs.com/watch/frighteningvictorioussalamander',
-     {'https://thumbs3.redgifs.com/FrighteningVictoriousSalamander.mp4'}),
+     {'FrighteningVictoriousSalamander.mp4'}),
     ('https://redgifs.com/watch/springgreendecisivetaruca',
-     {'https://thumbs3.redgifs.com/SpringgreenDecisiveTaruca.mp4'}),
+     {'SpringgreenDecisiveTaruca.mp4'}),
     ('https://www.redgifs.com/watch/palegoldenrodrawhalibut',
-     {'https://thumbs3.redgifs.com/PalegoldenrodRawHalibut.mp4'}),
+     {'PalegoldenrodRawHalibut.mp4'}),
     ('https://redgifs.com/watch/hollowintentsnowyowl',
-     {'https://thumbs3.redgifs.com/HollowIntentSnowyowl-large.jpg'}),
+     {'HollowIntentSnowyowl-large.jpg'}),
     ('https://www.redgifs.com/watch/lustrousstickywaxwing',
-     {'https://thumbs3.redgifs.com/EntireEnchantingHypsilophodon-large.jpg',
-      'https://thumbs3.redgifs.com/FancyMagnificentAdamsstaghornedbeetle-large.jpg',
-      'https://thumbs3.redgifs.com/LustrousStickyWaxwing-large.jpg',
-      'https://thumbs3.redgifs.com/ParchedWindyArmyworm-large.jpg',
-      'https://thumbs3.redgifs.com/ThunderousColorlessErmine-large.jpg',
-      'https://thumbs3.redgifs.com/UnripeUnkemptWoodpecker-large.jpg'}),
+     {'EntireEnchantingHypsilophodon-large.jpg',
+      'FancyMagnificentAdamsstaghornedbeetle-large.jpg',
+      'LustrousStickyWaxwing-large.jpg',
+      'ParchedWindyArmyworm-large.jpg',
+      'ThunderousColorlessErmine-large.jpg',
+      'UnripeUnkemptWoodpecker-large.jpg'}),
 ))
 def test_get_link(test_url: str, expected: set[str]):
     result = Redgifs._get_link(test_url)
-    assert result == expected
+    result = list(result)
+    patterns = [r'https://thumbs\d\.redgifs\.com/' + e + r'.*' for e in expected]
+    assert all([re.match(p, r) for p in patterns] for r in result)
 
 
 @pytest.mark.online

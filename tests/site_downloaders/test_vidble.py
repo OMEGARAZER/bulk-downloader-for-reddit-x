@@ -30,9 +30,6 @@ def test_change_med_url(test_url: str, expected: str):
         'https://www.vidble.com/VWuNsnLJMD.jpg',
         'https://www.vidble.com/sMmM8O650W.jpg',
     }),
-    ('https://www.vidble.com/watch?v=joC6b7cgs2Tnucx7dhDoyqKPbr7TQUA5', {
-        'https://www.vidble.com/joC6b7cgs2Tnucx7dhDoyqKPbr7TQUA5.mp4',
-    }),
     ('https://www.vidble.com/pHuwWkOcEb', {
         'https://www.vidble.com/pHuwWkOcEb.jpg',
     }),
@@ -42,6 +39,7 @@ def test_get_links(test_url: str, expected: set[str]):
     assert results == expected
 
 
+@pytest.mark.online
 @pytest.mark.parametrize(('test_url', 'expected_hashes'), (
     ('https://www.vidble.com/show/UxsvAssYe5', {
         '0ef2f8e0e0b45936d2fb3e6fbdf67e28',

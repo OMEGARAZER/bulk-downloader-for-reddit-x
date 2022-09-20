@@ -24,16 +24,11 @@ class Redgifs(BaseDownloader):
     @staticmethod
     def _get_link(url: str) -> set[str]:
         try:
-            redgif_id = re.match(r'.*/(.*?)/?$', url).group(1)
+            redgif_id = re.match(r'.*/(.*?)(\..{0,})?$', url).group(1)
         except AttributeError:
             raise SiteDownloaderError(f'Could not extract Redgifs ID from {url}')
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/90.0.4430.93 Safari/537.36',
-        }
-
-        content = Redgifs.retrieve_url(f'https://api.redgifs.com/v2/gifs/{redgif_id}', headers=headers)
+        content = Redgifs.retrieve_url(f'https://api.redgifs.com/v2/gifs/{redgif_id}')
 
         if content is None:
             raise SiteDownloaderError('Could not read the page source')
@@ -50,9 +45,7 @@ class Redgifs(BaseDownloader):
             elif response_json['gif']['type'] == 2:  # type 2 is an image
                 if response_json['gif']['gallery']:
                     content = Redgifs.retrieve_url(
-                        f'https://api.redgifs.com/v2/gallery/{response_json["gif"]["gallery"]}',
-                        headers=headers,
-                    )
+                        f'https://api.redgifs.com/v2/gallery/{response_json["gif"]["gallery"]}')
                     response_json = json.loads(content.text)
                     out = {p['urls']['hd'] for p in response_json['gifs']}
                 else:
@@ -62,14 +55,7 @@ class Redgifs(BaseDownloader):
         except (KeyError, AttributeError):
             raise SiteDownloaderError('Failed to find JSON data in page')
 
-        # returned domain seems to be being phased out
+        # Update subdomain if old one is returned
         out = {re.sub('thumbs2', 'thumbs3', link) for link in out}
-        out = {Redgifs._clean_thumbs4_link(link) for link in out}
-        return out
-
-    @staticmethod
-    def _clean_thumbs4_link(url: str) -> str:
-        split_url = urllib.parse.urlsplit(url)
-        out = split_url.scheme + '://' + split_url.netloc + split_url.path
-        out = re.sub('thumbs4', 'thumbs3', out)
+        out = {re.sub('thumbs3', 'thumbs4', link) for link in out}
         return out
