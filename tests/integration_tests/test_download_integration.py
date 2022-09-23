@@ -60,6 +60,7 @@ def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.slow
 @pytest.mark.authenticated
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
@@ -94,8 +95,8 @@ def test_cli_download_user_specific_subreddits(test_args: list[str], tmp_path: P
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g'],
-    ['-l', 'https://www.reddit.com/r/TrollXChromosomes/comments/m2601g/its_a_step_in_the_right_direction/'],
+    ['-l', '6l7778'],
+    ['-l', 'https://reddit.com/r/EmpireDidNothingWrong/comments/6l7778/technically_true/'],
     ['-l', 'm3hxzd'],  # Really long title used to overflow filename limit
     ['-l', 'm5bqkf'],  # Resource leading to a 404
 ))
@@ -266,7 +267,7 @@ def test_cli_download_use_default_config(tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--exclude-id', 'm2601g'],
+    ['-l', '6l7778', '--exclude-id', '6l7778'],
 ))
 def test_cli_download_links_exclusion(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -281,7 +282,7 @@ def test_cli_download_links_exclusion(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--skip-subreddit', 'trollxchromosomes'],
+    ['-l', '6l7778', '--skip-subreddit', 'EmpireDidNothingWrong'],
     ['-s', 'trollxchromosomes', '--skip-subreddit', 'trollxchromosomes', '-L', '3'],
 ))
 def test_cli_download_subreddit_exclusion(test_args: list[str], tmp_path: Path):
@@ -312,8 +313,8 @@ def test_cli_download_file_scheme_warning(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--disable-module', 'SelfPost'],
-    ['-l', 'nnb9vs', '--disable-module', 'YtdlpFallback'],
+    ['-l', 'n9w9fo', '--disable-module', 'SelfPost'],
+    ['-l', 'nnb9vs', '--disable-module', 'VReddit'],
 ))
 def test_cli_download_disable_modules(test_args: list[str], tmp_path: Path):
     runner = CliRunner()

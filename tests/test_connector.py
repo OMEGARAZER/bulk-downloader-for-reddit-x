@@ -399,7 +399,7 @@ def test_read_submission_ids_from_file(downloader_mock: MagicMock, tmp_path: Pat
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.parametrize('test_redditor_name', (
-    'Paracortex',
+    'nasa',
     'crowdstrike',
     'HannibalGoddamnit',
 ))
