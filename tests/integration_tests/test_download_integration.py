@@ -313,7 +313,7 @@ def test_cli_download_file_scheme_warning(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'n9w9fo', '--disable-module', 'Direct'],
+    ['-l', 'n9w9fo', '--disable-module', 'SelfPost'],
     ['-l', 'nnb9vs', '--disable-module', 'VReddit'],
 ))
 def test_cli_download_disable_modules(test_args: list[str], tmp_path: Path):
