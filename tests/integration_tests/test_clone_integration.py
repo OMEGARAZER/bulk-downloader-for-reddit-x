@@ -32,10 +32,10 @@ def create_basic_args_for_cloner_runner(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g'],
+    ['-l', '6l7778'],
     ['-s', 'TrollXChromosomes/', '-L', 1],
-    ['-l', 'tr79b'],
-    ['-l', 'tr6ky'],
+    ['-l', 'eiajjw'],
+    ['-l', 'xl0lhi'],
 ))
 def test_cli_scrape_general(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
