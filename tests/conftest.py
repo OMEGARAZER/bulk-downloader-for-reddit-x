@@ -23,7 +23,7 @@ def reddit_instance():
 
 @pytest.fixture(scope='session')
 def authenticated_reddit_instance():
-    test_config_path = Path('test_config.cfg')
+    test_config_path = Path('./tests/test_config.cfg')
     if not test_config_path.exists():
         pytest.skip('Refresh token must be provided to authenticate with OAuth2')
     cfg_parser = configparser.ConfigParser()

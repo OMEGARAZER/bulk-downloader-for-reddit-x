@@ -16,6 +16,7 @@ from bdfr.site_downloaders.imgur import Imgur
 from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
+from bdfr.site_downloaders.vreddit import VReddit
 from bdfr.site_downloaders.youtube import Youtube
 
 
@@ -23,12 +24,12 @@ from bdfr.site_downloaders.youtube import Youtube
 @pytest.mark.parametrize(('test_submission_url', 'expected_class'), (
     ('https://www.reddit.com/r/TwoXChromosomes/comments/lu29zn/i_refuse_to_live_my_life'
      '_in_anything_but_comfort/', SelfPost),
-    ('https://i.imgur.com/bZx1SJQ.jpg', Direct),
+    ('https://i.imgur.com/bZx1SJQ.jpg', Imgur),
     ('https://i.redd.it/affyv0axd5k61.png', Direct),
-    ('https://imgur.com/3ls94yv.jpeg', Direct),
+    ('https://imgur.com/3ls94yv.jpeg', Imgur),
     ('https://i.imgur.com/BuzvZwb.gifv', Imgur),
     ('https://imgur.com/BuzvZwb.gifv', Imgur),
-    ('https://i.imgur.com/6fNdLst.gif', Direct),
+    ('https://i.imgur.com/6fNdLst.gif', Imgur),
     ('https://imgur.com/a/MkxAzeg', Imgur),
     ('https://i.imgur.com/OGeVuAe.giff', Imgur),
     ('https://www.reddit.com/gallery/lu93m7', Gallery),
@@ -39,15 +40,16 @@ from bdfr.site_downloaders.youtube import Youtube
     ('https://www.gifdeliverynetwork.com/repulsivefinishedandalusianhorse', Redgifs),
     ('https://youtu.be/DevfjHOhuFc', Youtube),
     ('https://m.youtube.com/watch?v=kr-FeojxzUM', Youtube),
-    ('https://i.imgur.com/3SKrQfK.jpg?1', Direct),
+    ('https://i.imgur.com/3SKrQfK.jpg?1', Imgur),
     ('https://dynasty-scans.com/system/images_images/000/017/819/original/80215103_p0.png?1612232781', Direct),
     ('https://m.imgur.com/a/py3RW0j', Imgur),
-    ('https://v.redd.it/9z1dnk3xr5k61', YtdlpFallback),
+    ('https://v.redd.it/9z1dnk3xr5k61', VReddit),
     ('https://streamable.com/dt46y', YtdlpFallback),
     ('https://vimeo.com/channels/31259/53576664', YtdlpFallback),
     ('http://video.pbs.org/viralplayer/2365173446/', YtdlpFallback),
     ('https://www.pornhub.com/view_video.php?viewkey=ph5a2ee0461a8d0', PornHub),
     ('https://www.patreon.com/posts/minecart-track-59346560', Gallery),
+    ('https://v.redd.it/9z1dnk3xr5k61', VReddit)
 ))
 def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownloader, reddit_instance: praw.Reddit):
     result = DownloadFactory.pull_lever(test_submission_url)

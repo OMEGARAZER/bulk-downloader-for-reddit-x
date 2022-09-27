@@ -9,11 +9,11 @@ from click.testing import CliRunner
 
 from bdfr.__main__ import cli
 
-does_test_config_exist = Path('../test_config.cfg').exists()
+does_test_config_exist = Path('./tests/test_config.cfg').exists()
 
 
 def copy_test_config(run_path: Path):
-    shutil.copy(Path('../test_config.cfg'), Path(run_path, '../test_config.cfg'))
+    shutil.copy(Path('./tests/test_config.cfg'), Path(run_path, './test_config.cfg'))
 
 
 def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
@@ -21,7 +21,7 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
     out = [
         'download', str(run_path),
         '-v',
-        '--config', str(Path(run_path, '../test_config.cfg')),
+        '--config', str(Path(run_path, './test_config.cfg')),
         '--log', str(Path(run_path, 'test_log.txt')),
     ] + test_args
     return out
@@ -31,23 +31,23 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-s', 'Mindustry', '-L', 1],
-    ['-s', 'r/Mindustry', '-L', 1],
-    ['-s', 'r/mindustry', '-L', 1],
-    ['-s', 'mindustry', '-L', 1],
-    ['-s', 'https://www.reddit.com/r/TrollXChromosomes/', '-L', 1],
-    ['-s', 'r/TrollXChromosomes/', '-L', 1],
-    ['-s', 'TrollXChromosomes/', '-L', 1],
-    ['-s', 'trollxchromosomes', '-L', 1],
-    ['-s', 'trollxchromosomes,mindustry,python', '-L', 1],
-    ['-s', 'trollxchromosomes, mindustry, python', '-L', 1],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--sort', 'new'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--sort', 'new'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--search', 'women'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--search', 'women'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--sort', 'new', '--search', 'women'],
-    ['-s', 'trollxchromosomes', '-L', 1, '--time', 'day', '--sort', 'new', '--search', 'women'],
+    ['-s', 'Mindustry', '-L', 3],
+    ['-s', 'r/Mindustry', '-L', 3],
+    ['-s', 'r/mindustry', '-L', 3],
+    ['-s', 'mindustry', '-L', 3],
+    ['-s', 'https://www.reddit.com/r/TrollXChromosomes/', '-L', 3],
+    ['-s', 'r/TrollXChromosomes/', '-L', 3],
+    ['-s', 'TrollXChromosomes/', '-L', 3],
+    ['-s', 'trollxchromosomes', '-L', 3],
+    ['-s', 'trollxchromosomes,mindustry,python', '-L', 3],
+    ['-s', 'trollxchromosomes, mindustry, python', '-L', 3],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--sort', 'new'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day', '--sort', 'new'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--search', 'women'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day', '--search', 'women'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--sort', 'new', '--search', 'women'],
+    ['-s', 'trollxchromosomes', '-L', 3, '--time', 'day', '--sort', 'new', '--search', 'women'],
 ))
 def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -60,10 +60,12 @@ def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.slow
 @pytest.mark.authenticated
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
     ['-s', 'hentai', '-L', 10, '--search', 'red', '--authenticate'],
+    ['--authenticate', '--subscribed', '-L', 10],
 ))
 def test_cli_download_search_subreddits_authenticated(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -93,10 +95,9 @@ def test_cli_download_user_specific_subreddits(test_args: list[str], tmp_path: P
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g'],
-    ['-l', 'https://www.reddit.com/r/TrollXChromosomes/comments/m2601g/its_a_step_in_the_right_direction/'],
+    ['-l', '6l7778'],
+    ['-l', 'https://reddit.com/r/EmpireDidNothingWrong/comments/6l7778/technically_true/'],
     ['-l', 'm3hxzd'],  # Really long title used to overflow filename limit
-    ['-l', 'm3kua3'],  # Has a deleted user
     ['-l', 'm5bqkf'],  # Resource leading to a 404
 ))
 def test_cli_download_links(test_args: list[str], tmp_path: Path):
@@ -266,7 +267,7 @@ def test_cli_download_use_default_config(tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--exclude-id', 'm2601g'],
+    ['-l', '6l7778', '--exclude-id', '6l7778'],
 ))
 def test_cli_download_links_exclusion(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -281,7 +282,7 @@ def test_cli_download_links_exclusion(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--skip-subreddit', 'trollxchromosomes'],
+    ['-l', '6l7778', '--skip-subreddit', 'EmpireDidNothingWrong'],
     ['-s', 'trollxchromosomes', '--skip-subreddit', 'trollxchromosomes', '-L', '3'],
 ))
 def test_cli_download_subreddit_exclusion(test_args: list[str], tmp_path: Path):
@@ -312,9 +313,8 @@ def test_cli_download_file_scheme_warning(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g', '--disable-module', 'Direct'],
-    ['-l', 'nnb9vs', '--disable-module', 'YoutubeDlFallback'],
-    ['-l', 'nnb9vs', '--disable-module', 'youtubedlfallback'],
+    ['-l', 'n9w9fo', '--disable-module', 'SelfPost'],
+    ['-l', 'nnb9vs', '--disable-module', 'VReddit'],
 ))
 def test_cli_download_disable_modules(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -352,3 +352,20 @@ def test_cli_download_ignore_user(test_args: list[str], tmp_path: Path):
     assert result.exit_code == 0
     assert 'Downloaded submission' not in result.output
     assert 'being an ignored user' in result.output
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
+@pytest.mark.parametrize(('test_args', 'was_filtered'), (
+    (['-l', 'ljyy27', '--min-score', '50'], True),
+    (['-l', 'ljyy27', '--min-score', '1'], False),
+    (['-l', 'ljyy27', '--max-score', '1'], True),
+    (['-l', 'ljyy27', '--max-score', '100'], False),
+))
+def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_download_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert ('filtered due to score' in result.output) == was_filtered

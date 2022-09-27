@@ -15,6 +15,7 @@ from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallb
     ('https://www.youtube.com/watch?v=P19nvJOmqCc', True),
     ('https://www.example.com/test', False),
     ('https://milesmatrix.bandcamp.com/album/la-boum/', False),
+    ('https://v.redd.it/54i8fvzev3u81', True),
 ))
 def test_can_handle_link(test_url: str, expected: bool):
     result = YtdlpFallback.can_handle_link(test_url)
@@ -35,8 +36,8 @@ def test_info_extraction_bad(test_url: str):
 @pytest.mark.parametrize(('test_url', 'expected_hash'), (
     ('https://streamable.com/dt46y', 'b7e465adaade5f2b6d8c2b4b7d0a2878'),
     ('https://streamable.com/t8sem', '49b2d1220c485455548f1edbc05d4ecf'),
-    ('https://www.reddit.com/r/specializedtools/comments/n2nw5m/bamboo_splitter/', '21968d3d92161ea5e0abdcaf6311b06c'),
-    ('https://v.redd.it/9z1dnk3xr5k61', '351a2b57e888df5ccbc508056511f38d'),
+    ('https://www.reddit.com/r/specializedtools/comments/n2nw5m/bamboo_splitter/', '03087ce64f88f438bad6849858c9b7f0'),
+    ('https://v.redd.it/9z1dnk3xr5k61', '9ce39c8e46b6534a0b3f164a792d51c8'),
 ))
 def test_find_resources(test_url: str, expected_hash: str):
     test_submission = MagicMock()

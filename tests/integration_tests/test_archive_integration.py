@@ -10,11 +10,11 @@ from click.testing import CliRunner
 
 from bdfr.__main__ import cli
 
-does_test_config_exist = Path('../test_config.cfg').exists()
+does_test_config_exist = Path('./tests/test_config.cfg').exists()
 
 
 def copy_test_config(run_path: Path):
-    shutil.copy(Path('../test_config.cfg'), Path(run_path, '../test_config.cfg'))
+    shutil.copy(Path('./tests/test_config.cfg'), Path(run_path, 'test_config.cfg'))
 
 
 def create_basic_args_for_archive_runner(test_args: list[str], run_path: Path):
@@ -23,7 +23,7 @@ def create_basic_args_for_archive_runner(test_args: list[str], run_path: Path):
         'archive',
         str(run_path),
         '-v',
-        '--config', str(Path(run_path, '../test_config.cfg')),
+        '--config', str(Path(run_path, 'test_config.cfg')),
         '--log', str(Path(run_path, 'test_log.txt')),
     ] + test_args
     return out
@@ -121,3 +121,33 @@ def test_cli_archive_ignore_user(test_args: list[str], tmp_path: Path):
     assert result.exit_code == 0
     assert 'being an ignored user' in result.output
     assert 'Attempting to archive submission' not in result.output
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
+@pytest.mark.parametrize('test_args', (
+    ['--file-scheme', '{TITLE}', '-l', 'suy011'],
+))
+def test_cli_archive_file_format(test_args: list[str], tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_archive_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert 'Attempting to archive submission' in result.output
+    assert re.search('format at /.+?/Judge says Trump and two adult', result.output)
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
+@pytest.mark.parametrize('test_args', (
+    ['-l', 'm2601g', '--exclude-id', 'm2601g'],
+))
+def test_cli_archive_links_exclusion(test_args: list[str], tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_archive_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert 'in exclusion list' in result.output
+    assert 'Attempting to archive' not in result.output

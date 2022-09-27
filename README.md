@@ -53,6 +53,12 @@ However, these commands are not enough. You should chain parameters in [Options]
 python3 -m bdfr download ./path/to/output --subreddit Python -L 10
 ```
 ```bash
+python3 -m bdfr download ./path/to/output --user reddituser --submitted -L 100
+```
+```bash
+python3 -m bdfr download ./path/to/output --user reddituser --submitted --all-comments --comment-context
+```
+```bash
 python3 -m bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
 ```
 ```bash
@@ -61,6 +67,31 @@ python3 -m bdfr download ./path/to/output --subreddit 'Python, all, mindustry' -
 ```bash
 python3 -m bdfr archive ./path/to/output --subreddit all --format yaml -L 500 --folder-scheme ''
 ```
+
+Alternatively, you can pass options through a YAML file.
+
+```bash
+python3 -m bdfr download ./path/to/output --opts my_opts.yaml
+```
+
+For example, running it with the following file
+
+```yaml
+skip: [mp4, avi]
+file_scheme: "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}"
+limit: 10
+sort: top
+subreddit:
+  - EarthPorn
+  - CityPorn
+```
+
+would be equilavent to (take note that in YAML there is `file_scheme` instead of `file-scheme`):
+```bash
+python3 -m bdfr download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
+```
+
+In case when the same option is specified both in the YAML file and in as a command line argument, the command line argument takes prs
 
 ## Options
 
@@ -74,6 +105,10 @@ The following options are common between both the `archive` and `download` comma
 - `--config`
   - If the path to a configuration file is supplied with this option, the BDFR will use the specified config
   - See [Configuration Files](#configuration) for more details
+- `--opts`
+  - Load options from a YAML file.
+  - Has higher prority than the global config file but lower than command-line arguments.
+  - See [opts_example.yaml](./opts_example.yaml) for an example file.
 - `--disable-module`
   - Can be specified multiple times
   - Disables certain modules from being used
@@ -92,8 +127,8 @@ The following options are common between both the `archive` and `download` comma
   - This option will make the BDFR use the supplied user's saved posts list as a download source
   - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
 - `--search`
-  - This will apply the specified search term to specific lists when scraping submissions
-  - A search term can only be applied to subreddits and multireddits, supplied with the `- s` and `-m` flags respectively
+  - This will apply the input search term to specific lists when scraping submissions
+  - A search term can only be applied when using the `--subreddit` and `--multireddit` flags
 - `--submitted`
   - This will use a user's submissions as a source
   - A user must be specified with `--user`
@@ -192,6 +227,15 @@ The following options apply only to the `download` command. This command downloa
   - This skips all submissions from the specified subreddit
   - Can be specified multiple times
   - Also accepts CSV subreddit names
+- `--min-score`
+  - This skips all submissions which have fewer than specified upvotes
+- `--max-score`
+  - This skips all submissions which have more than specified upvotes
+- `--min-score-ratio`
+  - This skips all submissions which have lower than specified upvote ratio
+- `--max-score-ratio`
+  - This skips all submissions which have higher than specified upvote ratio
+
 
 ### Archiver Options
 
@@ -215,7 +259,10 @@ The `clone` command can take all the options listed above for both the `archive`
 
 ## Common Command Tricks
 
-A common use case is for subreddits/users to be loaded from a file. The BDFR doesn't support this directly but it is simple enough to do through the command-line. Consider a list of usernames to download; they can be passed through to the BDFR with the following command, assuming that the usernames are in a text file:
+A common use case is for subreddits/users to be loaded from a file. The BDFR supports this via YAML file options (`--opts my_opts.yaml`).
+
+Alternatively, you can use the command-line [xargs](https://en.wikipedia.org/wiki/Xargs) function.
+For a list of users `users.txt` (one user per line), type:
 
 ```bash
 cat users.txt | xargs -L 1 echo --user | xargs -L 50 python3 -m bdfr download <ARGS>

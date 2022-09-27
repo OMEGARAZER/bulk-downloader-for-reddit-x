@@ -17,6 +17,7 @@ from bdfr.site_downloaders.pornhub import PornHub
 from bdfr.site_downloaders.redgifs import Redgifs
 from bdfr.site_downloaders.self_post import SelfPost
 from bdfr.site_downloaders.vidble import Vidble
+from bdfr.site_downloaders.vreddit import VReddit
 from bdfr.site_downloaders.youtube import Youtube
 
 
@@ -24,8 +25,10 @@ class DownloadFactory:
     @staticmethod
     def pull_lever(url: str) -> Type[BaseDownloader]:
         sanitised_url = DownloadFactory.sanitise_url(url)
-        if re.match(r'(i\.)?imgur.*\.gif.+$', sanitised_url):
+        if re.match(r'(i\.|m\.)?imgur', sanitised_url):
             return Imgur
+        elif re.match(r'(i\.)?(redgifs|gifdeliverynetwork)', sanitised_url):
+            return Redgifs
         elif re.match(r'.*/.*\.\w{3,4}(\?[\w;&=]*)?$', sanitised_url) and \
                 not DownloadFactory.is_web_resource(sanitised_url):
             return Direct
@@ -37,16 +40,14 @@ class DownloadFactory:
             return Gallery
         elif re.match(r'gfycat\.', sanitised_url):
             return Gfycat
-        elif re.match(r'(m\.)?imgur.*', sanitised_url):
-            return Imgur
-        elif re.match(r'(redgifs|gifdeliverynetwork)', sanitised_url):
-            return Redgifs
         elif re.match(r'reddit\.com/r/', sanitised_url):
             return SelfPost
         elif re.match(r'(m\.)?youtu\.?be', sanitised_url):
             return Youtube
         elif re.match(r'i\.redd\.it.*', sanitised_url):
             return Direct
+        elif re.match(r'v\.redd\.it.*', sanitised_url):
+            return VReddit
         elif re.match(r'pornhub\.com.*', sanitised_url):
             return PornHub
         elif re.match(r'vidble\.com', sanitised_url):

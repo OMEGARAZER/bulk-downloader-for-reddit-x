@@ -9,19 +9,20 @@ from click.testing import CliRunner
 
 from bdfr.__main__ import cli
 
-does_test_config_exist = Path('../test_config.cfg').exists()
+does_test_config_exist = Path('./tests/test_config.cfg').exists()
 
 
 def copy_test_config(run_path: Path):
-    shutil.copy(Path('../test_config.cfg'), Path(run_path, '../test_config.cfg'))
+    shutil.copy(Path('./tests/test_config.cfg'), Path(run_path, 'test_config.cfg'))
 
 
 def create_basic_args_for_cloner_runner(test_args: list[str], tmp_path: Path):
+    copy_test_config(tmp_path)
     out = [
         'clone',
         str(tmp_path),
         '-v',
-        '--config', 'test_config.cfg',
+        '--config', str(Path(tmp_path, 'test_config.cfg')),
         '--log', str(Path(tmp_path, 'test_log.txt')),
     ] + test_args
     return out
@@ -31,8 +32,10 @@ def create_basic_args_for_cloner_runner(test_args: list[str], tmp_path: Path):
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
 @pytest.mark.parametrize('test_args', (
-    ['-l', 'm2601g'],
+    ['-l', '6l7778'],
     ['-s', 'TrollXChromosomes/', '-L', 1],
+    ['-l', 'eiajjw'],
+    ['-l', 'xl0lhi'],
 ))
 def test_cli_scrape_general(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
