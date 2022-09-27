@@ -15,7 +15,7 @@ from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallb
     ('https://www.youtube.com/watch?v=P19nvJOmqCc', True),
     ('https://www.example.com/test', False),
     ('https://milesmatrix.bandcamp.com/album/la-boum/', False),
-    ('https://v.redd.it/54i8fvzev3u81', False),
+    ('https://v.redd.it/54i8fvzev3u81', True),
 ))
 def test_can_handle_link(test_url: str, expected: bool):
     result = YtdlpFallback.can_handle_link(test_url)
