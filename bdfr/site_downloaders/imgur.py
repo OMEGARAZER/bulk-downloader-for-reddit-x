@@ -78,7 +78,7 @@ class Imgur(BaseDownloader):
 
     @staticmethod
     def _validate_extension(extension_suffix: str) -> str:
-        extension_suffix = extension_suffix.strip('?1')
+        extension_suffix = re.sub(r'\?.*', '', extension_suffix)
         possible_extensions = ('.jpg', '.png', '.mp4', '.gif')
         selection = [ext for ext in possible_extensions if ext == extension_suffix]
         if len(selection) == 1:
