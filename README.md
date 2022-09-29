@@ -220,6 +220,7 @@ The following options apply only to the `download` command. This command downloa
 - `--skip-domain`
   - This adds domains to the download filter i.e. submissions coming from these domains will not be downloaded
   - Can be specified multiple times
+  - Domains must be supplied in the form `example.com` or `img.example.com`
 - `--skip`
   - This adds file types to the download filter i.e. submissions with one of the supplied file extensions will not be downloaded
   - Can be specified multiple times
