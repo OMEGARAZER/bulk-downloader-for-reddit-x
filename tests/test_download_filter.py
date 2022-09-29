@@ -11,7 +11,7 @@ from bdfr.resource import Resource
 
 @pytest.fixture()
 def download_filter() -> DownloadFilter:
-    return DownloadFilter(['mp4', 'mp3'], ['test.com', 'reddit.com'])
+    return DownloadFilter(['mp4', 'mp3'], ['test.com', 'reddit.com', 'img.example.com'])
 
 
 @pytest.mark.parametrize(('test_extension', 'expected'), (
@@ -31,6 +31,9 @@ def test_filter_extension(test_extension: str, expected: bool, download_filter: 
     ('http://reddit.com/test.gif', False),
     ('https://www.example.com/test.mp4', True),
     ('https://www.example.com/test.png', True),
+    ('https://i.example.com/test.png', True),
+    ('https://img.example.com/test.png', False),
+    ('https://i.test.com/test.png', False),
 ))
 def test_filter_domain(test_url: str, expected: bool, download_filter: DownloadFilter):
     result = download_filter._check_domain(test_url)
