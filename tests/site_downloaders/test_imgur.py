@@ -152,11 +152,23 @@ def test_imgur_extension_validation_bad(test_extension: str):
     ),
     (
         'https://i.imgur.com/OGeVuAe.giff',
-        ('77389679084d381336f168538793f218',)
+        ('77389679084d381336f168538793f218',),
     ),
     (
         'https://i.imgur.com/OGeVuAe.gift',
-        ('77389679084d381336f168538793f218',)
+        ('77389679084d381336f168538793f218',),
+    ),
+    (
+        'https://i.imgur.com/3SKrQfK.jpg?1',
+        ('aa299e181b268578979cad176d1bd1d0',),
+    ),
+    (
+        'https://i.imgur.com/cbivYRW.jpg?3',
+        ('7ec6ceef5380cb163a1d498c359c51fd',),
+    ),
+    (
+        'http://i.imgur.com/s9uXxlq.jpg?5.jpg',
+        ('338de3c23ee21af056b3a7c154e2478f',),
     ),
 ))
 def test_find_resources(test_url: str, expected_hashes: list[str]):
