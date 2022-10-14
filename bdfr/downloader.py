@@ -114,7 +114,10 @@ class RedditDownloader(RedditConnector):
                         f'Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere')
                     return
                 elif self.args.make_hard_links:
-                    self.master_hash_list[resource_hash].link_to(destination)
+                    try:
+                        destination.hardlink_to(self.master_hash_list[resource_hash])
+                    except:
+                        self.master_hash_list[resource_hash].link_to(destination)
                     logger.info(
                         f'Hard link made linking {destination} to {self.master_hash_list[resource_hash]}'
                         f' in submission {submission.id}')
