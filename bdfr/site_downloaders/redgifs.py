@@ -28,7 +28,7 @@ class Redgifs(BaseDownloader):
         except AttributeError:
             raise SiteDownloaderError(f'Could not extract Redgifs ID from {url}')
 
-        content = Redgifs.retrieve_url(f'https://api.redgifs.com/v2/gifs/{redgif_id}')
+        content = Redgifs.retrieve_url(f'https://api.redgifs.com/v1/gifs/{redgif_id}')
 
         if content is None:
             raise SiteDownloaderError('Could not read the page source')
@@ -40,16 +40,16 @@ class Redgifs(BaseDownloader):
 
         out = set()
         try:
-            if response_json['gif']['type'] == 1:  # type 1 is a video
-                out.add(response_json['gif']['urls']['hd'])
-            elif response_json['gif']['type'] == 2:  # type 2 is an image
-                if response_json['gif']['gallery']:
+            if response_json['gfyItem']['type'] == 1:  # type 1 is a video
+                out.add(response_json['gfyItem']['mp4Url'])
+            elif response_json['gfyItem']['type'] == 2:  # type 2 is an image
+                if 'gallery' in response_json['gfyItem']:
                     content = Redgifs.retrieve_url(
-                        f'https://api.redgifs.com/v2/gallery/{response_json["gif"]["gallery"]}')
+                        f'https://api.redgifs.com/v2/gallery/{response_json["gfyItem"]["gallery"]}')
                     response_json = json.loads(content.text)
                     out = {p['urls']['hd'] for p in response_json['gifs']}
                 else:
-                    out.add(response_json['gif']['urls']['hd'])
+                    out.add(response_json['gfyItem']['content_urls']['large']['url'])
             else:
                 raise KeyError
         except (KeyError, AttributeError):
