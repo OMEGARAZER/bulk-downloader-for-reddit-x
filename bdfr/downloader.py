@@ -116,7 +116,7 @@ class RedditDownloader(RedditConnector):
                 elif self.args.make_hard_links:
                     try:
                         destination.hardlink_to(self.master_hash_list[resource_hash])
-                    except:
+                    except AttributeError:
                         self.master_hash_list[resource_hash].link_to(destination)
                     logger.info(
                         f'Hard link made linking {destination} to {self.master_hash_list[resource_hash]}'
