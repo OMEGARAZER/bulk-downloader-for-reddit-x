@@ -51,7 +51,7 @@ def do_test_path_equality(result: Path, expected: str) -> bool:
 
 @pytest.fixture(scope='session')
 def reddit_submission(reddit_instance: praw.Reddit) -> praw.models.Submission:
-    return reddit_instance.submission(id='lgilgt')
+    return reddit_instance.submission(id='w22m5l')
 
 
 @pytest.mark.parametrize(('test_format_string', 'expected'), (
@@ -86,12 +86,12 @@ def test_check_format_string_validity(test_string: str, expected: bool):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.parametrize(('test_format_string', 'expected'), (
-    ('{SUBREDDIT}', 'Mindustry'),
-    ('{REDDITOR}', 'Gamer_player_boi'),
-    ('{POSTID}', 'lgilgt'),
-    ('{FLAIR}', 'Art'),
-    ('{SUBREDDIT}_{TITLE}', 'Mindustry_Toxopid that is NOT humane >:('),
-    ('{REDDITOR}_{TITLE}_{POSTID}', 'Gamer_player_boi_Toxopid that is NOT humane >:(_lgilgt')
+    ('{SUBREDDIT}', 'formula1'),
+    ('{REDDITOR}', 'Kirsty-Blue'),
+    ('{POSTID}', 'w22m5l'),
+    ('{FLAIR}', 'Social Media rall'),
+    ('{SUBREDDIT}_{TITLE}', 'formula1_George Russel acknowledges the Twitter trend about him'),
+    ('{REDDITOR}_{TITLE}_{POSTID}', 'Kirsty-Blue_George Russel acknowledges the Twitter trend about him_w22m5l')
 ))
 def test_format_name_real(test_format_string: str, expected: str, reddit_submission: praw.models.Submission):
     test_formatter = FileNameFormatter(test_format_string, '', '')
@@ -105,17 +105,17 @@ def test_format_name_real(test_format_string: str, expected: str, reddit_submiss
     (
         '{SUBREDDIT}',
         '{POSTID}',
-        'test/Mindustry/lgilgt.png',
+        'test/formula1/w22m5l.png',
     ),
     (
         '{SUBREDDIT}',
         '{TITLE}_{POSTID}',
-        'test/Mindustry/Toxopid that is NOT humane >:(_lgilgt.png',
+        'test/formula1/George Russel acknowledges the Twitter trend about him_w22m5l.png',
     ),
     (
         '{SUBREDDIT}',
         '{REDDITOR}_{TITLE}_{POSTID}',
-        'test/Mindustry/Gamer_player_boi_Toxopid that is NOT humane >:(_lgilgt.png',
+        'test/formula1/Kirsty-Blue_George Russel acknowledges the Twitter trend about him_w22m5l.png',
     ),
 ))
 def test_format_full(
@@ -148,10 +148,10 @@ def test_format_full_conform(
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.parametrize(('format_string_directory', 'format_string_file', 'index', 'expected'), (
-    ('{SUBREDDIT}', '{POSTID}', None, 'test/Mindustry/lgilgt.png'),
-    ('{SUBREDDIT}', '{POSTID}', 1, 'test/Mindustry/lgilgt_1.png'),
-    ('{SUBREDDIT}', '{POSTID}', 2, 'test/Mindustry/lgilgt_2.png'),
-    ('{SUBREDDIT}', '{TITLE}_{POSTID}', 2, 'test/Mindustry/Toxopid that is NOT humane >:(_lgilgt_2.png'),
+    ('{SUBREDDIT}', '{POSTID}', None, 'test/formula1/w22m5l.png'),
+    ('{SUBREDDIT}', '{POSTID}', 1, 'test/formula1/w22m5l_1.png'),
+    ('{SUBREDDIT}', '{POSTID}', 2, 'test/formula1/w22m5l_2.png'),
+    ('{SUBREDDIT}', '{TITLE}_{POSTID}', 2, 'test/formula1/George Russel acknowledges the Twitter trend about him_w22m5l_2.png'),
 ))
 def test_format_full_with_index_suffix(
         format_string_directory: str,
