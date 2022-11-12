@@ -7,6 +7,7 @@ from typing import Type
 
 from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.site_downloaders.base_downloader import BaseDownloader
+from bdfr.site_downloaders.delay_for_reddit import DelayForReddit
 from bdfr.site_downloaders.direct import Direct
 from bdfr.site_downloaders.erome import Erome
 from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
@@ -34,6 +35,8 @@ class DownloadFactory:
             return Direct
         elif re.match(r'erome\.com.*', sanitised_url):
             return Erome
+        elif re.match(r'delayforreddit\.com', sanitised_url):
+            return DelayForReddit
         elif re.match(r'reddit\.com/gallery/.*', sanitised_url):
             return Gallery
         elif re.match(r'patreon\.com.*', sanitised_url):
