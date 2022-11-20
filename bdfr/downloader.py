@@ -12,6 +12,7 @@ from pathlib import Path
 import praw
 import praw.exceptions
 import praw.models
+import prawcore
 
 from bdfr import exceptions as errors
 from bdfr.configuration import Configuration
@@ -42,7 +43,10 @@ class RedditDownloader(RedditConnector):
     def download(self):
         for generator in self.reddit_lists:
             for submission in generator:
-                self._download_submission(submission)
+                try:
+                    self._download_submission(submission)
+                except prawcore.PrawcoreException as e:
+                    logger.error(f'Submission {submission.id} failed to download due to a PRAW exception: {e}')
 
     def _download_submission(self, submission: praw.models.Submission):
         if submission.id in self.excluded_submission_ids:
