@@ -36,6 +36,8 @@ def create_basic_args_for_archive_runner(test_args: list[str], run_path: Path):
     ['-l', 'gstd4hk'],
     ['-l', 'm2601g', '-f', 'yaml'],
     ['-l', 'n60t4c', '-f', 'xml'],
+    ['-l', 'ijy4ch'],  # user deleted post
+    ['-l', 'kw4wjm'],  # post from banned subreddit
 ))
 def test_cli_archive_single(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
