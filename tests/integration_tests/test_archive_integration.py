@@ -36,8 +36,6 @@ def create_basic_args_for_archive_runner(test_args: list[str], run_path: Path):
     ['-l', 'gstd4hk'],
     ['-l', 'm2601g', '-f', 'yaml'],
     ['-l', 'n60t4c', '-f', 'xml'],
-    ['-l', 'ijy4ch'],  # user deleted post
-    ['-l', 'kw4wjm'],  # post from banned subreddit
 ))
 def test_cli_archive_single(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -152,4 +150,19 @@ def test_cli_archive_links_exclusion(test_args: list[str], tmp_path: Path):
     result = runner.invoke(cli, test_args)
     assert result.exit_code == 0
     assert 'in exclusion list' in result.output
+    assert 'Attempting to archive' not in result.output
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
+@pytest.mark.parametrize('test_args', (
+    ['-l', 'ijy4ch'],  # user deleted post
+    ['-l', 'kw4wjm'],  # post from banned subreddit
+))
+def test_cli_archive_soft_fail(test_args: list[str], tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_archive_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert 'failed to be archived due to a PRAW exception' in result.output
     assert 'Attempting to archive' not in result.output

@@ -286,7 +286,7 @@ def test_get_multireddits_public(
     downloader_mock.create_filtered_listing_generator.return_value = \
         RedditConnector.create_filtered_listing_generator(
             downloader_mock,
-            reddit_instance.multireddit(test_user, test_multireddits[0]),
+            reddit_instance.multireddit(redditor=test_user, name=test_multireddits[0]),
         )
     results = RedditConnector.get_multireddits(downloader_mock)
     results = [sub for res in results for sub in res]

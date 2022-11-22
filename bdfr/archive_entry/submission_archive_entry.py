@@ -45,7 +45,7 @@ class SubmissionArchiveEntry(BaseArchiveEntry):
     def _get_comments(self) -> list[dict]:
         logger.debug(f'Retrieving full comment tree for submission {self.source.id}')
         comments = []
-        self.source.comments.replace_more(0)
+        self.source.comments.replace_more(limit=None)
         for top_level_comment in self.source.comments:
             comments.append(self._convert_comment_to_dict(top_level_comment))
         return comments
