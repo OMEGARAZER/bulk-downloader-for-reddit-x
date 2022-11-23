@@ -32,7 +32,7 @@ class BaseArchiveEntry(ABC):
             'parent_id': in_comment.parent_id,
             'replies': [],
         }
-        in_comment.replies.replace_more(0)
+        in_comment.replies.replace_more(limit=None)
         for reply in in_comment.replies:
             out_dict['replies'].append(BaseArchiveEntry._convert_comment_to_dict(reply))
         return out_dict

@@ -323,7 +323,7 @@ class RedditConnector(metaclass=ABCMeta):
             out = []
             for multi in self.split_args_input(self.args.multireddit):
                 try:
-                    multi = self.reddit_instance.multireddit(self.args.user[0], multi)
+                    multi = self.reddit_instance.multireddit(redditor=self.args.user[0], name=multi)
                     if not multi.subreddits:
                         raise errors.BulkDownloaderException
                     out.append(self.create_filtered_listing_generator(multi))
