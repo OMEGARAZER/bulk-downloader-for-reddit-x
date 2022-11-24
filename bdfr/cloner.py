@@ -3,6 +3,8 @@
 
 import logging
 
+import prawcore
+
 from bdfr.archiver import Archiver
 from bdfr.configuration import Configuration
 from bdfr.downloader import RedditDownloader
@@ -17,5 +19,8 @@ class RedditCloner(RedditDownloader, Archiver):
     def download(self):
         for generator in self.reddit_lists:
             for submission in generator:
-                self._download_submission(submission)
-                self.write_entry(submission)
+                try:
+                    self._download_submission(submission)
+                    self.write_entry(submission)
+                except prawcore.PrawcoreException as e:
+                    logger.error(f'Submission {submission.id} failed to be cloned due to a PRAW exception: {e}')

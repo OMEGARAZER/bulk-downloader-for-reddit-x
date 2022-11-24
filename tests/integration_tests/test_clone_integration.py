@@ -36,6 +36,8 @@ def create_basic_args_for_cloner_runner(test_args: list[str], tmp_path: Path):
     ['-s', 'TrollXChromosomes/', '-L', 1],
     ['-l', 'eiajjw'],
     ['-l', 'xl0lhi'],
+    ['-l', 'ijy4ch'],  # user deleted post
+    ['-l', 'kw4wjm'],  # post from banned subreddit
 ))
 def test_cli_scrape_general(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
@@ -44,3 +46,19 @@ def test_cli_scrape_general(test_args: list[str], tmp_path: Path):
     assert result.exit_code == 0
     assert 'Downloaded submission' in result.output
     assert 'Record for entry item' in result.output
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason='A test config file is required for integration tests')
+@pytest.mark.parametrize('test_args', (
+    ['-l', 'ijy4ch'],  # user deleted post
+    ['-l', 'kw4wjm'],  # post from banned subreddit
+))
+def test_cli_scrape_soft_fail(test_args: list[str], tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_cloner_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert 'Downloaded submission' not in result.output
+    assert 'Record for entry item' not in result.output
