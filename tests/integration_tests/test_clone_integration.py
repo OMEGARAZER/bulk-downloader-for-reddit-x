@@ -36,8 +36,6 @@ def create_basic_args_for_cloner_runner(test_args: list[str], tmp_path: Path):
     ['-s', 'TrollXChromosomes/', '-L', 1],
     ['-l', 'eiajjw'],
     ['-l', 'xl0lhi'],
-    ['-l', 'ijy4ch'],  # user deleted post
-    ['-l', 'kw4wjm'],  # post from banned subreddit
 ))
 def test_cli_scrape_general(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
