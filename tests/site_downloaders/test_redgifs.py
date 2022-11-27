@@ -41,8 +41,7 @@ def test_get_link(test_url: str, expected: set[str]):
     ('https://redgifs.com/watch/springgreendecisivetaruca', {'8dac487ac49a1f18cc1b4dabe23f0869'}),
     ('https://redgifs.com/watch/leafysaltydungbeetle', {'076792c660b9c024c0471ef4759af8bd'}),
     ('https://www.redgifs.com/watch/palegoldenrodrawhalibut', {'46d5aa77fe80c6407de1ecc92801c10e'}),
-    ('https://redgifs.com/watch/hollowintentsnowyowl',
-     {'5ee51fa15e0a58e98f11dea6a6cca771'}),
+    ('https://redgifs.com/watch/hollowintentsnowyowl', {'5ee51fa15e0a58e98f11dea6a6cca771'}),
     ('https://www.redgifs.com/watch/lustrousstickywaxwing',
      {'b461e55664f07bed8d2f41d8586728fa',
       '30ba079a8ed7d7adf17929dc3064c10f',
@@ -60,3 +59,27 @@ def test_download_resource(test_url: str, expected_hashes: set[str]):
     [res.download() for res in results]
     hashes = set([res.hash.hexdigest() for res in results])
     assert hashes == set(expected_hashes)
+
+
+@pytest.mark.online
+@pytest.mark.parametrize(('test_url', 'expected_link', 'expected_hash'), (
+    ('https://redgifs.com/watch/flippantmemorablebaiji', {'FlippantMemorableBaiji-mobile.mp4'},
+     {'41a5fb4865367ede9f65fc78736f497a'}),
+    ('https://redgifs.com/watch/thirstyunfortunatewaterdragons', {'thirstyunfortunatewaterdragons-mobile.mp4'},
+     {'1a51dad8fedb594bdd84f027b3cbe8af'}),
+    ('https://redgifs.com/watch/conventionalplainxenopterygii', {'conventionalplainxenopterygii-mobile.mp4'},
+     {'2e1786b3337da85b80b050e2c289daa4'})
+))
+def test_hd_soft_fail(test_url: str, expected_link: set[str], expected_hash: set[str]):
+    link = Redgifs._get_link(test_url)
+    link = list(link)
+    patterns = [r'https://thumbs\d\.redgifs\.com/' + e + r'.*' for e in expected_link]
+    assert all([re.match(p, r) for p in patterns] for r in link)
+    mock_submission = Mock()
+    mock_submission.url = test_url
+    test_site = Redgifs(mock_submission)
+    results = test_site.find_resources()
+    assert all([isinstance(res, Resource) for res in results])
+    [res.download() for res in results]
+    hashes = set([res.hash.hexdigest() for res in results])
+    assert hashes == set(expected_hash)
