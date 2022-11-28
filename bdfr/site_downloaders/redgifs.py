@@ -2,7 +2,7 @@
 
 import json
 import re
-import urllib.parse
+import requests
 from typing import Optional
 
 from praw.models import Submission
@@ -29,7 +29,13 @@ class Redgifs(BaseDownloader):
             raise SiteDownloaderError(f'Could not extract Redgifs ID from {url}')
 
         auth_token = json.loads(Redgifs.retrieve_url('https://api.redgifs.com/v2/auth/temporary').text)['token']
+        if not auth_token:
+            raise SiteDownloaderError('Unable to retrieve Redgifs API token')
+
         headers = {
+            'referer': 'https://www.redgifs.com/',
+            'origin': 'https://www.redgifs.com',
+            'content-type': 'application/json',
             'Authorization': f'Bearer {auth_token}',
         }
 
@@ -46,7 +52,10 @@ class Redgifs(BaseDownloader):
         out = set()
         try:
             if response_json['gif']['type'] == 1:  # type 1 is a video
-                out.add(response_json['gif']['urls']['hd'])
+                if requests.get(response_json['gif']['urls']['hd'], headers=headers).ok:
+                    out.add(response_json['gif']['urls']['hd'])
+                else:
+                    out.add(response_json['gif']['urls']['sd'])
             elif response_json['gif']['type'] == 2:  # type 2 is an image
                 if response_json['gif']['gallery']:
                     content = Redgifs.retrieve_url(
