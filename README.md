@@ -1,4 +1,5 @@
 # Bulk Downloader for Reddit
+
 [![PyPI version](https://img.shields.io/pypi/v/bdfr.svg)](https://pypi.python.org/pypi/bdfr)
 [![PyPI downloads](https://img.shields.io/pypi/dm/bdfr)](https://pypi.python.org/pypi/bdfr)
 [![Python Test](https://github.com/aliparlakci/bulk-downloader-for-reddit/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/aliparlakci/bulk-downloader-for-reddit/actions/workflows/test.yml)
@@ -10,19 +11,24 @@ If you wish to open an issue, please read [the guide on opening issues](docs/CON
 Included in this README are a few example Bash tricks to get certain behaviour. For that, see [Common Command Tricks](#common-command-tricks).
 
 ## Installation
+
 *Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it as such:
+
 ```bash
 python3 -m pip install bdfr --upgrade
 ```
+
 **To update BDFR**, run the above command again after the installation.
 
 ### AUR Package
+
 If on Arch Linux or derivative operating systems such as Manjaro, the BDFR can be installed through the AUR.
 
-- Latest Release: https://aur.archlinux.org/packages/python-bdfr/
-- Latest Development Build: https://aur.archlinux.org/packages/python-bdfr-git/
+- Latest Release: <https://aur.archlinux.org/packages/python-bdfr>
+- Latest Development Build: <https://aur.archlinux.org/packages/python-bdfr-git>
 
 ### Source code
+
 If you want to use the source code or make contributions, refer to [CONTRIBUTING](docs/CONTRIBUTING.md#preparing-the-environment-for-development)
 
 ## Usage
@@ -52,18 +58,23 @@ However, these commands are not enough. You should chain parameters in [Options]
 ```bash
 python3 -m bdfr download ./path/to/output --subreddit Python -L 10
 ```
+
 ```bash
 python3 -m bdfr download ./path/to/output --user reddituser --submitted -L 100
 ```
+
 ```bash
 python3 -m bdfr download ./path/to/output --user reddituser --submitted --all-comments --comment-context
 ```
+
 ```bash
 python3 -m bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
 ```
+
 ```bash
 python3 -m bdfr download ./path/to/output --subreddit 'Python, all, mindustry' -L 10 --make-hard-links
 ```
+
 ```bash
 python3 -m bdfr archive ./path/to/output --subreddit all --format yaml -L 500 --folder-scheme ''
 ```
@@ -87,6 +98,7 @@ subreddit:
 ```
 
 would be equilavent to (take note that in YAML there is `file_scheme` instead of `file-scheme`):
+
 ```bash
 python3 -m bdfr download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
 ```
@@ -156,8 +168,8 @@ The following options are common between both the `archive` and `download` comma
 - `-m, --multireddit`
   - This is the name of a multireddit to add as a source
   - Can be specified multiple times
-      - This can be done by using `-m` multiple times
-      - Multireddits can also be used to provide CSV multireddits e.g. `-m 'chess, favourites'`
+    - This can be done by using `-m` multiple times
+    - Multireddits can also be used to provide CSV multireddits e.g. `-m 'chess, favourites'`
   - The specified multireddits must all belong to the user specified with the `--user` option
 - `-s, --subreddit`
   - This adds a subreddit as a source
@@ -237,7 +249,6 @@ The following options apply only to the `download` command. This command downloa
 - `--max-score-ratio`
   - This skips all submissions which have higher than specified upvote ratio
 
-
 ### Archiver Options
 
 The following options are for the `archive` command specifically.
@@ -291,18 +302,18 @@ For more details on the configuration file and the values therein, see [Configur
 
 The naming and folder schemes for the BDFR are both completely customisable. A number of different fields can be given which will be replaced with properties from a submission when downloading it. The scheme format takes the form of `{KEY}`, where `KEY` is a string from the below list.
 
-  - `DATE`
-  - `FLAIR`
-  - `POSTID`
-  - `REDDITOR`
-  - `SUBREDDIT`
-  - `TITLE`
-  - `UPVOTES`
+- `DATE`
+- `FLAIR`
+- `POSTID`
+- `REDDITOR`
+- `SUBREDDIT`
+- `TITLE`
+- `UPVOTES`
 
 Each of these can be enclosed in curly bracket, `{}`, and included in the name. For example, to just title every downloaded post with the unique submission ID, you can use `{POSTID}`. Static strings can also be included, such as `download_{POSTID}` which will not change from submission to submission. For example, the previous string will result in the following submission file names:
 
-  - `download_aaaaaa.png`
-  - `download_bbbbbb.png`
+- `download_aaaaaa.png`
+- `download_bbbbbb.png`
 
 At least one key *must* be included in the file scheme, otherwise an error will be thrown. The folder scheme however, can be null or a simple static string. In the former case, all files will be placed in the folder specified with the `directory` argument. If the folder scheme is a static string, then all submissions will be placed in a folder of that name. In both cases, there will be no separation between all submissions.
 
@@ -312,19 +323,19 @@ It is highly recommended that the file name scheme contain the parameter `{POSTI
 
 The configuration files are, by default, stored in the configuration directory for the user. This differs depending on the OS that the BDFR is being run on. For Windows, this will be:
 
-  - `C:\Users\<User>\AppData\Local\BDFR\bdfr`
+- `C:\Users\<User>\AppData\Local\BDFR\bdfr`
 
 If Python has been installed through the Windows Store, the folder will appear in a different place. Note that the hash included in the file path may change from installation to installation.
 
-  - `C:\Users\<User>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\Local\BDFR\bdfr`
+- `C:\Users\<User>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\Local\BDFR\bdfr`
 
 On Mac OSX, this will be:
 
-  - `~/Library/Application Support/bdfr`. 
-    
+- `~/Library/Application Support/bdfr`.
+
 Lastly, on a Linux system, this will be:
 
-  - `~/.config/bdfr/`
+- `~/.config/bdfr/`
 
 The logging output for each run of the BDFR will be saved to this directory in the file `log_output.txt`. If you need to submit a bug, it is this file that you will need to submit with the report.
 
@@ -332,16 +343,16 @@ The logging output for each run of the BDFR will be saved to this directory in t
 
 The `config.cfg` is the file that supplies the BDFR with the configuration to use. At the moment, the following keys **must** be included in the configuration file supplied.
 
-  - `client_id`
-  - `client_secret`
-  - `scopes`
+- `client_id`
+- `client_secret`
+- `scopes`
 
 The following keys are optional, and defaults will be used if they cannot be found.
 
-  - `backup_log_count`
-  - `max_wait_time`
-  - `time_format`
-  - `disabled_modules`
+- `backup_log_count`
+- `max_wait_time`
+- `time_format`
+- `disabled_modules`
 
 All of these should not be modified unless you know what you're doing, as the default values will enable the BDFR to function just fine. A configuration is included in the BDFR when it is installed, and this will be placed in the configuration directory as the default.
 
@@ -360,12 +371,16 @@ The individual modules of the BDFR, used to download submissions from websites, 
 Modules can be disabled through the command line interface for the BDFR or more permanently in the configuration file via the `disabled_modules` option. The list of downloaders that can be disabled are the following. Note that they are case-insensitive.
 
 - `Direct`
+- `DelayForReddit`
 - `Erome`
 - `Gallery` (Reddit Image Galleries)
 - `Gfycat`
 - `Imgur`
+- `PornHub`
 - `Redgifs`
 - `SelfPost` (Reddit Text Post)
+- `Vidble`
+- `VReddit` (Reddit Video Post)
 - `Youtube`
 - `YoutubeDlFallback`
 
@@ -393,17 +408,19 @@ The logfiles that the BDFR outputs are consistent and quite detailed and in a fo
 
 ## List of currently supported sources
 
-  - Direct links (links leading to a file)
-  - Erome
-  - Gfycat
-  - Gif Delivery Network
-  - Imgur
-  - Reddit Galleries
-  - Reddit Text Posts
-  - Reddit Videos
-  - Redgifs
-  - YouTube
-  - Streamable
+- Direct links (links leading to a file)
+- Delay for Reddit
+- Erome
+- Gfycat
+- Gif Delivery Network
+- Imgur
+- Reddit Galleries
+- Reddit Text Posts
+- Reddit Videos
+- Redgifs
+- Vidble
+- YouTube
+  - Any source supported by [YT-DLP](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) should be compatable
 
 ## Contributing
 
