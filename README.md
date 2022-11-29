@@ -64,15 +64,15 @@ python3 -m bdfr download ./path/to/output --user reddituser --submitted -L 100
 ```
 
 ```bash
-python3 -m bdfr download ./path/to/output --user reddituser --submitted --all-comments --comment-context
-```
-
-```bash
 python3 -m bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
 ```
 
 ```bash
 python3 -m bdfr download ./path/to/output --subreddit 'Python, all, mindustry' -L 10 --make-hard-links
+```
+
+```bash
+python3 -m bdfr archive ./path/to/output --user reddituser --submitted --all-comments --comment-context
 ```
 
 ```bash
