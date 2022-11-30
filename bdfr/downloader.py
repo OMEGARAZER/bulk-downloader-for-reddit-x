@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 def _calc_hash(existing_file: Path):
     chunk_size = 1024 * 1024
     md5_hash = hashlib.md5()
-    with open(existing_file, 'rb') as file:
+    with existing_file.open('rb') as file:
         chunk = file.read(chunk_size)
         while chunk:
             md5_hash.update(chunk)
@@ -127,7 +127,7 @@ class RedditDownloader(RedditConnector):
                         f' in submission {submission.id}')
                     return
             try:
-                with open(destination, 'wb') as file:
+                with destination.open('wb') as file:
                     file.write(res.content)
                 logger.debug(f'Written file to {destination}')
             except OSError as e:
