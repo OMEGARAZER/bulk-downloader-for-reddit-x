@@ -18,7 +18,7 @@ Included in this README are a few example Bash tricks to get certain behaviour. 
 python3 -m pip install bdfr --upgrade
 ```
 
-or with [pipx](https://pypa.github.io/pipx) with:
+or via [pipx](https://pypa.github.io/pipx) with:
 
 ```bash
 python3 -m pipx install bdfr --upgrade
