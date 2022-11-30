@@ -66,6 +66,6 @@ def test_token_manager_write(example_config: configparser.ConfigParser, tmp_path
     test_manager = OAuth2TokenManager(example_config, test_path)
     test_manager.post_refresh_callback(mock_authoriser)
     assert example_config.get('DEFAULT', 'user_token') == 'changed_token'
-    with open(test_path, 'r') as file:
+    with test_path.open('r') as file:
         file_contents = file.read()
     assert 'user_token = changed_token' in file_contents
