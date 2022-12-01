@@ -6,7 +6,7 @@ import platform
 import re
 import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from praw.models import Comment, Submission
 
@@ -34,7 +34,7 @@ class FileNameFormatter:
         self.directory_format_string: list[str] = directory_format_string.split('/')
         self.time_format_string = time_format_string
 
-    def _format_name(self, submission: (Comment, Submission), format_string: str) -> str:
+    def _format_name(self, submission: Union[Comment, Submission], format_string: str) -> str:
         if isinstance(submission, Submission):
             attributes = self._generate_name_dict_from_submission(submission)
         elif isinstance(submission, Comment):

@@ -2,12 +2,13 @@
 # coding=utf-8
 
 from abc import ABC, abstractmethod
+from typing import Union
 
 from praw.models import Comment, Submission
 
 
 class BaseArchiveEntry(ABC):
-    def __init__(self, source: (Comment, Submission)):
+    def __init__(self, source: Union[Comment, Submission]):
         self.source = source
         self.post_details: dict = {}
 
