@@ -1,17 +1,17 @@
 if (Test-Path -Path $args[0] -PathType Leaf) {
-	$file=$args[0]
+    $file=$args[0]
 }
 else {
-	Write-Host "CANNOT FIND LOG FILE"
-	Exit 1
+    Write-Host "CANNOT FIND LOG FILE"
+    Exit 1
 }
 
-if ($args[1] -ne $null) {
-	$output=$args[1]
-	Write-Host "Outputting IDs to $output"
+if ($null -ne $args[1]) {
+    $output=$args[1]
+    Write-Host "Outputting IDs to $output"
 }
 else {
-	$output="./successful.txt"
+    $output="./successful.txt"
 }
 
 Select-String -Path $file -Pattern "Downloaded submission" | ForEach-Object { -split $_.Line | Select-Object -Last 3 | Select-Object -SkipLast 2 } >> $output

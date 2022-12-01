@@ -107,7 +107,7 @@ class FileNameFormatter:
             destination_directory,
             *[self._format_name(resource.source_submission, part) for part in self.directory_format_string],
         )
-        index = f'_{str(index)}' if index else ''
+        index = f'_{index}' if index else ''
         if not resource.extension:
             raise BulkDownloaderException(f'Resource from {resource.url} has no extension')
         file_name = str(self._format_name(resource.source_submission, self.file_format_string))

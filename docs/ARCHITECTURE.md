@@ -18,18 +18,18 @@ Another major part of the ethos of the design is DOTADIW, Do One Thing And Do It
 
 The BDFR is organised around a central object, the RedditDownloader class. The Archiver object extends and inherits from this class.
 
-  1. The RedditDownloader parses all the arguments and configuration options, held in the Configuration object, and creates a variety of internal objects for use, such as the file name formatter, download filter, etc. 
-  
+  1. The RedditDownloader parses all the arguments and configuration options, held in the Configuration object, and creates a variety of internal objects for use, such as the file name formatter, download filter, etc.
+
   2. The RedditDownloader scrapes raw submissions from Reddit via several methods relating to different sources. A source is defined as a single stream of submissions from a subreddit, multireddit, or user list.
 
-  3. These raw submissions are passed to the DownloaderFactory class to select the specialised downloader class to use. Each of these are for a specific website or link type, with some catch-all classes like Direct. 
+  3. These raw submissions are passed to the DownloaderFactory class to select the specialised downloader class to use. Each of these are for a specific website or link type, with some catch-all classes like Direct.
 
-  4. The BaseDownloader child, spawned by DownloaderFactory, takes the link and does any necessary processing to find the direct link to the actual resource. 
+  4. The BaseDownloader child, spawned by DownloaderFactory, takes the link and does any necessary processing to find the direct link to the actual resource.
 
   5. This is returned to the RedditDownloader in the form of a Resource object. This holds the URL and some other information for the final resource.
 
   6. The Resource is passed through the DownloadFilter instantiated in step 1.
-  
+
   7. The destination file name for the Resource is calculated. If it already exists, then the Resource will be discarded.
 
   8. Here the actual data is downloaded to the Resource and a hash calculated which is used to find duplicates.

@@ -2,10 +2,10 @@
 
 Due to the verboseness of the logs, a great deal of information can be gathered quite easily from the BDFR's logfiles. In this folder, there is a selection of scripts that parse these logs, scraping useful bits of information. Since the logfiles are recurring patterns of strings, it is a fairly simple matter to write scripts that utilise tools included on most Linux systems.
 
-  - [Script to extract all successfully downloaded IDs](#extract-all-successfully-downloaded-ids)
-  - [Script to extract all failed download IDs](#extract-all-failed-ids)
-  - [Timestamp conversion](#converting-bdfrv1-timestamps-to-bdfrv2-timestamps)
-  - [Printing summary statistics for a run](#printing-summary-statistics)
+- [Script to extract all successfully downloaded IDs](#extract-all-successfully-downloaded-ids)
+- [Script to extract all failed download IDs](#extract-all-failed-ids)
+- [Timestamp conversion](#converting-bdfrv1-timestamps-to-bdfrv2-timestamps)
+- [Printing summary statistics for a run](#printing-summary-statistics)
 
 ## Extract all Successfully Downloaded IDs
 
@@ -58,7 +58,7 @@ A simple script has been included to print sumamry statistics for a run of the B
 
 This will create an output like the following:
 
-```
+```text
 Downloaded submissions: 250
 Failed downloads: 103
 Files already downloaded: 20073

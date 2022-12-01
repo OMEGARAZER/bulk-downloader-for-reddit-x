@@ -91,7 +91,7 @@ class RedditConnector(metaclass=ABCMeta):
         logger.log(9, 'Created site authenticator')
 
         self.args.skip_subreddit = self.split_args_input(self.args.skip_subreddit)
-        self.args.skip_subreddit = set([sub.lower() for sub in self.args.skip_subreddit])
+        self.args.skip_subreddit = {sub.lower() for sub in self.args.skip_subreddit}
 
     def read_config(self):
         """Read any cfg values that need to be processed"""
@@ -113,7 +113,7 @@ class RedditConnector(metaclass=ABCMeta):
     def parse_disabled_modules(self):
         disabled_modules = self.args.disable_module
         disabled_modules = self.split_args_input(disabled_modules)
-        disabled_modules = set([name.strip().lower() for name in disabled_modules])
+        disabled_modules = {name.strip().lower() for name in disabled_modules}
         self.args.disable_module = disabled_modules
         logger.debug(f'Disabling the following modules: {", ".join(self.args.disable_module)}')
 
@@ -249,7 +249,7 @@ class RedditConnector(metaclass=ABCMeta):
             if self.args.authenticate:
                 try:
                     subscribed_subreddits = list(self.reddit_instance.user.subreddits(limit=None))
-                    subscribed_subreddits = set([s.display_name for s in subscribed_subreddits])
+                    subscribed_subreddits = {s.display_name for s in subscribed_subreddits}
                 except prawcore.InsufficientScope:
                     logger.error('BDFR has insufficient scope to access subreddit lists')
             else:
@@ -428,7 +428,7 @@ class RedditConnector(metaclass=ABCMeta):
             if not id_file.exists():
                 logger.warning(f'ID file at {id_file} does not exist')
                 continue
-            with open(id_file, 'r') as file:
+            with id_file.open('r') as file:
                 for line in file:
                     out.append(line.strip())
         return set(out)

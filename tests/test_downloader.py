@@ -152,7 +152,7 @@ def test_download_submission_hash_exists(
     RedditDownloader._download_submission(downloader_mock, submission)
     folder_contents = list(tmp_path.iterdir())
     output = capsys.readouterr()
-    assert len(folder_contents) == 0
+    assert not folder_contents
     assert re.search(r'Resource hash .*? downloaded elsewhere', output.out)
 
 

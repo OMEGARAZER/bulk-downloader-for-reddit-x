@@ -48,11 +48,11 @@ class Youtube(BaseDownloader):
                     raise SiteDownloaderError(f'Youtube download failed: {e}')
 
                 downloaded_files = list(download_path.iterdir())
-                if len(downloaded_files) > 0:
+                if downloaded_files:
                     downloaded_file = downloaded_files[0]
                 else:
                     raise NotADownloadableLinkError(f"No media exists in the URL {self.post.url}")
-                with open(downloaded_file, 'rb') as file:
+                with downloaded_file.open('rb') as file:
                     content = file.read()
                 return content
         return download

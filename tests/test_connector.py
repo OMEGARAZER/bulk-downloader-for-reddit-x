@@ -47,7 +47,7 @@ def assert_all_results_are_submissions(result_limit: int, results: list[Iterator
 
 def assert_all_results_are_submissions_or_comments(result_limit: int, results: list[Iterator]) -> list:
     results = [sub for res in results for sub in res]
-    assert all([isinstance(res, praw.models.Submission) or isinstance(res, praw.models.Comment) for res in results])
+    assert all([isinstance(res, (praw.models.Submission, praw.models.Comment)) for res in results])
     assert not any([isinstance(m, MagicMock) for m in results])
     if result_limit is not None:
         assert len(results) == result_limit
@@ -259,7 +259,7 @@ def test_get_subreddit_search(
     assert all([res.subreddit.display_name in test_subreddits for res in results])
     assert len(results) <= max_expected_len
     if max_expected_len != 0:
-        assert len(results) > 0
+        assert results
     assert not any([isinstance(m, MagicMock) for m in results])
 
 
@@ -356,7 +356,7 @@ def test_get_subscribed_subreddits(downloader_mock: MagicMock, authenticated_red
     downloader_mock.sort_filter = RedditTypes.SortType.HOT
     results = RedditConnector.get_subreddits(downloader_mock)
     assert all([isinstance(s, praw.models.ListingGenerator) for s in results])
-    assert len(results) > 0
+    assert results
 
 
 @pytest.mark.parametrize(('test_name', 'expected'), (
