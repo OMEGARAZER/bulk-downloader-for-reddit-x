@@ -6,7 +6,7 @@ import sys
 import unittest.mock
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Type
 from unittest.mock import MagicMock
 
 import praw.models
@@ -33,7 +33,7 @@ def submission() -> MagicMock:
     return test
 
 
-def do_test_string_equality(result: [Path, str], expected: str) -> bool:
+def do_test_string_equality(result: Path | str, expected: str) -> bool:
     if platform.system() == 'Windows':
         expected = FileNameFormatter._format_for_windows(expected)
     return str(result).endswith(expected)
@@ -411,7 +411,7 @@ def test_windows_max_path(tmp_path: Path):
 ))
 def test_name_submission(
         test_reddit_id: str,
-        test_downloader: type(BaseDownloader),
+        test_downloader: Type[BaseDownloader],
         expected_names: set[str],
         reddit_instance: praw.reddit.Reddit,
 ):
