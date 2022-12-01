@@ -12,10 +12,16 @@ Included in this README are a few example Bash tricks to get certain behaviour. 
 
 ## Installation
 
-*Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it as such:
+*Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it via pip with:
 
 ```bash
 python3 -m pip install bdfr --upgrade
+```
+
+or via [pipx](https://pypa.github.io/pipx) with:
+
+```bash
+python3 -m pipx install bdfr --upgrade
 ```
 
 **To update BDFR**, run the above command again after the installation.
@@ -42,47 +48,47 @@ Note that the `clone` command is not a true, failthful clone of Reddit. It simpl
 After installation, run the program from any directory as shown below:
 
 ```bash
-python3 -m bdfr download
+bdfr download
 ```
 
 ```bash
-python3 -m bdfr archive
+bdfr archive
 ```
 
 ```bash
-python3 -m bdfr clone
+bdfr clone
 ```
 
 However, these commands are not enough. You should chain parameters in [Options](#options) according to your use case. Don't forget that some parameters can be provided multiple times. Some quick reference commands are:
 
 ```bash
-python3 -m bdfr download ./path/to/output --subreddit Python -L 10
+bdfr download ./path/to/output --subreddit Python -L 10
 ```
 
 ```bash
-python3 -m bdfr download ./path/to/output --user reddituser --submitted -L 100
+bdfr download ./path/to/output --user reddituser --submitted -L 100
 ```
 
 ```bash
-python3 -m bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
+bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
 ```
 
 ```bash
-python3 -m bdfr download ./path/to/output --subreddit 'Python, all, mindustry' -L 10 --make-hard-links
+bdfr download ./path/to/output --subreddit 'Python, all, mindustry' -L 10 --make-hard-links
 ```
 
 ```bash
-python3 -m bdfr archive ./path/to/output --user reddituser --submitted --all-comments --comment-context
+bdfr archive ./path/to/output --user reddituser --submitted --all-comments --comment-context
 ```
 
 ```bash
-python3 -m bdfr archive ./path/to/output --subreddit all --format yaml -L 500 --folder-scheme ''
+bdfr archive ./path/to/output --subreddit all --format yaml -L 500 --folder-scheme ''
 ```
 
 Alternatively, you can pass options through a YAML file.
 
 ```bash
-python3 -m bdfr download ./path/to/output --opts my_opts.yaml
+bdfr download ./path/to/output --opts my_opts.yaml
 ```
 
 For example, running it with the following file
@@ -100,7 +106,7 @@ subreddit:
 would be equilavent to (take note that in YAML there is `file_scheme` instead of `file-scheme`):
 
 ```bash
-python3 -m bdfr download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
+bdfr download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
 ```
 
 In case when the same option is specified both in the YAML file and in as a command line argument, the command line argument takes prs
@@ -277,7 +283,7 @@ Alternatively, you can use the command-line [xargs](https://en.wikipedia.org/wik
 For a list of users `users.txt` (one user per line), type:
 
 ```bash
-cat users.txt | xargs -L 1 echo --user | xargs -L 50 python3 -m bdfr download <ARGS>
+cat users.txt | xargs -L 1 echo --user | xargs -L 50 bdfr download <ARGS>
 ```
 
 The part `-L 50` is to make sure that the character limit for a single line isn't exceeded, but may not be necessary. This can also be used to load subreddits from a file, simply exchange `--user` with `--subreddit` and so on.

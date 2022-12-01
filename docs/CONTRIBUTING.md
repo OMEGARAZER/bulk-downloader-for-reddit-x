@@ -55,7 +55,7 @@ python3 -m pip install -e .
 Then, you can run the program from anywhere in your disk as such:
 
 ```bash
-$ python3 -m bdfr
+bdfr
 ```
 
 ## Style Guide
