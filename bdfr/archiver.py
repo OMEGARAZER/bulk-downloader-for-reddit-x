@@ -65,7 +65,7 @@ class Archiver(RedditConnector):
         return results
 
     @staticmethod
-    def _pull_lever_entry_factory(praw_item: praw.models.Submission | praw.models.Comment) -> BaseArchiveEntry:
+    def _pull_lever_entry_factory(praw_item: (praw.models.Submission, praw.models.Comment)) -> BaseArchiveEntry:
         if isinstance(praw_item, praw.models.Submission):
             return SubmissionArchiveEntry(praw_item)
         elif isinstance(praw_item, praw.models.Comment):
@@ -73,7 +73,7 @@ class Archiver(RedditConnector):
         else:
             raise ArchiverError(f'Factory failed to classify item of type {type(praw_item).__name__}')
 
-    def write_entry(self, praw_item: praw.models.Submission | praw.models.Comment):
+    def write_entry(self, praw_item: (praw.models.Submission, praw.models.Comment)):
         if self.args.comment_context and isinstance(praw_item, praw.models.Comment):
             logger.debug(f'Converting comment {praw_item.id} to submission {praw_item.submission.id}')
             praw_item = praw_item.submission

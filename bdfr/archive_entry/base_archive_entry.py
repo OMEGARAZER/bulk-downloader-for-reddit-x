@@ -7,7 +7,7 @@ from praw.models import Comment, Submission
 
 
 class BaseArchiveEntry(ABC):
-    def __init__(self, source: Comment | Submission):
+    def __init__(self, source: (Comment, Submission)):
         self.source = source
         self.post_details: dict = {}
 
