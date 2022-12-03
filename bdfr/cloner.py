@@ -23,4 +23,4 @@ class RedditCloner(RedditDownloader, Archiver):
                     self._download_submission(submission)
                     self.write_entry(submission)
                 except prawcore.PrawcoreException as e:
-                    logger.error(f'Submission {submission.id} failed to be cloned due to a PRAW exception: {e}')
+                    logger.error(f"Submission {submission.id} failed to be cloned due to a PRAW exception: {e}")

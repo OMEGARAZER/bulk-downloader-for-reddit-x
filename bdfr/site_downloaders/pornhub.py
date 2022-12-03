@@ -20,11 +20,11 @@ class PornHub(Youtube):
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         ytdl_options = {
-            'format': 'best',
-            'nooverwrites': True,
+            "format": "best",
+            "nooverwrites": True,
         }
         if video_attributes := super().get_video_attributes(self.post.url):
-            extension = video_attributes['ext']
+            extension = video_attributes["ext"]
         else:
             raise SiteDownloaderError()
 

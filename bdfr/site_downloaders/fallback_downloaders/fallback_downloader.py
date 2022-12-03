@@ -7,7 +7,6 @@ from bdfr.site_downloaders.base_downloader import BaseDownloader
 
 
 class BaseFallbackDownloader(BaseDownloader, ABC):
-
     @staticmethod
     @abstractmethod
     def can_handle_link(url: str) -> bool:
