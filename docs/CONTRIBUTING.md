@@ -26,13 +26,13 @@ Before creating a pull request (PR), check out [ARCHITECTURE](ARCHITECTURE.md) f
 
 Once you have done both of these, the below list shows the path that should be followed when writing a PR.
 
-  1. If an issue does not already exist, open one that will relate to the PR.
-  2. Ensure that any changes fit into the architecture specified above.
-  3. Ensure that you have written tests that cover the new code.
-  4. Ensure that no existing tests fail, unless there is a good reason for them to do so.
-  5. If needed, update any documentation with changes.
-  6. Open a pull request that references the relevant issue.
-  7. Expect changes or suggestions and heed the Code of Conduct. We're all volunteers here.
+1. If an issue does not already exist, open one that will relate to the PR.
+2. Ensure that any changes fit into the architecture specified above.
+3. Ensure that you have written tests that cover the new code.
+4. Ensure that no existing tests fail, unless there is a good reason for them to do so.
+5. If needed, update any documentation with changes.
+6. Open a pull request that references the relevant issue.
+7. Expect changes or suggestions and heed the Code of Conduct. We're all volunteers here.
 
 Someone will review your pull request as soon as possible, but remember that all maintainers are volunteers and this won't happen immediately. Once it is approved, congratulations! Your code is now part of the BDFR.
 
@@ -87,14 +87,14 @@ When submitting a PR, it is required that you run **all** possible tests to ensu
 This is accomplished with marks, a system that pytest uses to categorise tests. There are currently the current marks in use in the BDFR test suite.
 
 - `slow`
-  - This marks a test that may take a long time to complete
-  - Usually marks a test that downloads many submissions or downloads a particularly large resource
+    - This marks a test that may take a long time to complete
+    - Usually marks a test that downloads many submissions or downloads a particularly large resource
 - `online`
-  - This marks a test that requires an internet connection and uses online resources
+    - This marks a test that requires an internet connection and uses online resources
 - `reddit`
-  - This marks a test that accesses online Reddit specifically
+    - This marks a test that accesses online Reddit specifically
 - `authenticated`
-  - This marks a test that requires a test configuration file with a valid OAuth2 token
+    - This marks a test that requires a test configuration file with a valid OAuth2 token
 
 These tests can be run either all at once, or excluding certain marks. The tests that require online resources, such as those marked `reddit` or `online`, will naturally require more time to run than tests that are entirely offline. To run tests, you must be in the root directory of the project and can use the following command.
 
