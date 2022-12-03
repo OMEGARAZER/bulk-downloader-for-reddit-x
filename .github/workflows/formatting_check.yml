@@ -5,8 +5,9 @@ jobs:
   formatting_check:
     runs-on: ubuntu-latest
     steps:
+      - name: Install dependencies
+        run: gem install mdl
       - uses: actions/checkout@v3
-      - uses: actionshub/markdownlint@main
       - uses: paolorechia/pox@v1.0.1
         with:
           tox_env: "format_check"
