@@ -1,6 +1,6 @@
 name: formatting_check
 run-name: Check code formatting
-on: pull_request
+on: [push, pull_request]
 jobs:
   formatting_check:
     runs-on: ubuntu-latest
