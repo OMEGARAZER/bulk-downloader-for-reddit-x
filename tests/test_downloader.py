@@ -167,9 +167,7 @@ def test_download_submission_file_exists(
     folder_contents = list(tmp_path.iterdir())
     output = capsys.readouterr()
     assert len(folder_contents) == 1
-    assert (
-        "Arneeman_Metagaming isn't always a bad thing_m1hqw6.png" " from submission m1hqw6 already exists" in output.out
-    )
+    assert "Arneeman_Metagaming isn't always a bad thing_m1hqw6.png from submission m1hqw6 already exists" in output.out
 
 
 @pytest.mark.online
