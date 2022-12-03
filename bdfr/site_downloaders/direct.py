@@ -4,8 +4,8 @@ from typing import Optional
 
 from praw.models import Submission
 
-from bdfr.site_authenticator import SiteAuthenticator
 from bdfr.resource import Resource
+from bdfr.site_authenticator import SiteAuthenticator
 from bdfr.site_downloaders.base_downloader import BaseDownloader
 
 

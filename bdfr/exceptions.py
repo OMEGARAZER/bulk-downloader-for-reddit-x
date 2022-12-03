@@ -1,5 +1,6 @@
 #!/usr/bin/env
 
+
 class BulkDownloaderException(Exception):
     pass
 

@@ -22,18 +22,18 @@ class VReddit(Youtube):
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         ytdl_options = {
-            'playlistend': 1,
-            'nooverwrites': True,
+            "playlistend": 1,
+            "nooverwrites": True,
         }
         download_function = self._download_video(ytdl_options)
-        extension = self.get_video_attributes(self.post.url)['ext']
+        extension = self.get_video_attributes(self.post.url)["ext"]
         res = Resource(self.post, self.post.url, download_function, extension)
         return [res]
 
     @staticmethod
     def get_video_attributes(url: str) -> dict:
         result = VReddit.get_video_data(url)
-        if 'ext' in result:
+        if "ext" in result:
             return result
         else:
             try:
@@ -41,4 +41,4 @@ class VReddit(Youtube):
                 return result
             except Exception as e:
                 logger.exception(e)
-                raise NotADownloadableLinkError(f'Video info extraction failed for {url}')
+                raise NotADownloadableLinkError(f"Video info extraction failed for {url}")
