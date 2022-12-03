@@ -116,160 +116,160 @@ In case when the same option is specified both in the YAML file and in as a comm
 The following options are common between both the `archive` and `download` commands of the BDFR.
 
 - `directory`
-  - This is the directory to which the BDFR will download and place all files
+    - This is the directory to which the BDFR will download and place all files
 - `--authenticate`
-  - This flag will make the BDFR attempt to use an authenticated Reddit session
-  - See [Authentication](#authentication-and-security) for more details
+    - This flag will make the BDFR attempt to use an authenticated Reddit session
+    - See [Authentication](#authentication-and-security) for more details
 - `--config`
-  - If the path to a configuration file is supplied with this option, the BDFR will use the specified config
-  - See [Configuration Files](#configuration) for more details
+    - If the path to a configuration file is supplied with this option, the BDFR will use the specified config
+    - See [Configuration Files](#configuration) for more details
 - `--opts`
-  - Load options from a YAML file.
-  - Has higher prority than the global config file but lower than command-line arguments.
-  - See [opts_example.yaml](./opts_example.yaml) for an example file.
+    - Load options from a YAML file.
+    - Has higher prority than the global config file but lower than command-line arguments.
+    - See [opts_example.yaml](./opts_example.yaml) for an example file.
 - `--disable-module`
-  - Can be specified multiple times
-  - Disables certain modules from being used
-  - See [Disabling Modules](#disabling-modules) for more information and a list of module names
+    - Can be specified multiple times
+    - Disables certain modules from being used
+    - See [Disabling Modules](#disabling-modules) for more information and a list of module names
 - `--ignore-user`
-  - This will add a user to ignore
-  - Can be specified multiple times
+    - This will add a user to ignore
+    - Can be specified multiple times
 - `--include-id-file`
-  - This will add any submission with the IDs in the files provided
-  - Can be specified multiple times
-  - Format is one ID per line
+    - This will add any submission with the IDs in the files provided
+    - Can be specified multiple times
+    - Format is one ID per line
 - `--log`
-  - This allows one to specify the location of the logfile
-  - This must be done when running multiple instances of the BDFR, see [Multiple Instances](#multiple-instances) below
+    - This allows one to specify the location of the logfile
+    - This must be done when running multiple instances of the BDFR, see [Multiple Instances](#multiple-instances) below
 - `--saved`
-  - This option will make the BDFR use the supplied user's saved posts list as a download source
-  - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
+    - This option will make the BDFR use the supplied user's saved posts list as a download source
+    - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
 - `--search`
-  - This will apply the input search term to specific lists when scraping submissions
-  - A search term can only be applied when using the `--subreddit` and `--multireddit` flags
+    - This will apply the input search term to specific lists when scraping submissions
+    - A search term can only be applied when using the `--subreddit` and `--multireddit` flags
 - `--submitted`
-  - This will use a user's submissions as a source
-  - A user must be specified with `--user`
+    - This will use a user's submissions as a source
+    - A user must be specified with `--user`
 - `--upvoted`
-  - This will use a user's upvoted posts as a source of posts to scrape
-  - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
+    - This will use a user's upvoted posts as a source of posts to scrape
+    - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
 - `-L, --limit`
-  - This is the limit on the number of submissions retrieve
-  - Default is max possible
-  - Note that this limit applies to **each source individually** e.g. if a `--limit` of 10 and three subreddits are provided, then 30 total submissions will be scraped
-  - If it is not supplied, then the BDFR will default to the maximum allowed by Reddit, roughly 1000 posts. **We cannot bypass this.**
+    - This is the limit on the number of submissions retrieve
+    - Default is max possible
+    - Note that this limit applies to **each source individually** e.g. if a `--limit` of 10 and three subreddits are provided, then 30 total submissions will be scraped
+    - If it is not supplied, then the BDFR will default to the maximum allowed by Reddit, roughly 1000 posts. **We cannot bypass this.**
 - `-S, --sort`
-  - This is the sort type for each applicable submission source supplied to the BDFR
-  - This option does not apply to upvoted or saved posts when scraping from these sources
-  - The following options are available:
-    - `controversial`
-    - `hot` (default)
-    - `new`
-    - `relevance` (only available when using `--search`)
-    - `rising`
-    - `top`
+    - This is the sort type for each applicable submission source supplied to the BDFR
+    - This option does not apply to upvoted or saved posts when scraping from these sources
+    - The following options are available:
+        - `controversial`
+        - `hot` (default)
+        - `new`
+        - `relevance` (only available when using `--search`)
+        - `rising`
+        - `top`
 - `-l, --link`
-  - This is a direct link to a submission to download, either as a URL or an ID
-  - Can be specified multiple times
+    - This is a direct link to a submission to download, either as a URL or an ID
+    - Can be specified multiple times
 - `-m, --multireddit`
-  - This is the name of a multireddit to add as a source
-  - Can be specified multiple times
-    - This can be done by using `-m` multiple times
-    - Multireddits can also be used to provide CSV multireddits e.g. `-m 'chess, favourites'`
-  - The specified multireddits must all belong to the user specified with the `--user` option
+    - This is the name of a multireddit to add as a source
+    - Can be specified multiple times
+        - This can be done by using `-m` multiple times
+        - Multireddits can also be used to provide CSV multireddits e.g. `-m 'chess, favourites'`
+    - The specified multireddits must all belong to the user specified with the `--user` option
 - `-s, --subreddit`
-  - This adds a subreddit as a source
-  - Can be used mutliple times
-    - This can be done by using `-s` multiple times
-    - Subreddits can also be used to provide CSV subreddits e.g. `-m 'all, python, mindustry'`
+    - This adds a subreddit as a source
+    - Can be used mutliple times
+        - This can be done by using `-s` multiple times
+        - Subreddits can also be used to provide CSV subreddits e.g. `-m 'all, python, mindustry'`
 - `-t, --time`
-  - This is the time filter that will be applied to all applicable sources
-  - This option does not apply to upvoted or saved posts when scraping from these sources
-  - The following options are available:
-    - `all` (default)
-    - `hour`
-    - `day`
-    - `week`
-    - `month`
-    - `year`
-  - `--time-format`
-    - This specifies the format of the datetime string that replaces `{DATE}` in file and folder naming schemes
-    - See [Time Formatting Customisation](#time-formatting-customisation) for more details, and the formatting scheme
+    - This is the time filter that will be applied to all applicable sources
+    - This option does not apply to upvoted or saved posts when scraping from these sources
+    - The following options are available:
+        - `all` (default)
+        - `hour`
+        - `day`
+        - `week`
+        - `month`
+        - `year`
+    - `--time-format`
+        - This specifies the format of the datetime string that replaces `{DATE}` in file and folder naming schemes
+        - See [Time Formatting Customisation](#time-formatting-customisation) for more details, and the formatting scheme
 - `-u, --user`
-  - This specifies the user to scrape in concert with other options
-  - When using `--authenticate`, `--user me` can be used to refer to the authenticated user
-  - Can be specified multiple times for multiple users
-    - If downloading a multireddit, only one user can be specified
+    - This specifies the user to scrape in concert with other options
+    - When using `--authenticate`, `--user me` can be used to refer to the authenticated user
+    - Can be specified multiple times for multiple users
+        - If downloading a multireddit, only one user can be specified
 - `-v, --verbose`
-  - Increases the verbosity of the program
-  - Can be specified multiple times
+    - Increases the verbosity of the program
+    - Can be specified multiple times
 
 ### Downloader Options
 
 The following options apply only to the `download` command. This command downloads the files and resources linked to in the submission, or a text submission itself, to the disk in the specified directory.
 
 - `--make-hard-links`
-  - This flag will create hard links to an existing file when a duplicate is downloaded
-  - This will make the file appear in multiple directories while only taking the space of a single instance
+    - This flag will create hard links to an existing file when a duplicate is downloaded
+    - This will make the file appear in multiple directories while only taking the space of a single instance
 - `--max-wait-time`
-  - This option specifies the maximum wait time for downloading a resource
-  - The default is 120 seconds
-  - See [Rate Limiting](#rate-limiting) for details
+    - This option specifies the maximum wait time for downloading a resource
+    - The default is 120 seconds
+    - See [Rate Limiting](#rate-limiting) for details
 - `--no-dupes`
-  - This flag will not redownload files if they already exist somewhere in the root folder tree
-  - This is calculated by MD5 hash
+    - This flag will not redownload files if they already exist somewhere in the root folder tree
+    - This is calculated by MD5 hash
 - `--search-existing`
-  - This will make the BDFR compile the hashes for every file in `directory` and store them to remove duplicates if `--no-dupes` is also supplied
+    - This will make the BDFR compile the hashes for every file in `directory` and store them to remove duplicates if `--no-dupes` is also supplied
 - `--file-scheme`
-  - Sets the scheme for files
-  - Default is `{REDDITOR}_{TITLE}_{POSTID}`
-  - See [Folder and File Name Schemes](#folder-and-file-name-schemes) for more details
+    - Sets the scheme for files
+    - Default is `{REDDITOR}_{TITLE}_{POSTID}`
+    - See [Folder and File Name Schemes](#folder-and-file-name-schemes) for more details
 - `--folder-scheme`
-  - Sets the scheme for folders
-  - Default is `{SUBREDDIT}`
-  - See [Folder and File Name Schemes](#folder-and-file-name-schemes) for more details
+    - Sets the scheme for folders
+    - Default is `{SUBREDDIT}`
+    - See [Folder and File Name Schemes](#folder-and-file-name-schemes) for more details
 - `--exclude-id`
-  - This will skip the download of any submission with the ID provided
-  - Can be specified multiple times
+    - This will skip the download of any submission with the ID provided
+    - Can be specified multiple times
 - `--exclude-id-file`
-  - This will skip the download of any submission with any of the IDs in the files provided
-  - Can be specified multiple times
-  - Format is one ID per line
+    - This will skip the download of any submission with any of the IDs in the files provided
+    - Can be specified multiple times
+    - Format is one ID per line
 - `--skip-domain`
-  - This adds domains to the download filter i.e. submissions coming from these domains will not be downloaded
-  - Can be specified multiple times
-  - Domains must be supplied in the form `example.com` or `img.example.com`
+    - This adds domains to the download filter i.e. submissions coming from these domains will not be downloaded
+    - Can be specified multiple times
+    - Domains must be supplied in the form `example.com` or `img.example.com`
 - `--skip`
-  - This adds file types to the download filter i.e. submissions with one of the supplied file extensions will not be downloaded
-  - Can be specified multiple times
+    - This adds file types to the download filter i.e. submissions with one of the supplied file extensions will not be downloaded
+    - Can be specified multiple times
 - `--skip-subreddit`
-  - This skips all submissions from the specified subreddit
-  - Can be specified multiple times
-  - Also accepts CSV subreddit names
+    - This skips all submissions from the specified subreddit
+    - Can be specified multiple times
+    - Also accepts CSV subreddit names
 - `--min-score`
-  - This skips all submissions which have fewer than specified upvotes
+    - This skips all submissions which have fewer than specified upvotes
 - `--max-score`
-  - This skips all submissions which have more than specified upvotes
+    - This skips all submissions which have more than specified upvotes
 - `--min-score-ratio`
-  - This skips all submissions which have lower than specified upvote ratio
+    - This skips all submissions which have lower than specified upvote ratio
 - `--max-score-ratio`
-  - This skips all submissions which have higher than specified upvote ratio
+    - This skips all submissions which have higher than specified upvote ratio
 
 ### Archiver Options
 
 The following options are for the `archive` command specifically.
 
 - `--all-comments`
-  - When combined with the `--user` option, this will download all the user's comments
+    - When combined with the `--user` option, this will download all the user's comments
 - `-f, --format`
-  - This specifies the format of the data file saved to disk
-  - The following formats are available:
-    - `json` (default)
-    - `xml`
-    - `yaml`
+    - This specifies the format of the data file saved to disk
+    - The following formats are available:
+        - `json` (default)
+        - `xml`
+        - `yaml`
 - `--comment-context`
-  - This option will, instead of downloading an individual comment, download the submission that comment is a part of
-  - May result in a longer run time as it retrieves much more data
+    - This option will, instead of downloading an individual comment, download the submission that comment is a part of
+    - May result in a longer run time as it retrieves much more data
 
 ### Cloner Options
 
@@ -426,7 +426,7 @@ The logfiles that the BDFR outputs are consistent and quite detailed and in a fo
 - Redgifs
 - Vidble
 - YouTube
-  - Any source supported by [YT-DLP](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) should be compatable
+    - Any source supported by [YT-DLP](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) should be compatable
 
 ## Contributing
 
