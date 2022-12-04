@@ -35,7 +35,7 @@ class Archiver(RedditConnector):
                     ):
                         logger.debug(
                             f"Submission {submission.id} in {submission.subreddit.display_name} skipped"
-                            f' due to {submission.author.name if submission.author else "DELETED"} being an ignored user'
+                            f" due to {submission.author.name if submission.author else 'DELETED'} being an ignored user"
                         )
                         continue
                     if submission.id in self.excluded_submission_ids:
