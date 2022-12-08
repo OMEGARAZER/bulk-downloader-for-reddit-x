@@ -58,23 +58,36 @@ Then, you can run the program from anywhere in your disk as such:
 bdfr
 ```
 
-## Style Guide
+There are additional Python packages that are required to develop the BDFR. These can be installed with the following command:
 
-The BDFR must conform to PEP8 standard wherever there is Python code, with one exception. Line lengths may extend to 120 characters, but all other PEP8 standards must be followed.
-
-It's easy to format your code without any manual work via a variety of tools. Autopep8 is a good one, and can be used with `autopep8 --max-line-length 120` which will format the code according to the style in use with the BDFR.
-
-Hanging brackets are preferred when there are many items, items that otherwise go over the 120 character line limit, or when doing so would increase readability. It is also preferred when there might be many commits altering the list, such as with the parameter lists for tests. A hanging comma is also required in such cases. An example of this is below:
-
-```python
-test = [
-    'test 1',
-    'test 2',
-    'test 3',
-]
+```bash
+python3 -m pip install -r dev-requirements.txt
 ```
 
-Note that the last bracket is on its own line, and that the first bracket has a new line before the first term. Also note that there is a comma after the last term.
+### Tools
+
+The BDFR project uses several tools to manage the code of the project. These include:
+
+- [black](https://github.com/psf/black)
+- [isort](https://github.com/PyCQA/isort)
+- [markdownlint (mdl)](https://github.com/markdownlint/markdownlint)
+- [tox](https://tox.wiki/en/latest/)
+- [pre-commit](https://github.com/pre-commit/pre-commit)
+
+The first three tools are formatters. These change the code to the standards expected for the BDFR project. The configuration details for these tools are contained in the [pyproject.toml](../pyproject.toml) file for the project.
+
+The tool `tox` is used to run tests and tools on demand and has the following environments:
+
+- `format`
+- `format_check`
+
+The tool `pre-commit` is optional, and runs the three formatting tools automatically when a commit is made. This is **highly recommended** to ensure that all code submitted for this project is formatted acceptably. Note that any PR that does not follow the formatting guide will not be accepted. For information on how to use pre-commit to avoid this, see [the pre-commit documentation](https://pre-commit.com/).
+
+## Style Guide
+
+The BDFR uses the Black formatting standard and enforces this with the tool by the same name. Additionally, the tool isort is used as well to format imports.
+
+See [Preparing the Environment for Development](#preparing-the-environment-for-development) for how to setup these tools to run automatically.
 
 ## Tests
 
