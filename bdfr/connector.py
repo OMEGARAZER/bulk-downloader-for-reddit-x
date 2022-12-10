@@ -13,6 +13,7 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
+from time import sleep
 from typing import Callable, Iterator
 
 import appdirs
@@ -353,26 +354,31 @@ class RedditConnector(metaclass=ABCMeta):
             generators = []
             for user in self.args.user:
                 try:
-                    self.check_user_existence(user)
-                except errors.BulkDownloaderException as e:
-                    logger.error(e)
-                    continue
-                if self.args.submitted:
-                    logger.debug(f"Retrieving submitted posts of user {self.args.user}")
-                    generators.append(
-                        self.create_filtered_listing_generator(
-                            self.reddit_instance.redditor(user).submissions,
+                    try:
+                        self.check_user_existence(user)
+                    except errors.BulkDownloaderException as e:
+                        logger.error(e)
+                        continue
+                    if self.args.submitted:
+                        logger.debug(f"Retrieving submitted posts of user {user}")
+                        generators.append(
+                            self.create_filtered_listing_generator(
+                                self.reddit_instance.redditor(user).submissions,
+                            )
                         )
-                    )
-                if not self.authenticated and any((self.args.upvoted, self.args.saved)):
-                    logger.warning("Accessing user lists requires authentication")
-                else:
-                    if self.args.upvoted:
-                        logger.debug(f"Retrieving upvoted posts of user {self.args.user}")
-                        generators.append(self.reddit_instance.redditor(user).upvoted(limit=self.args.limit))
-                    if self.args.saved:
-                        logger.debug(f"Retrieving saved posts of user {self.args.user}")
-                        generators.append(self.reddit_instance.redditor(user).saved(limit=self.args.limit))
+                    if not self.authenticated and any((self.args.upvoted, self.args.saved)):
+                        logger.warning("Accessing user lists requires authentication")
+                    else:
+                        if self.args.upvoted:
+                            logger.debug(f"Retrieving upvoted posts of user {user}")
+                            generators.append(self.reddit_instance.redditor(user).upvoted(limit=self.args.limit))
+                        if self.args.saved:
+                            logger.debug(f"Retrieving saved posts of user {user}")
+                            generators.append(self.reddit_instance.redditor(user).saved(limit=self.args.limit))
+                except prawcore.PrawcoreException as e:
+                    logger.error(f"User {user} failed to be retrieved due to a PRAW exception: {e}")
+                    logger.debug("Waiting 60 seconds to continue")
+                    sleep(60)
             return generators
         else:
             return []

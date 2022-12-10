@@ -8,6 +8,7 @@ import time
 from datetime import datetime
 from multiprocessing import Pool
 from pathlib import Path
+from time import sleep
 
 import praw
 import praw.exceptions
@@ -42,11 +43,16 @@ class RedditDownloader(RedditConnector):
 
     def download(self):
         for generator in self.reddit_lists:
-            for submission in generator:
-                try:
-                    self._download_submission(submission)
-                except prawcore.PrawcoreException as e:
-                    logger.error(f"Submission {submission.id} failed to download due to a PRAW exception: {e}")
+            try:
+                for submission in generator:
+                    try:
+                        self._download_submission(submission)
+                    except prawcore.PrawcoreException as e:
+                        logger.error(f"Submission {submission.id} failed to download due to a PRAW exception: {e}")
+            except prawcore.PrawcoreException as e:
+                logger.error(f"The submission after {submission.id} failed to download due to a PRAW exception: {e}")
+                logger.debug("Waiting 60 seconds to continue")
+                sleep(60)
 
     def _download_submission(self, submission: praw.models.Submission):
         if submission.id in self.excluded_submission_ids:
