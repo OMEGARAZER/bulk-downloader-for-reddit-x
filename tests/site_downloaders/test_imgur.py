@@ -170,6 +170,10 @@ def test_imgur_extension_validation_bad(test_extension: str):
             "http://i.imgur.com/s9uXxlq.jpg?5.jpg",
             ("338de3c23ee21af056b3a7c154e2478f",),
         ),
+        (
+            "https://i.imgur.com/2TtN68l_d.webp",
+            ("6569ab9ad9fa68d93f6b408f112dd741",),
+        ),
     ),
 )
 def test_find_resources(test_url: str, expected_hashes: list[str]):
