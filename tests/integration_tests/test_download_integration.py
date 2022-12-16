@@ -3,7 +3,9 @@
 
 import shutil
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
+import prawcore
 import pytest
 from click.testing import CliRunner
 
@@ -396,3 +398,30 @@ def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp
     result = runner.invoke(cli, test_args)
     assert result.exit_code == 0
     assert ("filtered due to score" in result.output) == was_filtered
+
+
+@pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.parametrize(
+    ("test_args", "response"),
+    (
+        (
+            ["--user", "nasa", "--submitted"],
+            502,
+        ),
+        (
+            ["--user", "nasa", "--submitted"],
+            504,
+        ),
+    ),
+)
+def test_user_serv_fail(test_args: list[str], response: int, tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_download_runner(test_args, tmp_path)
+    with patch("bdfr.connector.sleep", return_value=None):
+        with patch(
+            "bdfr.connector.RedditConnector.check_user_existence",
+            side_effect=prawcore.exceptions.ResponseException(MagicMock(status_code=response)),
+        ):
+            result = runner.invoke(cli, test_args)
+            assert result.exit_code == 0
+            assert f"received {response} HTTP response" in result.output

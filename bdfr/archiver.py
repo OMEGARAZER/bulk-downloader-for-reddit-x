@@ -4,6 +4,7 @@
 import json
 import logging
 import re
+from time import sleep
 from typing import Iterator, Union
 
 import dict2xml
@@ -28,23 +29,28 @@ class Archiver(RedditConnector):
 
     def download(self):
         for generator in self.reddit_lists:
-            for submission in generator:
-                try:
-                    if (submission.author and submission.author.name in self.args.ignore_user) or (
-                        submission.author is None and "DELETED" in self.args.ignore_user
-                    ):
-                        logger.debug(
-                            f"Submission {submission.id} in {submission.subreddit.display_name} skipped"
-                            f" due to {submission.author.name if submission.author else 'DELETED'} being an ignored user"
-                        )
-                        continue
-                    if submission.id in self.excluded_submission_ids:
-                        logger.debug(f"Object {submission.id} in exclusion list, skipping")
-                        continue
-                    logger.debug(f"Attempting to archive submission {submission.id}")
-                    self.write_entry(submission)
-                except prawcore.PrawcoreException as e:
-                    logger.error(f"Submission {submission.id} failed to be archived due to a PRAW exception: {e}")
+            try:
+                for submission in generator:
+                    try:
+                        if (submission.author and submission.author.name in self.args.ignore_user) or (
+                            submission.author is None and "DELETED" in self.args.ignore_user
+                        ):
+                            logger.debug(
+                                f"Submission {submission.id} in {submission.subreddit.display_name} skipped due to"
+                                f" {submission.author.name if submission.author else 'DELETED'} being an ignored user"
+                            )
+                            continue
+                        if submission.id in self.excluded_submission_ids:
+                            logger.debug(f"Object {submission.id} in exclusion list, skipping")
+                            continue
+                        logger.debug(f"Attempting to archive submission {submission.id}")
+                        self.write_entry(submission)
+                    except prawcore.PrawcoreException as e:
+                        logger.error(f"Submission {submission.id} failed to be archived due to a PRAW exception: {e}")
+            except prawcore.PrawcoreException as e:
+                logger.error(f"The submission after {submission.id} failed to download due to a PRAW exception: {e}")
+                logger.debug("Waiting 60 seconds to continue")
+                sleep(60)
 
     def get_submissions_from_link(self) -> list[list[praw.models.Submission]]:
         supplied_submissions = []
