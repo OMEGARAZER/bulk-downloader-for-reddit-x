@@ -7,6 +7,7 @@ import click
 
 from bdfr.archiver import Archiver
 from bdfr.cloner import RedditCloner
+from bdfr.completion import Completion
 from bdfr.configuration import Configuration
 from bdfr.downloader import RedditDownloader
 
@@ -74,15 +75,19 @@ def _add_options(opts: list):
 
 
 @click.group()
+@click.help_option("-h", "--help")
 def cli():
+    """BDFR is used to download and archive content from Reddit."""
     pass
 
 
 @cli.command("download")
 @_add_options(_common_options)
 @_add_options(_downloader_options)
+@click.help_option("-h", "--help")
 @click.pass_context
 def cli_download(context: click.Context, **_):
+    """Used to download content posted to Reddit."""
     config = Configuration()
     config.process_click_arguments(context)
     setup_logging(config.verbose)
@@ -99,8 +104,10 @@ def cli_download(context: click.Context, **_):
 @cli.command("archive")
 @_add_options(_common_options)
 @_add_options(_archiver_options)
+@click.help_option("-h", "--help")
 @click.pass_context
 def cli_archive(context: click.Context, **_):
+    """Used to archive post data from Reddit."""
     config = Configuration()
     config.process_click_arguments(context)
     setup_logging(config.verbose)
@@ -118,8 +125,10 @@ def cli_archive(context: click.Context, **_):
 @_add_options(_common_options)
 @_add_options(_archiver_options)
 @_add_options(_downloader_options)
+@click.help_option("-h", "--help")
 @click.pass_context
 def cli_clone(context: click.Context, **_):
+    """Combines archive and download commands."""
     config = Configuration()
     config.process_click_arguments(context)
     setup_logging(config.verbose)
@@ -131,6 +140,30 @@ def cli_clone(context: click.Context, **_):
         raise
     else:
         logger.info("Program complete")
+
+
+@cli.command("completion")
+@click.argument("shell", type=click.Choice(("all", "bash", "fish", "zsh"), case_sensitive=False), default="all")
+@click.help_option("-h", "--help")
+@click.option("-u", "--uninstall", is_flag=True, default=False, help="Uninstall completion")
+def cli_completion(shell: str, uninstall: bool):
+    """\b
+    Installs shell completions for BDFR.
+    Options: all, bash, fish, zsh
+    Default: all"""
+    shell = shell.lower()
+    if sys.platform == "win32":
+        print("Completions are not currently supported on Windows.")
+        return
+    if uninstall and click.confirm(f"Would you like to uninstall {shell} completions for BDFR"):
+        Completion(shell).uninstall()
+        return
+    if shell not in ("all", "bash", "fish", "zsh"):
+        print(f"{shell} is not a valid option.")
+        print("Options: all, bash, fish, zsh")
+        return
+    if click.confirm(f"Would you like to install {shell} completions for BDFR"):
+        Completion(shell).install()
 
 
 def setup_logging(verbosity: int):

@@ -12,7 +12,9 @@ Included in this README are a few example Bash tricks to get certain behaviour. 
 
 ## Installation
 
-*Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement. Then, you can install it via pip with:
+*Bulk Downloader for Reddit* needs Python version 3.9 or above. Please update Python before installation to meet the requirement.
+
+Then, you can install it via pip with:
 
 ```bash
 python3 -m pip install bdfr --upgrade
@@ -21,10 +23,12 @@ python3 -m pip install bdfr --upgrade
 or via [pipx](https://pypa.github.io/pipx) with:
 
 ```bash
-python3 -m pipx install bdfr --upgrade
+python3 -m pipx install bdfr
 ```
 
-**To update BDFR**, run the above command again after the installation.
+**To update BDFR**, run the above command again for pip or `pipx upgrade bdfr` for pipx installations.
+
+**To install shell completions**, run `bdfr completions`
 
 ### AUR Package
 
