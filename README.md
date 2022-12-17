@@ -28,6 +28,8 @@ python3 -m pipx install bdfr
 
 **To update BDFR**, run the above command again for pip or `pipx upgrade bdfr` for pipx installations.
 
+**To check your version of BDFR**, run `bdfr --version`
+
 **To install shell completions**, run `bdfr completions`
 
 ### AUR Package

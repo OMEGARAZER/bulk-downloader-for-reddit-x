@@ -61,7 +61,7 @@ bdfr
 There are additional Python packages that are required to develop the BDFR. These can be installed with the following command:
 
 ```bash
-python3 -m pip install -r dev-requirements.txt
+python3 -m pip install -e .[dev]
 ```
 
 ### Tools

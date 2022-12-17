@@ -12,7 +12,7 @@ class Completion:
         self.shell = shell
         self.env = os.environ.copy()
         self.share_dir = appdirs.user_data_dir()
-        self.entry_points = ["bdfr"]
+        self.entry_points = ["bdfr", "bdfr-archive", "bdfr-clone", "bdfr-download"]
 
     def install(self):
         if self.shell in ("all", "bash"):

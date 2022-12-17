@@ -4,7 +4,9 @@ import logging
 import sys
 
 import click
+import requests
 
+from bdfr import __version__
 from bdfr.archiver import Archiver
 from bdfr.cloner import RedditCloner
 from bdfr.completion import Completion
@@ -74,8 +76,25 @@ def _add_options(opts: list):
     return wrap
 
 
+def _check_version(context, param, value):
+    if not value or context.resilient_parsing:
+        return
+    current = __version__
+    latest = requests.get("https://pypi.org/pypi/bdfr/json").json()["info"]["version"]
+    print(f"You are currently using v{current} the latest is v{latest}")
+    context.exit()
+
+
 @click.group()
 @click.help_option("-h", "--help")
+@click.option(
+    "--version",
+    is_flag=True,
+    is_eager=True,
+    expose_value=False,
+    callback=_check_version,
+    help="Check version and exit.",
+)
 def cli():
     """BDFR is used to download and archive content from Reddit."""
     pass
