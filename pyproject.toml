@@ -78,5 +78,4 @@ markers = [
     "reddit: tests require a connection to Reddit",
     "slow: test is slow to run",
     "authenticated: test requires an authenticated Reddit instance",
-    "testing: incomplete tests",
 ]
