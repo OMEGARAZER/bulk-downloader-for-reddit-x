@@ -76,14 +76,8 @@ def test_cli_scrape_soft_fail(test_args: list[str], tmp_path: Path):
 @pytest.mark.parametrize(
     ("test_args", "response"),
     (
-        (
-            ["--user", "nasa", "--submitted"],
-            502,
-        ),
-        (
-            ["--user", "nasa", "--submitted"],
-            504,
-        ),
+        (["--user", "nasa", "--submitted"], 502),
+        (["--user", "nasa", "--submitted"], 504),
     ),
 )
 def test_user_serv_fail(test_args: list[str], response: int, tmp_path: Path):
