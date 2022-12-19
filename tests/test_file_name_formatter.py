@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import platform
 import sys
@@ -46,7 +46,7 @@ def do_test_path_equality(result: Path, expected: str) -> bool:
         expected = Path(*expected)
     else:
         expected = Path(expected)
-    return str(result).endswith(str(expected))
+    return str(result).endswith(str(expected))  # noqa: FURB123
 
 
 @pytest.fixture(scope="session")
