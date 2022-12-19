@@ -29,6 +29,7 @@ from bdfr.site_downloaders.redgifs import Redgifs
                 "UnripeUnkemptWoodpecker-large.jpg",
             },
         ),
+        ("https://www.redgifs.com/watch/genuineprivateguillemot/", {"GenuinePrivateGuillemot.mp4"}),
     ),
 )
 def test_get_link(test_url: str, expected: set[str]):
