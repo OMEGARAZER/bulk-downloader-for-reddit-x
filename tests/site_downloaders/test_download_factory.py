@@ -65,6 +65,7 @@ def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownlo
         "https://www.google.com",
         "https://www.google.com/test",
         "https://www.google.com/test/",
+        "https://www.tiktok.com/@keriberry.420",
     ),
 )
 def test_factory_lever_bad(test_url: str):
