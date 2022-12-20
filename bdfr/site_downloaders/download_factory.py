@@ -30,7 +30,7 @@ class DownloadFactory:
             return Imgur
         elif re.match(r"(i\.)?(redgifs|gifdeliverynetwork)", sanitised_url):
             return Redgifs
-        elif re.match(r".*/.*\.\w{3,4}(\?[\w;&=]*)?$", sanitised_url) and not DownloadFactory.is_web_resource(
+        elif re.match(r".*/.*\.[a-zA-Z34]{3,4}(\?[\w;&=]*)?$", sanitised_url) and not DownloadFactory.is_web_resource(
             sanitised_url
         ):
             return Direct
