@@ -17,6 +17,9 @@ class Completion:
     def install(self):
         if self.shell in ("all", "bash"):
             comp_dir = self.share_dir + "/bash-completion/completions/"
+            if not os.path.exists(comp_dir):
+                print("Creating Bash completion directory.")
+                os.makedirs(comp_dir, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "bash_source"
                 with open(comp_dir + point, "w") as file:
@@ -24,18 +27,24 @@ class Completion:
                     print(f"Bash completion for {point} written to {comp_dir}{point}")
         if self.shell in ("all", "fish"):
             comp_dir = self.share_dir + "/fish/vendor_completions.d/"
+            if not os.path.exists(comp_dir):
+                print("Creating Fish completion directory.")
+                os.makedirs(comp_dir, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "fish_source"
-                with open(comp_dir + point, "w") as file:
+                with open(comp_dir + point + ".fish", "w") as file:
                     file.write(subprocess.run([point], env=self.env, capture_output=True, text=True).stdout)
-                    print(f"Fish completion for {point} written to {comp_dir}{point}")
+                    print(f"Fish completion for {point} written to {comp_dir}{point}.fish")
         if self.shell in ("all", "zsh"):
             comp_dir = self.share_dir + "/zsh/site-functions/"
+            if not os.path.exists(comp_dir):
+                print("Creating Zsh completion directory.")
+                os.makedirs(comp_dir, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "zsh_source"
-                with open(comp_dir + point, "w") as file:
+                with open(comp_dir + "_" + point, "w") as file:
                     file.write(subprocess.run([point], env=self.env, capture_output=True, text=True).stdout)
-                    print(f"Zsh completion for {point} written to {comp_dir}{point}")
+                    print(f"Zsh completion for {point} written to {comp_dir}_{point}")
 
     def uninstall(self):
         if self.shell in ("all", "bash"):
@@ -47,12 +56,12 @@ class Completion:
         if self.shell in ("all", "fish"):
             comp_dir = self.share_dir + "/fish/vendor_completions.d/"
             for point in self.entry_points:
-                if os.path.exists(comp_dir + point):
-                    os.remove(comp_dir + point)
-                    print(f"Fish completion for {point} removed from {comp_dir}{point}")
+                if os.path.exists(comp_dir + point + ".fish"):
+                    os.remove(comp_dir + point + ".fish")
+                    print(f"Fish completion for {point} removed from {comp_dir}{point}.fish")
         if self.shell in ("all", "zsh"):
             comp_dir = self.share_dir + "/zsh/site-functions/"
             for point in self.entry_points:
-                if os.path.exists(comp_dir + point):
-                    os.remove(comp_dir + point)
-                    print(f"Zsh completion for {point} removed from {comp_dir}{point}")
+                if os.path.exists(comp_dir + "_" + point):
+                    os.remove(comp_dir + "_" + point)
+                    print(f"Zsh completion for {point} removed from {comp_dir}_{point}")
