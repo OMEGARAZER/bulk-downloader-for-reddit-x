@@ -115,7 +115,9 @@ would be equilavent to (take note that in YAML there is `file_scheme` instead of
 bdfr download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
 ```
 
-In case when the same option is specified both in the YAML file and in as a command line argument, the command line argument takes prs
+Any option that can be specified multiple times should be formatted like subreddit is above.
+
+In case when the same option is specified both in the YAML file and in as a command line argument, the command line argument takes priority
 
 ## Options
 
