@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 import subprocess
+from os import environ
+from pathlib import Path
 
 import appdirs
 
@@ -10,16 +11,16 @@ import appdirs
 class Completion:
     def __init__(self, shell: str):
         self.shell = shell
-        self.env = os.environ.copy()
+        self.env = environ.copy()
         self.share_dir = appdirs.user_data_dir()
         self.entry_points = ["bdfr", "bdfr-archive", "bdfr-clone", "bdfr-download"]
 
     def install(self):
         if self.shell in ("all", "bash"):
             comp_dir = self.share_dir + "/bash-completion/completions/"
-            if not os.path.exists(comp_dir):
+            if not Path(comp_dir).exists():
                 print("Creating Bash completion directory.")
-                os.makedirs(comp_dir, exist_ok=True)
+                Path(comp_dir).mkdir(parents=True, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "bash_source"
                 with open(comp_dir + point, "w") as file:
@@ -27,9 +28,9 @@ class Completion:
                     print(f"Bash completion for {point} written to {comp_dir}{point}")
         if self.shell in ("all", "fish"):
             comp_dir = self.share_dir + "/fish/vendor_completions.d/"
-            if not os.path.exists(comp_dir):
+            if not Path(comp_dir).exists():
                 print("Creating Fish completion directory.")
-                os.makedirs(comp_dir, exist_ok=True)
+                Path(comp_dir).mkdir(parents=True, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "fish_source"
                 with open(comp_dir + point + ".fish", "w") as file:
@@ -37,9 +38,9 @@ class Completion:
                     print(f"Fish completion for {point} written to {comp_dir}{point}.fish")
         if self.shell in ("all", "zsh"):
             comp_dir = self.share_dir + "/zsh/site-functions/"
-            if not os.path.exists(comp_dir):
+            if not Path(comp_dir).exists():
                 print("Creating Zsh completion directory.")
-                os.makedirs(comp_dir, exist_ok=True)
+                Path(comp_dir).mkdir(parents=True, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "zsh_source"
                 with open(comp_dir + "_" + point, "w") as file:
@@ -50,18 +51,18 @@ class Completion:
         if self.shell in ("all", "bash"):
             comp_dir = self.share_dir + "/bash-completion/completions/"
             for point in self.entry_points:
-                if os.path.exists(comp_dir + point):
-                    os.remove(comp_dir + point)
+                if Path(comp_dir + point).exists():
+                    Path(comp_dir + point).unlink()
                     print(f"Bash completion for {point} removed from {comp_dir}{point}")
         if self.shell in ("all", "fish"):
             comp_dir = self.share_dir + "/fish/vendor_completions.d/"
             for point in self.entry_points:
-                if os.path.exists(comp_dir + point + ".fish"):
-                    os.remove(comp_dir + point + ".fish")
+                if Path(comp_dir + point + ".fish").exists():
+                    Path(comp_dir + point + ".fish").unlink()
                     print(f"Fish completion for {point} removed from {comp_dir}{point}.fish")
         if self.shell in ("all", "zsh"):
             comp_dir = self.share_dir + "/zsh/site-functions/"
             for point in self.entry_points:
-                if os.path.exists(comp_dir + "_" + point):
-                    os.remove(comp_dir + "_" + point)
+                if Path(comp_dir + "_" + point).exists():
+                    Path(comp_dir + "_" + point).unlink()
                     print(f"Zsh completion for {point} removed from {comp_dir}_{point}")
