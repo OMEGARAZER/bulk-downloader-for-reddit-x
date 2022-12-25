@@ -10,6 +10,19 @@ from bdfr.resource import Resource
 from bdfr.site_downloaders.redgifs import Redgifs
 
 
+@pytest.mark.parametrize(
+    ("test_url", "expected"),
+    (
+        ("https://redgifs.com/watch/frighteningvictorioussalamander", "frighteningvictorioussalamander"),
+        ("https://www.redgifs.com/watch/genuineprivateguillemot/", "genuineprivateguillemot"),
+        ("https://www.redgifs.com/watch/marriedcrushingcob?rel=u%3Akokiri.girl%3Bo%3Arecent", "marriedcrushingcob"),
+    ),
+)
+def test_get_id(test_url: str, expected: str):
+    result = Redgifs._get_id(test_url)
+    assert result == expected
+
+
 @pytest.mark.online
 @pytest.mark.parametrize(
     ("test_url", "expected"),
