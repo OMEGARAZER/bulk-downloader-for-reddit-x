@@ -67,7 +67,7 @@ class Imgur(BaseDownloader):
             image_dict = re.search(outer_regex, chosen_script).group(1)
             image_dict = re.search(inner_regex, image_dict).group(1)
         except AttributeError:
-            raise SiteDownloaderError(f"Could not find image dictionary in page source")
+            raise SiteDownloaderError("Could not find image dictionary in page source")
 
         try:
             image_dict = json.loads(image_dict)

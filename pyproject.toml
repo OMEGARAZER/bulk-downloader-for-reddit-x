@@ -62,6 +62,12 @@ bdfr-download = "bdfr.__main__:cli_download"
 [tool.black]
 line-length = 120
 
+[tool.flake8]
+exclude = ["scripts"]
+max-line-length = 120
+show-source = true
+statistics = true
+
 [tool.isort]
 profile = "black"
 py_version = 39
