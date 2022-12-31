@@ -69,12 +69,13 @@ python3 -m pip install -e .[dev]
 The BDFR project uses several tools to manage the code of the project. These include:
 
 - [black](https://github.com/psf/black)
+- [flake8](https://github.com/john-hen/Flake8-pyproject)
 - [isort](https://github.com/PyCQA/isort)
 - [markdownlint (mdl)](https://github.com/markdownlint/markdownlint)
 - [tox](https://tox.wiki/en/latest/)
 - [pre-commit](https://github.com/pre-commit/pre-commit)
 
-The first three tools are formatters. These change the code to the standards expected for the BDFR project. The configuration details for these tools are contained in the [pyproject.toml](../pyproject.toml) file for the project.
+The first four tools are formatters. These change the code to the standards expected for the BDFR project. The configuration details for these tools are contained in the [pyproject.toml](../pyproject.toml) file for the project.
 
 The tool `tox` is used to run tests and tools on demand and has the following environments:
 
