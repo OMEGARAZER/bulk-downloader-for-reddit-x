@@ -205,7 +205,7 @@ class RedditConnector(metaclass=ABCMeta):
         else:
             log_path = Path(self.args.log).resolve().expanduser()
             if not log_path.parent.exists():
-                raise errors.BulkDownloaderException(f"Designated location for logfile does not exist")
+                raise errors.BulkDownloaderException("Designated location for logfile does not exist")
         backup_count = self.cfg_parser.getint("DEFAULT", "backup_log_count", fallback=3)
         file_handler = logging.handlers.RotatingFileHandler(
             log_path,
@@ -323,7 +323,7 @@ class RedditConnector(metaclass=ABCMeta):
     def get_multireddits(self) -> list[Iterator]:
         if self.args.multireddit:
             if len(self.args.user) != 1:
-                logger.error(f"Only 1 user can be supplied when retrieving from multireddits")
+                logger.error("Only 1 user can be supplied when retrieving from multireddits")
                 return []
             out = []
             for multi in self.split_args_input(self.args.multireddit):
