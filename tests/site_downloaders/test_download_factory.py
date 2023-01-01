@@ -40,6 +40,7 @@ from bdfr.site_downloaders.youtube import Youtube
         ("https://youtube.com/watch?v=Gv8Wz74FjVA", Youtube),
         ("https://redgifs.com/watch/courageousimpeccablecanvasback", Redgifs),
         ("https://www.gifdeliverynetwork.com/repulsivefinishedandalusianhorse", Redgifs),
+        ("https://thumbs4.redgifs.com/DismalIgnorantDrongo-mobile.mp4", Redgifs),
         ("https://youtu.be/DevfjHOhuFc", Youtube),
         ("https://m.youtube.com/watch?v=kr-FeojxzUM", Youtube),
         ("https://dynasty-scans.com/system/images_images/000/017/819/original/80215103_p0.png?1612232781", Direct),
