@@ -167,6 +167,7 @@ def test_create_authenticator(downloader_mock: MagicMock):
         ("lvpf4l",),
         ("lvpf4l", "lvqnsn"),
         ("lvpf4l", "lvqnsn", "lvl9kd"),
+        ("1000000",),
     ),
 )
 def test_get_submissions_from_link(
