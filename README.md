@@ -197,6 +197,7 @@ The following options are common between both the `archive` and `download` comma
 - `-t, --time`
     - This is the time filter that will be applied to all applicable sources
     - This option does not apply to upvoted or saved posts when scraping from these sources
+    - This option only applies if sorting by top or controversial.  See --sort for more detail.
     - The following options are available:
         - `all` (default)
         - `hour`
