@@ -4,11 +4,15 @@ on:
   push:
     branches: [ master, development ]
     paths-ignore:
-      - "*.md"
+      - "**.md"
+      - ".markdown_style.rb"
+      - ".mdlrc"
   pull_request:
     branches: [ master, development ]
     paths-ignore:
-      - "*.md"
+      - "**.md"
+      - ".markdown_style.rb"
+      - ".mdlrc"
 
 jobs:
   test:
