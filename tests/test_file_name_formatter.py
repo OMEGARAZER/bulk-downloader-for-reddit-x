@@ -33,6 +33,10 @@ def submission() -> MagicMock:
     return test
 
 
+def check_valid_windows_path(test_string: str):
+    return test_string == FileNameFormatter._format_for_windows(test_string)
+
+
 def do_test_string_equality(result: Union[Path, str], expected: str) -> bool:
     if platform.system() == "Windows":
         expected = FileNameFormatter._format_for_windows(expected)
@@ -92,6 +96,15 @@ def test_check_format_string_validity(test_string: str, expected: bool):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.parametrize(
+    "restriction_scheme",
+    (
+        "windows",
+        "linux",
+        "bla",
+        None,
+    ),
+)
+@pytest.mark.parametrize(
     ("test_format_string", "expected"),
     (
         ("{SUBREDDIT}", "formula1"),
@@ -102,10 +115,17 @@ def test_check_format_string_validity(test_string: str, expected: bool):
         ("{REDDITOR}_{TITLE}_{POSTID}", "Kirsty-Blue_George Russel acknowledges the Twitter trend about him_w22m5l"),
     ),
 )
-def test_format_name_real(test_format_string: str, expected: str, reddit_submission: praw.models.Submission):
-    test_formatter = FileNameFormatter(test_format_string, "", "")
+def test_format_name_real(
+    test_format_string: str,
+    expected: str,
+    reddit_submission: praw.models.Submission,
+    restriction_scheme: Optional[str],
+):
+    test_formatter = FileNameFormatter(test_format_string, "", "", restriction_scheme)
     result = test_formatter._format_name(reddit_submission, test_format_string)
     assert do_test_string_equality(result, expected)
+    if restriction_scheme == "windows":
+        assert check_valid_windows_path(result)
 
 
 @pytest.mark.online

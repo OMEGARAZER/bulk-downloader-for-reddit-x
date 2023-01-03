@@ -28,12 +28,19 @@ class FileNameFormatter:
         "upvotes",
     )
 
-    def __init__(self, file_format_string: str, directory_format_string: str, time_format_string: str):
+    def __init__(
+        self,
+        file_format_string: str,
+        directory_format_string: str,
+        time_format_string: str,
+        restriction_scheme: Optional[str] = None,
+    ):
         if not self.validate_string(file_format_string):
             raise BulkDownloaderException(f'"{file_format_string}" is not a valid format string')
         self.file_format_string = file_format_string
         self.directory_format_string: list[str] = directory_format_string.split("/")
         self.time_format_string = time_format_string
+        self.restiction_scheme = restriction_scheme.lower().strip() if restriction_scheme else None
 
     def _format_name(self, submission: Union[Comment, Submission], format_string: str) -> str:
         if isinstance(submission, Submission):
@@ -52,9 +59,11 @@ class FileNameFormatter:
 
         result = result.replace("/", "")
 
-        if platform.system() == "Windows":
+        if self.restiction_scheme is None:
+            if platform.system() == "Windows":
+                result = FileNameFormatter._format_for_windows(result)
+        elif self.restiction_scheme == "windows":
             result = FileNameFormatter._format_for_windows(result)
-
         return result
 
     @staticmethod
