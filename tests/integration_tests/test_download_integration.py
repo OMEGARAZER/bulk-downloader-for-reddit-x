@@ -410,7 +410,7 @@ def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp
         (["--user", "nasa", "--submitted"], 504),
     ),
 )
-def test_user_serv_fail(test_args: list[str], response: int, tmp_path: Path):
+def test_cli_download_user_reddit_server_error(test_args: list[str], response: int, tmp_path: Path):
     runner = CliRunner()
     test_args = create_basic_args_for_download_runner(test_args, tmp_path)
     with patch("bdfr.connector.sleep", return_value=None):
