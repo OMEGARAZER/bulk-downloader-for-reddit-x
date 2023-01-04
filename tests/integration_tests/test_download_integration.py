@@ -421,3 +421,22 @@ def test_user_serv_fail(test_args: list[str], response: int, tmp_path: Path):
             result = runner.invoke(cli, test_args)
             assert result.exit_code == 0
             assert f"received {response} HTTP response" in result.output
+
+
+@pytest.mark.online
+@pytest.mark.reddit
+@pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.parametrize(
+    "test_args",
+    (
+        ["-l", "102vd5i", "--filename-restriction-scheme", "windows"],
+        ["-l", "m3hxzd", "--filename-restriction-scheme", "windows"],
+    ),
+)
+def test_cli_download_explicit_filename_restriction_scheme(test_args: list[str], tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_download_runner(test_args, tmp_path)
+    result = runner.invoke(cli, test_args)
+    assert result.exit_code == 0
+    assert "Downloaded submission" in result.output
+    assert "Forcing Windows-compatible filenames" in result.output

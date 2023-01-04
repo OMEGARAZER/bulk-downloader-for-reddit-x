@@ -111,6 +111,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.args.filename_restriction_scheme = self.cfg_parser.get(
                 "DEFAULT", "filename_restriction_scheme", fallback=None
             )
+            logger.debug(f"Setting filename restriction scheme to '{self.args.filename_restriction_scheme}'")
         # Update config on disk
         with open(self.config_location, "w") as file:
             self.cfg_parser.write(file)
@@ -399,7 +400,9 @@ class RedditConnector(metaclass=ABCMeta):
                 raise errors.BulkDownloaderException(f"User {name} is banned")
 
     def create_file_name_formatter(self) -> FileNameFormatter:
-        return FileNameFormatter(self.args.file_scheme, self.args.folder_scheme, self.args.time_format)
+        return FileNameFormatter(
+            self.args.file_scheme, self.args.folder_scheme, self.args.time_format, self.args.filename_restriction_scheme
+        )
 
     def create_time_filter(self) -> RedditTypes.TimeType:
         try:
