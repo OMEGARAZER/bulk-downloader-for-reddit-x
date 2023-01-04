@@ -400,6 +400,8 @@ def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp
     assert ("filtered due to score" in result.output) == was_filtered
 
 
+@pytest.mark.online
+@pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
 @pytest.mark.parametrize(
     ("test_args", "response"),
