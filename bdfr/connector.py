@@ -107,6 +107,10 @@ class RedditConnector(metaclass=ABCMeta):
             self.args.time_format = option
         if not self.args.disable_module:
             self.args.disable_module = [self.cfg_parser.get("DEFAULT", "disabled_modules", fallback="")]
+        if not self.args.filename_restriction_scheme:
+            self.args.filename_restriction_scheme = self.cfg_parser.get(
+                "DEFAULT", "filename_restriction_scheme", fallback=None
+            )
         # Update config on disk
         with open(self.config_location, "w") as file:
             self.cfg_parser.write(file)

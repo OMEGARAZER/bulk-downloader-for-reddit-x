@@ -23,6 +23,7 @@ class Configuration(Namespace):
         self.exclude_id = []
         self.exclude_id_file = []
         self.file_scheme: str = "{REDDITOR}_{TITLE}_{POSTID}"
+        self.filename_restriction_scheme = None
         self.folder_scheme: str = "{SUBREDDIT}"
         self.ignore_user = []
         self.include_id_file = []
