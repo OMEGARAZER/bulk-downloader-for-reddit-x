@@ -438,6 +438,10 @@ The best option would be to always download to a filesystem that is as permissio
 
 The logfiles that the BDFR outputs are consistent and quite detailed and in a format that is amenable to regex. To this end, a number of bash scripts have been [included here](./scripts). They show examples for how to extract successfully downloaded IDs, failed IDs, and more besides.
 
+## Unsaving posts
+
+Back in v1 there was an option to unsave posts from your account when downloading, but it was removed from the core BDFR on v2 as it is considered a read-only tool. However, for those missing this functionality, a script was created that uses the log files to achieve this. There is info on how to use this on the README.md file on the scripts subdirectory.
+
 ## List of currently supported sources
 
 - Direct links (links leading to a file)
