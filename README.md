@@ -143,6 +143,10 @@ The following options are common between both the `archive` and `download` comma
     - Can be specified multiple times
     - Disables certain modules from being used
     - See [Disabling Modules](#disabling-modules) for more information and a list of module names
+- `--filename-restriction-scheme`
+    - Can be: `windows`, `linux`
+    - Turns off the OS detection and specifies which system to use when making filenames
+    - See [Filesystem Restrictions](#filesystem-restrictions)
 - `--ignore-user`
     - This will add a user to ignore
     - Can be specified multiple times
@@ -372,6 +376,7 @@ The following keys are optional, and defaults will be used if they cannot be fou
 - `max_wait_time`
 - `time_format`
 - `disabled_modules`
+- `filename-restriction-scheme`
 
 All of these should not be modified unless you know what you're doing, as the default values will enable the BDFR to function just fine. A configuration is included in the BDFR when it is installed, and this will be placed in the configuration directory as the default.
 
@@ -420,6 +425,14 @@ Running these scenarios consecutively is done easily, like any single run. Confi
 Running scenarios concurrently (at the same time) however, is more complicated. The BDFR will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of the BDFR running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
 
 The way to fix this is to use the `--log` option to manually specify where the logfile is to be stored. If the given location is unique to each instance of the BDFR, then it will run fine.
+
+## Filesystem Restrictions
+
+Different filesystems have different restrictions for what files and directories can be named. Thesse are separated into two broad categories: Linux-based filesystems, which have very few restrictions; and Windows-based filesystems, which are much more restrictive in terms if forbidden characters and length of paths.
+
+During the normal course of operation, the BDFR detects what filesystem it is running on and formats any filenames and directories to conform to the rules that are expected of it. However, there are cases where this will fail. When running on a Linux-based machine, or another system where the home filesystem is permissive, and accessing a share or drive with a less permissive system, the BDFR will assume that the *home* filesystem's rules apply. For example, when downloading to a SAMBA share from Ubuntu, there will be errors as SAMBA is more restrictive than Ubuntu.
+
+The best option would be to always download to a filesystem that is as permission as possible, such as an NFS share or ext4 drive. However, when this is not possible, the BDFR allows for the restriction scheme to be manually specified at either the command-line or in the configuration file. At the command-line, this is done with `--filename-restriction-scheme windows`, or else an option by the same name in the configuration file.
 
 ## Manipulating Logfiles
 
