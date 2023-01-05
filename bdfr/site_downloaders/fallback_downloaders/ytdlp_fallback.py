@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 from typing import Optional
@@ -24,7 +24,7 @@ class YtdlpFallback(BaseFallbackDownloader, Youtube):
             self.post,
             self.post.url,
             super()._download_video({}),
-            super().get_video_attributes(self.post.url)['ext'],
+            super().get_video_attributes(self.post.url)["ext"],
         )
         return [out]
 

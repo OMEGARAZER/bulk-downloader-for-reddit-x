@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 
@@ -17,5 +17,5 @@ class CommentArchiveEntry(BaseArchiveEntry):
     def compile(self) -> dict:
         self.source.refresh()
         self.post_details = self._convert_comment_to_dict(self.source)
-        self.post_details['submission_title'] = self.source.submission.title
+        self.post_details["submission_title"] = self.source.submission.title
         return self.post_details

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import json
 import re
@@ -22,21 +23,23 @@ class Gfycat(Redgifs):
 
     @staticmethod
     def _get_link(url: str) -> set[str]:
-        gfycat_id = re.match(r'.*/(.*?)/?$', url).group(1)
-        url = 'https://gfycat.com/' + gfycat_id
+        gfycat_id = re.match(r".*/(.*?)/?$", url).group(1)
+        url = "https://gfycat.com/" + gfycat_id
 
         response = Gfycat.retrieve_url(url)
-        if re.search(r'(redgifs|gifdeliverynetwork)', response.url):
+        if re.search(r"(redgifs|gifdeliverynetwork)", response.url):
             url = url.lower()  # Fixes error with old gfycat/redgifs links
             return Redgifs._get_link(url)
 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        content = soup.find('script', attrs={'data-react-helmet': 'true', 'type': 'application/ld+json'})
+        soup = BeautifulSoup(response.text, "html.parser")
+        content = soup.find("script", attrs={"data-react-helmet": "true", "type": "application/ld+json"})
 
         try:
-            out = json.loads(content.contents[0])['video']['contentUrl']
+            out = json.loads(content.contents[0])["video"]["contentUrl"]
         except (IndexError, KeyError, AttributeError) as e:
-            raise SiteDownloaderError(f'Failed to download Gfycat link {url}: {e}')
+            raise SiteDownloaderError(f"Failed to download Gfycat link {url}: {e}")
         except json.JSONDecodeError as e:
-            raise SiteDownloaderError(f'Did not receive valid JSON data: {e}')
-        return {out,}
+            raise SiteDownloaderError(f"Did not receive valid JSON data: {e}")
+        return {
+            out,
+        }

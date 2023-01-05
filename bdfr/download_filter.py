@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 import re
@@ -33,10 +33,10 @@ class DownloadFilter:
     def _check_extension(self, resource_extension: str) -> bool:
         if not self.excluded_extensions:
             return True
-        combined_extensions = '|'.join(self.excluded_extensions)
-        pattern = re.compile(r'.*({})$'.format(combined_extensions))
+        combined_extensions = "|".join(self.excluded_extensions)
+        pattern = re.compile(r".*({})$".format(combined_extensions))
         if re.match(pattern, resource_extension):
-            logger.log(9, f'Url "{resource_extension}" matched with "{str(pattern)}"')
+            logger.log(9, f'Url "{resource_extension}" matched with "{pattern}"')
             return False
         else:
             return True
@@ -44,10 +44,10 @@ class DownloadFilter:
     def _check_domain(self, url: str) -> bool:
         if not self.excluded_domains:
             return True
-        combined_domains = '|'.join(self.excluded_domains)
-        pattern = re.compile(r'https?://.*({}).*'.format(combined_domains))
+        combined_domains = "|".join(self.excluded_domains)
+        pattern = re.compile(r"https?://.*({}).*".format(combined_domains))
         if re.match(pattern, url):
-            logger.log(9, f'Url "{url}" matched with "{str(pattern)}"')
+            logger.log(9, f'Url "{url}" matched with "{pattern}"')
             return False
         else:
             return True

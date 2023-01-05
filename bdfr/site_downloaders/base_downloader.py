@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 from abc import ABC, abstractmethod
@@ -31,7 +31,7 @@ class BaseDownloader(ABC):
             res = requests.get(url, cookies=cookies, headers=headers)
         except requests.exceptions.RequestException as e:
             logger.exception(e)
-            raise SiteDownloaderError(f'Failed to get page {url}')
+            raise SiteDownloaderError(f"Failed to get page {url}")
         if res.status_code != 200:
-            raise ResourceNotFound(f'Server responded with {res.status_code} to {url}')
+            raise ResourceNotFound(f"Server responded with {res.status_code} to {url}")
         return res

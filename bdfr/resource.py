@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import hashlib
 import logging
@@ -39,7 +39,7 @@ class Resource:
             try:
                 content = self.download_function(download_parameters)
             except requests.exceptions.ConnectionError as e:
-                raise BulkDownloaderException(f'Could not download resource: {e}')
+                raise BulkDownloaderException(f"Could not download resource: {e}")
             except BulkDownloaderException:
                 raise
             if content:
@@ -51,7 +51,7 @@ class Resource:
         self.hash = hashlib.md5(self.content)
 
     def _determine_extension(self) -> Optional[str]:
-        extension_pattern = re.compile(r'.*(\..{3,5})$')
+        extension_pattern = re.compile(r".*(\..{3,5})$")
         stripped_url = urllib.parse.urlsplit(self.url).path
         match = re.search(extension_pattern, stripped_url)
         if match:
@@ -59,27 +59,28 @@ class Resource:
 
     @staticmethod
     def http_download(url: str, download_parameters: dict) -> Optional[bytes]:
-        headers = download_parameters.get('headers')
+        headers = download_parameters.get("headers")
         current_wait_time = 60
-        if 'max_wait_time' in download_parameters:
-            max_wait_time = download_parameters['max_wait_time']
+        if "max_wait_time" in download_parameters:
+            max_wait_time = download_parameters["max_wait_time"]
         else:
             max_wait_time = 300
         while True:
             try:
                 response = requests.get(url, headers=headers)
-                if re.match(r'^2\d{2}', str(response.status_code)) and response.content:
+                if re.match(r"^2\d{2}", str(response.status_code)) and response.content:
                     return response.content
                 elif response.status_code in (408, 429):
-                    raise requests.exceptions.ConnectionError(f'Response code {response.status_code}')
+                    raise requests.exceptions.ConnectionError(f"Response code {response.status_code}")
                 else:
                     raise BulkDownloaderException(
-                        f'Unrecoverable error requesting resource: HTTP Code {response.status_code}')
+                        f"Unrecoverable error requesting resource: HTTP Code {response.status_code}"
+                    )
             except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
-                logger.warning(f'Error occured downloading from {url}, waiting {current_wait_time} seconds: {e}')
+                logger.warning(f"Error occured downloading from {url}, waiting {current_wait_time} seconds: {e}")
                 time.sleep(current_wait_time)
                 if current_wait_time < max_wait_time:
                     current_wait_time += 60
                 else:
-                    logger.error(f'Max wait time exceeded for resource at url {url}')
+                    logger.error(f"Max wait time exceeded for resource at url {url}")
                     raise

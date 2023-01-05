@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import os
 import re
@@ -18,7 +18,7 @@ from bdfr.downloader import RedditDownloader
 @pytest.fixture()
 def args() -> Configuration:
     args = Configuration()
-    args.time_format = 'ISO'
+    args.time_format = "ISO"
     return args
 
 
@@ -32,29 +32,32 @@ def downloader_mock(args: Configuration):
     return downloader_mock
 
 
-@pytest.mark.parametrize(('test_ids', 'test_excluded', 'expected_len'), (
-    (('aaaaaa',), (), 1),
-    (('aaaaaa',), ('aaaaaa',), 0),
-    ((), ('aaaaaa',), 0),
-    (('aaaaaa', 'bbbbbb'), ('aaaaaa',), 1),
-    (('aaaaaa', 'bbbbbb', 'cccccc'), ('aaaaaa',), 2),
-))
-@patch('bdfr.site_downloaders.download_factory.DownloadFactory.pull_lever')
+@pytest.mark.parametrize(
+    ("test_ids", "test_excluded", "expected_len"),
+    (
+        (("aaaaaa",), (), 1),
+        (("aaaaaa",), ("aaaaaa",), 0),
+        ((), ("aaaaaa",), 0),
+        (("aaaaaa", "bbbbbb"), ("aaaaaa",), 1),
+        (("aaaaaa", "bbbbbb", "cccccc"), ("aaaaaa",), 2),
+    ),
+)
+@patch("bdfr.site_downloaders.download_factory.DownloadFactory.pull_lever")
 def test_excluded_ids(
-        mock_function: MagicMock,
-        test_ids: tuple[str],
-        test_excluded: tuple[str],
-        expected_len: int,
-        downloader_mock: MagicMock,
+    mock_function: MagicMock,
+    test_ids: tuple[str],
+    test_excluded: tuple[str],
+    expected_len: int,
+    downloader_mock: MagicMock,
 ):
     downloader_mock.excluded_submission_ids = test_excluded
     mock_function.return_value = MagicMock()
-    mock_function.return_value.__name__ = 'test'
+    mock_function.return_value.__name__ = "test"
     test_submissions = []
     for test_id in test_ids:
         m = MagicMock()
         m.id = test_id
-        m.subreddit.display_name.return_value = 'https://www.example.com/'
+        m.subreddit.display_name.return_value = "https://www.example.com/"
         m.__class__ = praw.models.Submission
         test_submissions.append(m)
     downloader_mock.reddit_lists = [test_submissions]
@@ -65,32 +68,27 @@ def test_excluded_ids(
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize('test_submission_id', (
-    'm1hqw6',
-))
+@pytest.mark.parametrize("test_submission_id", ("m1hqw6",))
 def test_mark_hard_link(
-        test_submission_id: str,
-        downloader_mock: MagicMock,
-        tmp_path: Path,
-        reddit_instance: praw.Reddit
+    test_submission_id: str, downloader_mock: MagicMock, tmp_path: Path, reddit_instance: praw.Reddit
 ):
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.args.make_hard_links = True
     downloader_mock.download_directory = tmp_path
-    downloader_mock.args.folder_scheme = ''
-    downloader_mock.args.file_scheme = '{POSTID}'
+    downloader_mock.args.folder_scheme = ""
+    downloader_mock.args.file_scheme = "{POSTID}"
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
-    original = Path(tmp_path, f'{test_submission_id}.png')
+    original = Path(tmp_path, f"{test_submission_id}.png")
 
     RedditDownloader._download_submission(downloader_mock, submission)
     assert original.exists()
 
-    downloader_mock.args.file_scheme = 'test2_{POSTID}'
+    downloader_mock.args.file_scheme = "test2_{POSTID}"
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     RedditDownloader._download_submission(downloader_mock, submission)
     test_file_1_stats = original.stat()
-    test_file_2_inode = Path(tmp_path, f'test2_{test_submission_id}.png').stat().st_ino
+    test_file_2_inode = Path(tmp_path, f"test2_{test_submission_id}.png").stat().st_ino
 
     assert test_file_1_stats.st_nlink == 2
     assert test_file_1_stats.st_ino == test_file_2_inode
@@ -98,20 +96,18 @@ def test_mark_hard_link(
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'test_creation_date'), (
-    ('ndzz50', 1621204841.0),
-))
+@pytest.mark.parametrize(("test_submission_id", "test_creation_date"), (("ndzz50", 1621204841.0),))
 def test_file_creation_date(
-        test_submission_id: str,
-        test_creation_date: float,
-        downloader_mock: MagicMock,
-        tmp_path: Path,
-        reddit_instance: praw.Reddit
+    test_submission_id: str,
+    test_creation_date: float,
+    downloader_mock: MagicMock,
+    tmp_path: Path,
+    reddit_instance: praw.Reddit,
 ):
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_directory = tmp_path
-    downloader_mock.args.folder_scheme = ''
-    downloader_mock.args.file_scheme = '{POSTID}'
+    downloader_mock.args.folder_scheme = ""
+    downloader_mock.args.file_scheme = "{POSTID}"
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
 
@@ -123,27 +119,25 @@ def test_file_creation_date(
 
 
 def test_search_existing_files():
-    results = RedditDownloader.scan_existing_files(Path('.'))
+    results = RedditDownloader.scan_existing_files(Path("."))
     assert len(results.keys()) != 0
 
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'test_hash'), (
-    ('m1hqw6', 'a912af8905ae468e0121e9940f797ad7'),
-))
+@pytest.mark.parametrize(("test_submission_id", "test_hash"), (("m1hqw6", "a912af8905ae468e0121e9940f797ad7"),))
 def test_download_submission_hash_exists(
-        test_submission_id: str,
-        test_hash: str,
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path,
-        capsys: pytest.CaptureFixture
+    test_submission_id: str,
+    test_hash: str,
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
 ):
     setup_logging(3)
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.args.no_dupes = True
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
@@ -152,48 +146,43 @@ def test_download_submission_hash_exists(
     RedditDownloader._download_submission(downloader_mock, submission)
     folder_contents = list(tmp_path.iterdir())
     output = capsys.readouterr()
-    assert len(folder_contents) == 0
-    assert re.search(r'Resource hash .*? downloaded elsewhere', output.out)
+    assert not folder_contents
+    assert re.search(r"Resource hash .*? downloaded elsewhere", output.out)
 
 
 @pytest.mark.online
 @pytest.mark.reddit
 def test_download_submission_file_exists(
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path,
-        capsys: pytest.CaptureFixture
+    downloader_mock: MagicMock, reddit_instance: praw.Reddit, tmp_path: Path, capsys: pytest.CaptureFixture
 ):
     setup_logging(3)
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
-    submission = downloader_mock.reddit_instance.submission(id='m1hqw6')
-    Path(tmp_path, 'Arneeman_Metagaming isn\'t always a bad thing_m1hqw6.png').touch()
+    submission = downloader_mock.reddit_instance.submission(id="m1hqw6")
+    Path(tmp_path, "Arneeman_Metagaming isn't always a bad thing_m1hqw6.png").touch()
     RedditDownloader._download_submission(downloader_mock, submission)
     folder_contents = list(tmp_path.iterdir())
     output = capsys.readouterr()
     assert len(folder_contents) == 1
-    assert 'Arneeman_Metagaming isn\'t always a bad thing_m1hqw6.png'\
-           ' from submission m1hqw6 already exists' in output.out
+    assert "Arneeman_Metagaming isn't always a bad thing_m1hqw6.png from submission m1hqw6 already exists" in output.out
 
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'expected_files_len'), (
-    ('ljyy27', 4),
-))
+@pytest.mark.parametrize(("test_submission_id", "expected_files_len"), (("ljyy27", 4),))
 def test_download_submission(
-        test_submission_id: str,
-        expected_files_len: int,
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path):
+    test_submission_id: str,
+    expected_files_len: int,
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+):
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
@@ -204,103 +193,95 @@ def test_download_submission(
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'min_score'), (
-    ('ljyy27', 1),
-))
+@pytest.mark.parametrize(("test_submission_id", "min_score"), (("ljyy27", 1),))
 def test_download_submission_min_score_above(
-        test_submission_id: str,
-        min_score: int,
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path,
-        capsys: pytest.CaptureFixture,
+    test_submission_id: str,
+    min_score: int,
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
 ):
     setup_logging(3)
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.args.min_score = min_score
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
     RedditDownloader._download_submission(downloader_mock, submission)
     output = capsys.readouterr()
-    assert 'filtered due to score' not in output.out
+    assert "filtered due to score" not in output.out
 
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'min_score'), (
-    ('ljyy27', 25),
-))
+@pytest.mark.parametrize(("test_submission_id", "min_score"), (("ljyy27", 25),))
 def test_download_submission_min_score_below(
-        test_submission_id: str,
-        min_score: int,
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path,
-        capsys: pytest.CaptureFixture,
+    test_submission_id: str,
+    min_score: int,
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
 ):
     setup_logging(3)
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.args.min_score = min_score
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
     RedditDownloader._download_submission(downloader_mock, submission)
     output = capsys.readouterr()
-    assert 'filtered due to score' in output.out
+    assert "filtered due to score" in output.out
 
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'max_score'), (
-    ('ljyy27', 25),
-))
+@pytest.mark.parametrize(("test_submission_id", "max_score"), (("ljyy27", 25),))
 def test_download_submission_max_score_below(
-        test_submission_id: str,
-        max_score: int,
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path,
-        capsys: pytest.CaptureFixture,
+    test_submission_id: str,
+    max_score: int,
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
 ):
     setup_logging(3)
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.args.max_score = max_score
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
     RedditDownloader._download_submission(downloader_mock, submission)
     output = capsys.readouterr()
-    assert 'filtered due to score' not in output.out
+    assert "filtered due to score" not in output.out
 
 
 @pytest.mark.online
 @pytest.mark.reddit
-@pytest.mark.parametrize(('test_submission_id', 'max_score'), (
-    ('ljyy27', 1),
-))
+@pytest.mark.parametrize(("test_submission_id", "max_score"), (("ljyy27", 1),))
 def test_download_submission_max_score_above(
-        test_submission_id: str,
-        max_score: int,
-        downloader_mock: MagicMock,
-        reddit_instance: praw.Reddit,
-        tmp_path: Path,
-        capsys: pytest.CaptureFixture,
+    test_submission_id: str,
+    max_score: int,
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
 ):
     setup_logging(3)
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
-    downloader_mock.args.folder_scheme = ''
+    downloader_mock.args.folder_scheme = ""
     downloader_mock.args.max_score = max_score
     downloader_mock.file_name_formatter = RedditConnector.create_file_name_formatter(downloader_mock)
     downloader_mock.download_directory = tmp_path
     submission = downloader_mock.reddit_instance.submission(id=test_submission_id)
     RedditDownloader._download_submission(downloader_mock, submission)
     output = capsys.readouterr()
-    assert 'filtered due to score' in output.out
+    assert "filtered due to score" in output.out

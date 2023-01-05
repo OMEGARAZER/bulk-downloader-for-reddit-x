@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import logging
 import re
@@ -23,34 +24,34 @@ class Erome(BaseDownloader):
         links = self._get_links(self.post.url)
 
         if not links:
-            raise SiteDownloaderError('Erome parser could not find any links')
+            raise SiteDownloaderError("Erome parser could not find any links")
 
         out = []
         for link in links:
-            if not re.match(r'https?://.*', link):
-                link = 'https://' + link
+            if not re.match(r"https?://.*", link):
+                link = "https://" + link
             out.append(Resource(self.post, link, self.erome_download(link)))
         return out
 
     @staticmethod
     def _get_links(url: str) -> set[str]:
         page = Erome.retrieve_url(url)
-        soup = bs4.BeautifulSoup(page.text, 'html.parser')
-        front_images = soup.find_all('img', attrs={'class': 'lasyload'})
-        out = [im.get('data-src') for im in front_images]
+        soup = bs4.BeautifulSoup(page.text, "html.parser")
+        front_images = soup.find_all("img", attrs={"class": "lasyload"})
+        out = [im.get("data-src") for im in front_images]
 
-        videos = soup.find_all('source')
-        out.extend([vid.get('src') for vid in videos])
+        videos = soup.find_all("source")
+        out.extend([vid.get("src") for vid in videos])
 
         return set(out)
 
     @staticmethod
     def erome_download(url: str) -> Callable:
         download_parameters = {
-            'headers': {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'
-                              ' Chrome/88.0.4324.104 Safari/537.36',
-                'Referer': 'https://www.erome.com/',
+            "headers": {
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"
+                " Chrome/88.0.4324.104 Safari/537.36",
+                "Referer": "https://www.erome.com/",
             },
         }
         return lambda global_params: Resource.http_download(url, global_params | download_parameters)

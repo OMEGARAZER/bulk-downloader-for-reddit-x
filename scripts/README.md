@@ -59,7 +59,7 @@ A simple script has been included to print sumamry statistics for a run of the B
 
 This will create an output like the following:
 
-```
+```text
 Downloaded submissions: 250
 Failed downloads: 103
 Files already downloaded: 20073
