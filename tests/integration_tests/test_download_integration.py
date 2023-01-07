@@ -52,9 +52,9 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
         ["-s", "trollxchromosomes", "-L", 3, "--sort", "new"],
         ["-s", "trollxchromosomes", "-L", 3, "--time", "day", "--sort", "new"],
         ["-s", "trollxchromosomes", "-L", 3, "--search", "women"],
-        ["-s", "trollxchromosomes", "-L", 3, "--time", "day", "--search", "women"],
+        ["-s", "trollxchromosomes", "-L", 3, "--time", "week", "--search", "women"],
         ["-s", "trollxchromosomes", "-L", 3, "--sort", "new", "--search", "women"],
-        ["-s", "trollxchromosomes", "-L", 3, "--time", "day", "--sort", "new", "--search", "women"],
+        ["-s", "trollxchromosomes", "-L", 3, "--time", "week", "--sort", "new", "--search", "women"],
     ),
 )
 def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
