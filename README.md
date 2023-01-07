@@ -226,17 +226,18 @@ The following options are common between both the `archive` and `download` comma
 The following options apply only to the `download` command. This command downloads the files and resources linked to in the submission, or a text submission itself, to the disk in the specified directory.
 
 - `--make-hard-links`
-    - This flag will create hard links to an existing file when a duplicate is downloaded
+    - This flag will create hard links to an existing file when a duplicate is downloaded in the current run
     - This will make the file appear in multiple directories while only taking the space of a single instance
 - `--max-wait-time`
     - This option specifies the maximum wait time for downloading a resource
     - The default is 120 seconds
     - See [Rate Limiting](#rate-limiting) for details
 - `--no-dupes`
-    - This flag will not redownload files if they already exist somewhere in the root folder tree
+    - This flag will not redownload files if they were already downloaded in the current run
     - This is calculated by MD5 hash
 - `--search-existing`
-    - This will make the BDFR compile the hashes for every file in `directory` and store them to remove duplicates if `--no-dupes` is also supplied
+    - This will make the BDFR compile the hashes for every file in `directory`
+    - The hashes are used to remove duplicates if `--no-dupes` is supplied or make hard links if `--make-hard-links` is supplied
 - `--file-scheme`
     - Sets the scheme for files
     - Default is `{REDDITOR}_{TITLE}_{POSTID}`
