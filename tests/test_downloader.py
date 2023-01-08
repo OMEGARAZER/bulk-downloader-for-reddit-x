@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import logging
 import os
 import re
 from pathlib import Path
@@ -9,10 +9,14 @@ from unittest.mock import MagicMock, patch
 import praw.models
 import pytest
 
-from bdfr.__main__ import setup_logging
+from bdfr.__main__ import make_console_logging_handler
 from bdfr.configuration import Configuration
 from bdfr.connector import RedditConnector
 from bdfr.downloader import RedditDownloader
+
+
+def add_console_handler():
+    logging.getLogger().addHandler(make_console_logging_handler(3))
 
 
 @pytest.fixture()
@@ -134,7 +138,7 @@ def test_download_submission_hash_exists(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    setup_logging(3)
+    add_console_handler()
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
     downloader_mock.args.folder_scheme = ""
@@ -155,7 +159,7 @@ def test_download_submission_hash_exists(
 def test_download_submission_file_exists(
     downloader_mock: MagicMock, reddit_instance: praw.Reddit, tmp_path: Path, capsys: pytest.CaptureFixture
 ):
-    setup_logging(3)
+    add_console_handler()
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
     downloader_mock.args.folder_scheme = ""
@@ -202,7 +206,7 @@ def test_download_submission_min_score_above(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    setup_logging(3)
+    add_console_handler()
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
     downloader_mock.args.folder_scheme = ""
@@ -226,7 +230,7 @@ def test_download_submission_min_score_below(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    setup_logging(3)
+    add_console_handler()
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
     downloader_mock.args.folder_scheme = ""
@@ -250,7 +254,7 @@ def test_download_submission_max_score_below(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    setup_logging(3)
+    add_console_handler()
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
     downloader_mock.args.folder_scheme = ""
@@ -274,7 +278,7 @@ def test_download_submission_max_score_above(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    setup_logging(3)
+    add_console_handler()
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.download_filter.check_url.return_value = True
     downloader_mock.args.folder_scheme = ""

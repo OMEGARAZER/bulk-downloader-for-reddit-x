@@ -9,6 +9,7 @@ from datetime import datetime
 from multiprocessing import Pool
 from pathlib import Path
 from time import sleep
+from typing import Iterable
 
 import praw
 import praw.exceptions
@@ -36,8 +37,8 @@ def _calc_hash(existing_file: Path):
 
 
 class RedditDownloader(RedditConnector):
-    def __init__(self, args: Configuration):
-        super(RedditDownloader, self).__init__(args)
+    def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
+        super(RedditDownloader, self).__init__(args, logging_handlers)
         if self.args.search_existing:
             self.master_hash_list = self.scan_existing_files(self.download_directory)
 
