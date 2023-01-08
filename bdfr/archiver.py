@@ -5,7 +5,7 @@ import json
 import logging
 import re
 from time import sleep
-from typing import Iterator, Union
+from typing import Iterable, Iterator, Union
 
 import dict2xml
 import praw.models
@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 class Archiver(RedditConnector):
-    def __init__(self, args: Configuration):
-        super(Archiver, self).__init__(args)
+    def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
+        super(Archiver, self).__init__(args, logging_handlers)
 
     def download(self):
         for generator in self.reddit_lists:

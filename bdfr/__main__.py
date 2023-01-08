@@ -111,9 +111,10 @@ def cli_download(context: click.Context, **_):
     """Used to download content posted to Reddit."""
     config = Configuration()
     config.process_click_arguments(context)
-    setup_logging(config.verbose)
+    silence_module_loggers()
+    stream = make_console_logging_handler(config.verbose)
     try:
-        reddit_downloader = RedditDownloader(config)
+        reddit_downloader = RedditDownloader(config, [stream])
         reddit_downloader.download()
     except Exception:
         logger.exception("Downloader exited unexpectedly")
@@ -131,9 +132,10 @@ def cli_archive(context: click.Context, **_):
     """Used to archive post data from Reddit."""
     config = Configuration()
     config.process_click_arguments(context)
-    setup_logging(config.verbose)
+    silence_module_loggers()
+    stream = make_console_logging_handler(config.verbose)
     try:
-        reddit_archiver = Archiver(config)
+        reddit_archiver = Archiver(config, [stream])
         reddit_archiver.download()
     except Exception:
         logger.exception("Archiver exited unexpectedly")
@@ -152,9 +154,10 @@ def cli_clone(context: click.Context, **_):
     """Combines archive and download commands."""
     config = Configuration()
     config.process_click_arguments(context)
-    setup_logging(config.verbose)
+    silence_module_loggers()
+    stream = make_console_logging_handler(config.verbose)
     try:
-        reddit_scraper = RedditCloner(config)
+        reddit_scraper = RedditCloner(config, [stream])
         reddit_scraper.download()
     except Exception:
         logger.exception("Scraper exited unexpectedly")
@@ -187,7 +190,7 @@ def cli_completion(shell: str, uninstall: bool):
         Completion(shell).install()
 
 
-def setup_logging(verbosity: int):
+def make_console_logging_handler(verbosity: int) -> logging.StreamHandler:
     class StreamExceptionFilter(logging.Filter):
         def filter(self, record: logging.LogRecord) -> bool:
             result = not (record.levelno == logging.ERROR and record.exc_info)
@@ -200,13 +203,16 @@ def setup_logging(verbosity: int):
     formatter = logging.Formatter("[%(asctime)s - %(name)s - %(levelname)s] - %(message)s")
     stream.setFormatter(formatter)
 
-    logger.addHandler(stream)
     if verbosity <= 0:
         stream.setLevel(logging.INFO)
     elif verbosity == 1:
         stream.setLevel(logging.DEBUG)
     else:
         stream.setLevel(9)
+    return stream
+
+
+def silence_module_loggers():
     logging.getLogger("praw").setLevel(logging.CRITICAL)
     logging.getLogger("prawcore").setLevel(logging.CRITICAL)
     logging.getLogger("urllib3").setLevel(logging.CRITICAL)

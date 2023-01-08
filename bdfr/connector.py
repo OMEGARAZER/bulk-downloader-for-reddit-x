@@ -14,7 +14,7 @@ from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
 from time import sleep
-from typing import Callable, Iterator
+from typing import Callable, Iterable, Iterator
 
 import appdirs
 import praw
@@ -51,20 +51,20 @@ class RedditTypes:
 
 
 class RedditConnector(metaclass=ABCMeta):
-    def __init__(self, args: Configuration):
+    def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
         self.args = args
         self.config_directories = appdirs.AppDirs("bdfr", "BDFR")
+        self.determine_directories()
+        self.load_config()
+        self.read_config()
+        file_log = self.create_file_logger()
+        self._apply_logging_handlers(itertools.chain(logging_handlers, [file_log]))
         self.run_time = datetime.now().isoformat()
         self._setup_internal_objects()
 
         self.reddit_lists = self.retrieve_reddit_lists()
 
     def _setup_internal_objects(self):
-        self.determine_directories()
-        self.load_config()
-        self.create_file_logger()
-
-        self.read_config()
 
         self.parse_disabled_modules()
 
@@ -93,6 +93,12 @@ class RedditConnector(metaclass=ABCMeta):
 
         self.args.skip_subreddit = self.split_args_input(self.args.skip_subreddit)
         self.args.skip_subreddit = {sub.lower() for sub in self.args.skip_subreddit}
+
+    @staticmethod
+    def _apply_logging_handlers(handlers: Iterable[logging.Handler]):
+        main_logger = logging.getLogger()
+        for handler in handlers:
+            main_logger.addHandler(handler)
 
     def read_config(self):
         """Read any cfg values that need to be processed"""
@@ -203,8 +209,7 @@ class RedditConnector(metaclass=ABCMeta):
             raise errors.BulkDownloaderException("Could not find a configuration file to load")
         self.cfg_parser.read(self.config_location)
 
-    def create_file_logger(self):
-        main_logger = logging.getLogger()
+    def create_file_logger(self) -> logging.handlers.RotatingFileHandler:
         if self.args.log is None:
             log_path = Path(self.config_directory, "log_output.txt")
         else:
@@ -229,8 +234,7 @@ class RedditConnector(metaclass=ABCMeta):
         formatter = logging.Formatter("[%(asctime)s - %(name)s - %(levelname)s] - %(message)s")
         file_handler.setFormatter(formatter)
         file_handler.setLevel(0)
-
-        main_logger.addHandler(file_handler)
+        return file_handler
 
     @staticmethod
     def sanitise_subreddit_name(subreddit: str) -> str:
