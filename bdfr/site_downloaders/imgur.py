@@ -44,10 +44,15 @@ class Imgur(BaseDownloader):
         try:
             if re.search(r".*/(.*?)(gallery/|a/)", link):
                 imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*)?$", link).group(1)
-                link = f"https://imgur.com/a/{imgur_id}"
             else:
-                imgur_id = re.match(r".*/(.*?)(_d)?(\..{0,})?$", link).group(1)
-                link = f"https://imgur.com/{imgur_id}"
+                imgur_id = re.match(r".*/(.*?)(?:_d)?(?:\..{0,})?$", link).group(1)
+            gallery = "a/" if re.search(r".*/(.*?)(gallery/|a/)", link) else ""
+            if len(imgur_id) > 7:
+                if imgur_id.endswith(("s", "b", "t", "m", "l", "h")):
+                    imgur_id = imgur_id[:7]
+                else:
+                    raise SiteDownloaderError(f"Imgur ID error in link {link}")
+            link = f"https://imgur.com/{gallery}{imgur_id}"
         except AttributeError:
             raise SiteDownloaderError(f"Could not extract Imgur ID from {link}")
 

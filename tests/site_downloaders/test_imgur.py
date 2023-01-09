@@ -137,6 +137,7 @@ def test_imgur_extension_validation_bad(test_extension: str):
         ("https://i.imgur.com/3SKrQfK.jpg?1", ("aa299e181b268578979cad176d1bd1d0",)),
         ("https://i.imgur.com/cbivYRW.jpg?3", ("7ec6ceef5380cb163a1d498c359c51fd",)),
         ("http://i.imgur.com/s9uXxlq.jpg?5.jpg", ("338de3c23ee21af056b3a7c154e2478f",)),
+        ("http://i.imgur.com/s9uXxlqb.jpg", ("338de3c23ee21af056b3a7c154e2478f",)),
         ("https://i.imgur.com/2TtN68l_d.webp", ("6569ab9ad9fa68d93f6b408f112dd741",)),
         ("https://imgur.com/a/1qzfWtY/gifv", ("65fbc7ba5c3ed0e3af47c4feef4d3735",)),
         ("https://imgur.com/a/1qzfWtY/mp4", ("65fbc7ba5c3ed0e3af47c4feef4d3735",)),
