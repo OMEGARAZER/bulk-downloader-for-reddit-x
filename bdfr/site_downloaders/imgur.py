@@ -42,8 +42,16 @@ class Imgur(BaseDownloader):
     @staticmethod
     def _get_data(link: str) -> dict:
         try:
-            imgur_id = re.match(r".*/(.*?)(_d)?(\..{0,})?$", link).group(1)
+            if re.search(r".*/(.*?)(gallery/|a/)", link):
+                imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*)?$", link).group(1)
+            else:
+                imgur_id = re.match(r".*/(.*?)(?:_d)?(?:\..{0,})?$", link).group(1)
             gallery = "a/" if re.search(r".*/(.*?)(gallery/|a/)", link) else ""
+            if len(imgur_id) > 7:
+                if imgur_id.endswith(("s", "b", "t", "m", "l", "h")):
+                    imgur_id = imgur_id[:7]
+                else:
+                    raise SiteDownloaderError(f"Imgur ID error in link {link}")
             link = f"https://imgur.com/{gallery}{imgur_id}"
         except AttributeError:
             raise SiteDownloaderError(f"Could not extract Imgur ID from {link}")
