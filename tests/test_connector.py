@@ -336,7 +336,7 @@ def test_get_multireddits_public(
     (
         ("danigirl3694", 10),
         ("danigirl3694", 50),
-        ("CapitanHam", None),
+        ("nasa", None),
     ),
 )
 def test_get_user_submissions(test_user: str, limit: int, downloader_mock: MagicMock, reddit_instance: praw.Reddit):
