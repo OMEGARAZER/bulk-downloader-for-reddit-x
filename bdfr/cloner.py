@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from collections.abc import Iterable
 from time import sleep
-from typing import Iterable
 
 import prawcore
 

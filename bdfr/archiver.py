@@ -4,8 +4,10 @@
 import json
 import logging
 import re
+from collections.abc import Iterable, Iterator
+from pathlib import Path
 from time import sleep
-from typing import Iterable, Iterator, Union
+from typing import Union
 
 import dict2xml
 import praw.models
@@ -108,13 +110,13 @@ class Archiver(RedditConnector):
 
     def _write_entry_yaml(self, entry: BaseArchiveEntry):
         resource = Resource(entry.source, "", lambda: None, ".yaml")
-        content = yaml.dump(entry.compile())
+        content = yaml.safe_dump(entry.compile())
         self._write_content_to_disk(resource, content)
 
     def _write_content_to_disk(self, resource: Resource, content: str):
         file_path = self.file_name_formatter.format_path(resource, self.download_directory)
         file_path.parent.mkdir(exist_ok=True, parents=True)
-        with open(file_path, "w", encoding="utf-8") as file:
+        with Path(file_path).open(mode="w", encoding="utf-8") as file:
             logger.debug(
                 f"Writing entry {resource.source_submission.id} to file in {resource.extension[1:].upper()}"
                 f" format at {file_path}"

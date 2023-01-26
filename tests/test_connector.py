@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from collections.abc import Iterator
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Iterator
 from unittest.mock import MagicMock
 
 import praw

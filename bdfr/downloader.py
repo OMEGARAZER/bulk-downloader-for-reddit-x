@@ -5,11 +5,11 @@ import hashlib
 import logging.handlers
 import os
 import time
+from collections.abc import Iterable
 from datetime import datetime
 from multiprocessing import Pool
 from pathlib import Path
 from time import sleep
-from typing import Iterable
 
 import praw
 import praw.exceptions

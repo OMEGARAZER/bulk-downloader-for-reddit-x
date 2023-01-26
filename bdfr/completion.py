@@ -23,7 +23,7 @@ class Completion:
                 Path(comp_dir).mkdir(parents=True, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "bash_source"
-                with open(comp_dir + point, "w") as file:
+                with Path(comp_dir + point).open(mode="w") as file:
                     file.write(subprocess.run([point], env=self.env, capture_output=True, text=True).stdout)
                     print(f"Bash completion for {point} written to {comp_dir}{point}")
         if self.shell in ("all", "fish"):
@@ -33,7 +33,7 @@ class Completion:
                 Path(comp_dir).mkdir(parents=True, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "fish_source"
-                with open(comp_dir + point + ".fish", "w") as file:
+                with Path(comp_dir + point + ".fish").open(mode="w") as file:
                     file.write(subprocess.run([point], env=self.env, capture_output=True, text=True).stdout)
                     print(f"Fish completion for {point} written to {comp_dir}{point}.fish")
         if self.shell in ("all", "zsh"):
@@ -43,7 +43,7 @@ class Completion:
                 Path(comp_dir).mkdir(parents=True, exist_ok=True)
             for point in self.entry_points:
                 self.env[f"_{point.upper().replace('-', '_')}_COMPLETE"] = "zsh_source"
-                with open(comp_dir + "_" + point, "w") as file:
+                with Path(comp_dir + "_" + point).open(mode="w") as file:
                     file.write(subprocess.run([point], env=self.env, capture_output=True, text=True).stdout)
                     print(f"Zsh completion for {point} written to {comp_dir}_{point}")
 

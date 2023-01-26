@@ -79,7 +79,7 @@ class Configuration(Namespace):
             return
         with yaml_file_loc.open() as file:
             try:
-                opts = yaml.load(file, Loader=yaml.FullLoader)
+                opts = yaml.safe_load(file)
             except yaml.YAMLError as e:
                 logger.error(f"Could not parse YAML options file: {e}")
                 return
