@@ -156,7 +156,7 @@ class RedditDownloader(RedditConnector):
     @staticmethod
     def scan_existing_files(directory: Path) -> dict[str, Path]:
         files = []
-        for (dirpath, dirnames, filenames) in os.walk(directory):
+        for (dirpath, _dirnames, filenames) in os.walk(directory):
             files.extend([Path(dirpath, file) for file in filenames])
         logger.info(f"Calculating hashes for {len(files)} files")
 

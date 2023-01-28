@@ -214,7 +214,7 @@ def test_format_full_with_index_suffix(
 
 def test_format_multiple_resources():
     mocks = []
-    for i in range(1, 5):
+    for _i in range(1, 5):
         new_mock = MagicMock()
         new_mock.url = "https://example.com/test.png"
         new_mock.extension = ".png"
