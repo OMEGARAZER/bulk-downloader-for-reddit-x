@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
-import os
 import re
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -118,12 +117,12 @@ def test_file_creation_date(
     RedditDownloader._download_submission(downloader_mock, submission)
 
     for file_path in Path(tmp_path).iterdir():
-        file_stats = os.stat(file_path)
+        file_stats = Path(file_path).stat()
         assert file_stats.st_mtime == test_creation_date
 
 
 def test_search_existing_files():
-    results = RedditDownloader.scan_existing_files(Path("."))
+    results = RedditDownloader.scan_existing_files(Path())
     assert len(results.keys()) != 0
 
 

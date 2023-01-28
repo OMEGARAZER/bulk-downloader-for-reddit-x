@@ -3,7 +3,8 @@
 
 import logging
 import re
-from typing import Callable, Optional
+from collections.abc import Callable
+from typing import Optional
 
 import bs4
 from praw.models import Submission

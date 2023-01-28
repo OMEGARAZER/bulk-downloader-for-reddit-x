@@ -3,7 +3,6 @@
 
 import re
 import urllib.parse
-from typing import Type
 
 from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.site_downloaders.base_downloader import BaseDownloader
@@ -24,7 +23,7 @@ from bdfr.site_downloaders.youtube import Youtube
 
 class DownloadFactory:
     @staticmethod
-    def pull_lever(url: str) -> Type[BaseDownloader]:
+    def pull_lever(url: str) -> type[BaseDownloader]:
         sanitised_url = DownloadFactory.sanitise_url(url)
         if re.match(r"(i\.|m\.)?imgur", sanitised_url):
             return Imgur

@@ -5,11 +5,11 @@ import hashlib
 import logging.handlers
 import os
 import time
+from collections.abc import Iterable
 from datetime import datetime
 from multiprocessing import Pool
 from pathlib import Path
 from time import sleep
-from typing import Iterable
 
 import praw
 import praw.exceptions
@@ -156,7 +156,7 @@ class RedditDownloader(RedditConnector):
     @staticmethod
     def scan_existing_files(directory: Path) -> dict[str, Path]:
         files = []
-        for (dirpath, dirnames, filenames) in os.walk(directory):
+        for (dirpath, _dirnames, filenames) in os.walk(directory):
             files.extend([Path(dirpath, file) for file in filenames])
         logger.info(f"Calculating hashes for {len(files)} files")
 

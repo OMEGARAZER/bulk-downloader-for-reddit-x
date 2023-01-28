@@ -10,11 +10,11 @@ import re
 import shutil
 import socket
 from abc import ABCMeta, abstractmethod
+from collections.abc import Callable, Iterable, Iterator
 from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
 from time import sleep
-from typing import Callable, Iterable, Iterator
 
 import appdirs
 import praw
@@ -119,7 +119,7 @@ class RedditConnector(metaclass=ABCMeta):
             )
             logger.debug(f"Setting filename restriction scheme to '{self.args.filename_restriction_scheme}'")
         # Update config on disk
-        with open(self.config_location, "w") as file:
+        with Path(self.config_location).open(mode="w") as file:
             self.cfg_parser.write(file)
 
     def parse_disabled_modules(self):
@@ -143,7 +143,7 @@ class RedditConnector(metaclass=ABCMeta):
                 )
                 token = oauth2_authenticator.retrieve_new_token()
                 self.cfg_parser["DEFAULT"]["user_token"] = token
-                with open(self.config_location, "w") as file:
+                with Path(self.config_location).open(mode="w") as file:
                     self.cfg_parser.write(file, True)
             token_manager = OAuth2TokenManager(self.cfg_parser, self.config_location)
 
