@@ -217,7 +217,7 @@ def test_cli_download_download_filters(test_args: list[str], tmp_path: Path):
     test_args = create_basic_args_for_download_runner(test_args, tmp_path)
     result = runner.invoke(cli, test_args)
     assert result.exit_code == 0
-    assert any((string in result.output for string in ("Download filter removed ", "filtered due to URL")))
+    assert any(string in result.output for string in ("Download filter removed ", "filtered due to URL"))
 
 
 @pytest.mark.online
