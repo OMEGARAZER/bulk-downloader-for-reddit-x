@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class Configuration(Namespace):
     def __init__(self):
-        super(Configuration, self).__init__()
+        super().__init__()
         self.authenticate = False
         self.config = None
         self.opts: Optional[str] = None

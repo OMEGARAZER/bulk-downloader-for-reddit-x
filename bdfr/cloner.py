@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class RedditCloner(RedditDownloader, Archiver):
     def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
-        super(RedditCloner, self).__init__(args, logging_handlers)
+        super().__init__(args, logging_handlers)
 
     def download(self):
         for generator in self.reddit_lists:

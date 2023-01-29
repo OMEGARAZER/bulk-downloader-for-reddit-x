@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class SubmissionArchiveEntry(BaseArchiveEntry):
     def __init__(self, submission: praw.models.Submission):
-        super(SubmissionArchiveEntry, self).__init__(submission)
+        super().__init__(submission)
 
     def compile(self) -> dict:
         comments = self._get_comments()

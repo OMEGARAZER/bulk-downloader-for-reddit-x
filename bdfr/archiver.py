@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 class Archiver(RedditConnector):
     def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
-        super(Archiver, self).__init__(args, logging_handlers)
+        super().__init__(args, logging_handlers)
 
     def download(self):
         for generator in self.reddit_lists:
@@ -65,7 +65,7 @@ class Archiver(RedditConnector):
         return [supplied_submissions]
 
     def get_user_data(self) -> list[Iterator]:
-        results = super(Archiver, self).get_user_data()
+        results = super().get_user_data()
         if self.args.user and self.args.all_comments:
             sort = self.determine_sort_function()
             for user in self.args.user:

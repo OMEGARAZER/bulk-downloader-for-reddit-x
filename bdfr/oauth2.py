@@ -88,7 +88,7 @@ class OAuth2Authenticator:
 
 class OAuth2TokenManager(praw.reddit.BaseTokenManager):
     def __init__(self, config: configparser.ConfigParser, config_location: Path):
-        super(OAuth2TokenManager, self).__init__()
+        super().__init__()
         self.config = config
         self.config_location = config_location
 
