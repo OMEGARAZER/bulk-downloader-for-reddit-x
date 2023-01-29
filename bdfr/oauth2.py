@@ -82,7 +82,7 @@ class OAuth2Authenticator:
 
     @staticmethod
     def send_message(client: socket.socket, message: str = ""):
-        client.send(f"HTTP/1.1 200 OK\r\n\r\n{message}".encode("utf-8"))
+        client.send(f"HTTP/1.1 200 OK\r\n\r\n{message}".encode())
         client.close()
 
 
