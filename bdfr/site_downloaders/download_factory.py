@@ -24,11 +24,13 @@ from bdfr.site_downloaders.youtube import Youtube
 class DownloadFactory:
     @staticmethod
     def pull_lever(url: str) -> type[BaseDownloader]:
-        sanitised_url = DownloadFactory.sanitise_url(url)
-        if re.match(r"(i\.|m\.)?imgur", sanitised_url):
+        sanitised_url = DownloadFactory.sanitise_url(url).lower()
+        if re.match(r"(i\.|m\.|o\.)?imgur", sanitised_url):
             return Imgur
         elif re.match(r"(i\.|thumbs\d\.|v\d\.)?(redgifs|gifdeliverynetwork)", sanitised_url):
             return Redgifs
+        elif re.match(r"(thumbs\.|giant\.)?gfycat\.", sanitised_url):
+            return Gfycat
         elif re.match(r".*/.*\.[a-zA-Z34]{3,4}(\?[\w;&=]*)?$", sanitised_url) and not DownloadFactory.is_web_resource(
             sanitised_url
         ):
@@ -41,8 +43,6 @@ class DownloadFactory:
             return Gallery
         elif re.match(r"patreon\.com.*", sanitised_url):
             return Gallery
-        elif re.match(r"gfycat\.", sanitised_url):
-            return Gfycat
         elif re.match(r"reddit\.com/r/", sanitised_url):
             return SelfPost
         elif re.match(r"(m\.)?youtu\.?be", sanitised_url):

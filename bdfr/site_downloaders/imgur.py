@@ -38,6 +38,8 @@ class Imgur(BaseDownloader):
     @staticmethod
     def _get_data(link: str) -> dict:
         try:
+            if link.endswith("/"):
+                link = link.removesuffix("/")
             if re.search(r".*/(.*?)(gallery/|a/)", link):
                 imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*)?$", link).group(1)
                 link = f"https://api.imgur.com/3/album/{imgur_id}"
