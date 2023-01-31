@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import re
 from unittest.mock import Mock
@@ -8,6 +8,22 @@ import pytest
 
 from bdfr.resource import Resource
 from bdfr.site_downloaders.redgifs import Redgifs
+
+
+@pytest.mark.parametrize(
+    ("test_url", "expected"),
+    (
+        ("https://redgifs.com/watch/frighteningvictorioussalamander", "frighteningvictorioussalamander"),
+        ("https://www.redgifs.com/watch/genuineprivateguillemot/", "genuineprivateguillemot"),
+        ("https://www.redgifs.com/watch/marriedcrushingcob?rel=u%3Akokiri.girl%3Bo%3Arecent", "marriedcrushingcob"),
+        ("https://thumbs4.redgifs.com/DismalIgnorantDrongo.mp4", "dismalignorantdrongo"),
+        ("https://thumbs4.redgifs.com/DismalIgnorantDrongo-mobile.mp4", "dismalignorantdrongo"),
+        ("https://v3.redgifs.com/watch/newilliteratemeerkat#rel=user%3Atastynova", "newilliteratemeerkat"),
+    ),
+)
+def test_get_id(test_url: str, expected: str):
+    result = Redgifs._get_id(test_url)
+    assert result == expected
 
 
 @pytest.mark.online
@@ -29,6 +45,7 @@ from bdfr.site_downloaders.redgifs import Redgifs
                 "UnripeUnkemptWoodpecker-large.jpg",
             },
         ),
+        ("https://www.redgifs.com/watch/genuineprivateguillemot/", {"GenuinePrivateGuillemot.mp4"}),
     ),
 )
 def test_get_link(test_url: str, expected: set[str]):

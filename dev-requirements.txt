@@ -1,4 +1,0 @@
-black
-isort
-pytest
-tox

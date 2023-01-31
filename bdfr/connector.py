@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import configparser
 import importlib.resources
@@ -10,10 +10,11 @@ import re
 import shutil
 import socket
 from abc import ABCMeta, abstractmethod
+from collections.abc import Callable, Iterable, Iterator
 from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
-from typing import Callable, Iterator
+from time import sleep
 
 import appdirs
 import praw
@@ -50,20 +51,20 @@ class RedditTypes:
 
 
 class RedditConnector(metaclass=ABCMeta):
-    def __init__(self, args: Configuration):
+    def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
         self.args = args
         self.config_directories = appdirs.AppDirs("bdfr", "BDFR")
+        self.determine_directories()
+        self.load_config()
+        self.read_config()
+        file_log = self.create_file_logger()
+        self._apply_logging_handlers(itertools.chain(logging_handlers, [file_log]))
         self.run_time = datetime.now().isoformat()
         self._setup_internal_objects()
 
         self.reddit_lists = self.retrieve_reddit_lists()
 
     def _setup_internal_objects(self):
-        self.determine_directories()
-        self.load_config()
-        self.create_file_logger()
-
-        self.read_config()
 
         self.parse_disabled_modules()
 
@@ -93,6 +94,12 @@ class RedditConnector(metaclass=ABCMeta):
         self.args.skip_subreddit = self.split_args_input(self.args.skip_subreddit)
         self.args.skip_subreddit = {sub.lower() for sub in self.args.skip_subreddit}
 
+    @staticmethod
+    def _apply_logging_handlers(handlers: Iterable[logging.Handler]):
+        main_logger = logging.getLogger()
+        for handler in handlers:
+            main_logger.addHandler(handler)
+
     def read_config(self):
         """Read any cfg values that need to be processed"""
         if self.args.max_wait_time is None:
@@ -106,8 +113,13 @@ class RedditConnector(metaclass=ABCMeta):
             self.args.time_format = option
         if not self.args.disable_module:
             self.args.disable_module = [self.cfg_parser.get("DEFAULT", "disabled_modules", fallback="")]
+        if not self.args.filename_restriction_scheme:
+            self.args.filename_restriction_scheme = self.cfg_parser.get(
+                "DEFAULT", "filename_restriction_scheme", fallback=None
+            )
+            logger.debug(f"Setting filename restriction scheme to '{self.args.filename_restriction_scheme}'")
         # Update config on disk
-        with open(self.config_location, "w") as file:
+        with Path(self.config_location).open(mode="w") as file:
             self.cfg_parser.write(file)
 
     def parse_disabled_modules(self):
@@ -131,7 +143,7 @@ class RedditConnector(metaclass=ABCMeta):
                 )
                 token = oauth2_authenticator.retrieve_new_token()
                 self.cfg_parser["DEFAULT"]["user_token"] = token
-                with open(self.config_location, "w") as file:
+                with Path(self.config_location).open(mode="w") as file:
                     self.cfg_parser.write(file, True)
             token_manager = OAuth2TokenManager(self.cfg_parser, self.config_location)
 
@@ -197,14 +209,13 @@ class RedditConnector(metaclass=ABCMeta):
             raise errors.BulkDownloaderException("Could not find a configuration file to load")
         self.cfg_parser.read(self.config_location)
 
-    def create_file_logger(self):
-        main_logger = logging.getLogger()
+    def create_file_logger(self) -> logging.handlers.RotatingFileHandler:
         if self.args.log is None:
             log_path = Path(self.config_directory, "log_output.txt")
         else:
             log_path = Path(self.args.log).resolve().expanduser()
             if not log_path.parent.exists():
-                raise errors.BulkDownloaderException(f"Designated location for logfile does not exist")
+                raise errors.BulkDownloaderException("Designated location for logfile does not exist")
         backup_count = self.cfg_parser.getint("DEFAULT", "backup_log_count", fallback=3)
         file_handler = logging.handlers.RotatingFileHandler(
             log_path,
@@ -223,8 +234,7 @@ class RedditConnector(metaclass=ABCMeta):
         formatter = logging.Formatter("[%(asctime)s - %(name)s - %(levelname)s] - %(message)s")
         file_handler.setFormatter(formatter)
         file_handler.setLevel(0)
-
-        main_logger.addHandler(file_handler)
+        return file_handler
 
     @staticmethod
     def sanitise_subreddit_name(subreddit: str) -> str:
@@ -300,7 +310,7 @@ class RedditConnector(metaclass=ABCMeta):
     def get_submissions_from_link(self) -> list[list[praw.models.Submission]]:
         supplied_submissions = []
         for sub_id in self.args.link:
-            if len(sub_id) == 6:
+            if len(sub_id) in (6, 7):
                 supplied_submissions.append(self.reddit_instance.submission(id=sub_id))
             else:
                 supplied_submissions.append(self.reddit_instance.submission(url=sub_id))
@@ -322,7 +332,7 @@ class RedditConnector(metaclass=ABCMeta):
     def get_multireddits(self) -> list[Iterator]:
         if self.args.multireddit:
             if len(self.args.user) != 1:
-                logger.error(f"Only 1 user can be supplied when retrieving from multireddits")
+                logger.error("Only 1 user can be supplied when retrieving from multireddits")
                 return []
             out = []
             for multi in self.split_args_input(self.args.multireddit):
@@ -353,26 +363,31 @@ class RedditConnector(metaclass=ABCMeta):
             generators = []
             for user in self.args.user:
                 try:
-                    self.check_user_existence(user)
-                except errors.BulkDownloaderException as e:
-                    logger.error(e)
-                    continue
-                if self.args.submitted:
-                    logger.debug(f"Retrieving submitted posts of user {self.args.user}")
-                    generators.append(
-                        self.create_filtered_listing_generator(
-                            self.reddit_instance.redditor(user).submissions,
+                    try:
+                        self.check_user_existence(user)
+                    except errors.BulkDownloaderException as e:
+                        logger.error(e)
+                        continue
+                    if self.args.submitted:
+                        logger.debug(f"Retrieving submitted posts of user {user}")
+                        generators.append(
+                            self.create_filtered_listing_generator(
+                                self.reddit_instance.redditor(user).submissions,
+                            )
                         )
-                    )
-                if not self.authenticated and any((self.args.upvoted, self.args.saved)):
-                    logger.warning("Accessing user lists requires authentication")
-                else:
-                    if self.args.upvoted:
-                        logger.debug(f"Retrieving upvoted posts of user {self.args.user}")
-                        generators.append(self.reddit_instance.redditor(user).upvoted(limit=self.args.limit))
-                    if self.args.saved:
-                        logger.debug(f"Retrieving saved posts of user {self.args.user}")
-                        generators.append(self.reddit_instance.redditor(user).saved(limit=self.args.limit))
+                    if not self.authenticated and any((self.args.upvoted, self.args.saved)):
+                        logger.warning("Accessing user lists requires authentication")
+                    else:
+                        if self.args.upvoted:
+                            logger.debug(f"Retrieving upvoted posts of user {user}")
+                            generators.append(self.reddit_instance.redditor(user).upvoted(limit=self.args.limit))
+                        if self.args.saved:
+                            logger.debug(f"Retrieving saved posts of user {user}")
+                            generators.append(self.reddit_instance.redditor(user).saved(limit=self.args.limit))
+                except prawcore.PrawcoreException as e:
+                    logger.error(f"User {user} failed to be retrieved due to a PRAW exception: {e}")
+                    logger.debug("Waiting 60 seconds to continue")
+                    sleep(60)
             return generators
         else:
             return []
@@ -389,7 +404,9 @@ class RedditConnector(metaclass=ABCMeta):
                 raise errors.BulkDownloaderException(f"User {name} is banned")
 
     def create_file_name_formatter(self) -> FileNameFormatter:
-        return FileNameFormatter(self.args.file_scheme, self.args.folder_scheme, self.args.time_format)
+        return FileNameFormatter(
+            self.args.file_scheme, self.args.folder_scheme, self.args.time_format, self.args.filename_restriction_scheme
+        )
 
     def create_time_filter(self) -> RedditTypes.TimeType:
         try:

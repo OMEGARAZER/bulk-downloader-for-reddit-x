@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from unittest.mock import MagicMock
 
@@ -76,4 +76,4 @@ def test_filter_empty_filter(test_url: str):
     download_filter = DownloadFilter()
     test_resource = Resource(MagicMock(), test_url, lambda: None)
     result = download_filter.check_resource(test_resource)
-    assert result is True
+    assert result

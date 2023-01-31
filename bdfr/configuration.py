@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 from argparse import Namespace
@@ -23,6 +23,7 @@ class Configuration(Namespace):
         self.exclude_id = []
         self.exclude_id_file = []
         self.file_scheme: str = "{REDDITOR}_{TITLE}_{POSTID}"
+        self.filename_restriction_scheme = None
         self.folder_scheme: str = "{SUBREDDIT}"
         self.ignore_user = []
         self.include_id_file = []
@@ -78,7 +79,7 @@ class Configuration(Namespace):
             return
         with yaml_file_loc.open() as file:
             try:
-                opts = yaml.load(file, Loader=yaml.FullLoader)
+                opts = yaml.safe_load(file)
             except yaml.YAMLError as e:
                 logger.error(f"Could not parse YAML options file: {e}")
                 return

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import configparser
 import logging
@@ -103,6 +103,6 @@ class OAuth2TokenManager(praw.reddit.BaseTokenManager):
 
     def post_refresh_callback(self, authorizer: praw.reddit.Authorizer):
         self.config.set("DEFAULT", "user_token", authorizer.refresh_token)
-        with open(self.config_location, "w") as file:
+        with Path(self.config_location).open(mode="w") as file:
             self.config.write(file, True)
         logger.log(9, f"Written OAuth2 token from authoriser to {self.config_location}")

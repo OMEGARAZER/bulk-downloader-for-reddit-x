@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import platform
 import sys
 import unittest.mock
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Type, Union
+from typing import Optional, Union
 from unittest.mock import MagicMock
 
 import praw.models
@@ -33,6 +33,16 @@ def submission() -> MagicMock:
     return test
 
 
+@pytest.fixture()
+def test_formatter() -> FileNameFormatter:
+    out = FileNameFormatter("{TITLE}", "", "ISO")
+    return out
+
+
+def check_valid_windows_path(test_string: str):
+    return test_string == FileNameFormatter._format_for_windows(test_string)
+
+
 def do_test_string_equality(result: Union[Path, str], expected: str) -> bool:
     if platform.system() == "Windows":
         expected = FileNameFormatter._format_for_windows(expected)
@@ -46,7 +56,7 @@ def do_test_path_equality(result: Path, expected: str) -> bool:
         expected = Path(*expected)
     else:
         expected = Path(expected)
-    return str(result).endswith(str(expected))
+    return str(result).endswith(str(expected))  # noqa: FURB123
 
 
 @pytest.fixture(scope="session")
@@ -92,6 +102,15 @@ def test_check_format_string_validity(test_string: str, expected: bool):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.parametrize(
+    "restriction_scheme",
+    (
+        "windows",
+        "linux",
+        "bla",
+        None,
+    ),
+)
+@pytest.mark.parametrize(
     ("test_format_string", "expected"),
     (
         ("{SUBREDDIT}", "formula1"),
@@ -102,10 +121,17 @@ def test_check_format_string_validity(test_string: str, expected: bool):
         ("{REDDITOR}_{TITLE}_{POSTID}", "Kirsty-Blue_George Russel acknowledges the Twitter trend about him_w22m5l"),
     ),
 )
-def test_format_name_real(test_format_string: str, expected: str, reddit_submission: praw.models.Submission):
-    test_formatter = FileNameFormatter(test_format_string, "", "")
+def test_format_name_real(
+    test_format_string: str,
+    expected: str,
+    reddit_submission: praw.models.Submission,
+    restriction_scheme: Optional[str],
+):
+    test_formatter = FileNameFormatter(test_format_string, "", "", restriction_scheme)
     result = test_formatter._format_name(reddit_submission, test_format_string)
     assert do_test_string_equality(result, expected)
+    if restriction_scheme == "windows":
+        assert check_valid_windows_path(result)
 
 
 @pytest.mark.online
@@ -188,7 +214,7 @@ def test_format_full_with_index_suffix(
 
 def test_format_multiple_resources():
     mocks = []
-    for i in range(1, 5):
+    for _i in range(1, 5):
         new_mock = MagicMock()
         new_mock.url = "https://example.com/test.png"
         new_mock.extension = ".png"
@@ -196,7 +222,7 @@ def test_format_multiple_resources():
         new_mock.source_submission.__class__ = praw.models.Submission
         mocks.append(new_mock)
     test_formatter = FileNameFormatter("{TITLE}", "", "ISO")
-    results = test_formatter.format_resource_paths(mocks, Path("."))
+    results = test_formatter.format_resource_paths(mocks, Path())
     results = set([str(res[0].name) for res in results])
     expected = {"test_1.png", "test_2.png", "test_3.png", "test_4.png"}
     assert results == expected
@@ -211,8 +237,8 @@ def test_format_multiple_resources():
         ("😍💕✨" * 100, "_1.png"),
     ),
 )
-def test_limit_filename_length(test_filename: str, test_ending: str):
-    result = FileNameFormatter.limit_file_name_length(test_filename, test_ending, Path("."))
+def test_limit_filename_length(test_filename: str, test_ending: str, test_formatter: FileNameFormatter):
+    result = test_formatter.limit_file_name_length(test_filename, test_ending, Path())
     assert len(result.name) <= 255
     assert len(result.name.encode("utf-8")) <= 255
     assert len(str(result)) <= FileNameFormatter.find_max_path_length()
@@ -233,8 +259,10 @@ def test_limit_filename_length(test_filename: str, test_ending: str):
         ("😍💕✨" * 100 + "_aaa1aa", "_1.png", "_aaa1aa_1.png"),
     ),
 )
-def test_preserve_id_append_when_shortening(test_filename: str, test_ending: str, expected_end: str):
-    result = FileNameFormatter.limit_file_name_length(test_filename, test_ending, Path("."))
+def test_preserve_id_append_when_shortening(
+    test_filename: str, test_ending: str, expected_end: str, test_formatter: FileNameFormatter
+):
+    result = test_formatter.limit_file_name_length(test_filename, test_ending, Path())
     assert len(result.name) <= 255
     assert len(result.name.encode("utf-8")) <= 255
     assert result.name.endswith(expected_end)
@@ -264,8 +292,8 @@ def test_shorten_filename_real(submission: MagicMock, tmp_path: Path):
         ("a" * 500, "_bbbbbb.jpg"),
     ),
 )
-def test_shorten_path(test_name: str, test_ending: str, tmp_path: Path):
-    result = FileNameFormatter.limit_file_name_length(test_name, test_ending, tmp_path)
+def test_shorten_path(test_name: str, test_ending: str, tmp_path: Path, test_formatter: FileNameFormatter):
+    result = test_formatter.limit_file_name_length(test_name, test_ending, tmp_path)
     assert len(str(result.name)) <= 255
     assert len(str(result.name).encode("UTF-8")) <= 255
     assert len(str(result.name).encode("cp1252")) <= 255
@@ -462,7 +490,9 @@ def test_get_max_path_length():
 def test_windows_max_path(tmp_path: Path):
     with unittest.mock.patch("platform.system", return_value="Windows"):
         with unittest.mock.patch("bdfr.file_name_formatter.FileNameFormatter.find_max_path_length", return_value=260):
-            result = FileNameFormatter.limit_file_name_length("test" * 100, "_1.png", tmp_path)
+            mock = MagicMock()
+            mock.max_path = 260
+            result = FileNameFormatter.limit_file_name_length(mock, "test" * 100, "_1.png", tmp_path)
             assert len(str(result)) <= 260
             assert len(result.name) <= (260 - len(str(tmp_path)))
 
@@ -479,13 +509,13 @@ def test_windows_max_path(tmp_path: Path):
 )
 def test_name_submission(
     test_reddit_id: str,
-    test_downloader: Type[BaseDownloader],
+    test_downloader: type[BaseDownloader],
     expected_names: set[str],
     reddit_instance: praw.reddit.Reddit,
 ):
     test_submission = reddit_instance.submission(id=test_reddit_id)
     test_resources = test_downloader(test_submission).find_resources()
     test_formatter = FileNameFormatter("{TITLE}", "", "")
-    results = test_formatter.format_resource_paths(test_resources, Path("."))
+    results = test_formatter.format_resource_paths(test_resources, Path())
     results = set([r[0].name for r in results])
     assert results == expected_names

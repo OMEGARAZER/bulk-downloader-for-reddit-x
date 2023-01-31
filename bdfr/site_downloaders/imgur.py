@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import json
 import re
 from typing import Optional
 
-import bs4
 from praw.models import Submission
 
 from bdfr.exceptions import SiteDownloaderError
@@ -22,65 +22,44 @@ class Imgur(BaseDownloader):
         self.raw_data = self._get_data(self.post.url)
 
         out = []
-        if "album_images" in self.raw_data:
-            images = self.raw_data["album_images"]
-            for image in images["images"]:
-                out.append(self._compute_image_url(image))
+        if "is_album" in self.raw_data:
+            for image in self.raw_data["images"]:
+                if "mp4" in image:
+                    out.append(Resource(self.post, image["mp4"], Resource.retry_download(image["mp4"])))
+                else:
+                    out.append(Resource(self.post, image["link"], Resource.retry_download(image["link"])))
         else:
-            out.append(self._compute_image_url(self.raw_data))
+            if "mp4" in self.raw_data:
+                out.append(Resource(self.post, self.raw_data["mp4"], Resource.retry_download(self.raw_data["mp4"])))
+            else:
+                out.append(Resource(self.post, self.raw_data["link"], Resource.retry_download(self.raw_data["link"])))
         return out
-
-    def _compute_image_url(self, image: dict) -> Resource:
-        ext = self._validate_extension(image["ext"])
-        if image.get("prefer_video", False):
-            ext = ".mp4"
-
-        image_url = "https://i.imgur.com/" + image["hash"] + ext
-        return Resource(self.post, image_url, Resource.retry_download(image_url))
 
     @staticmethod
     def _get_data(link: str) -> dict:
         try:
-            imgur_id = re.match(r".*/(.*?)(\..{0,})?$", link).group(1)
-            gallery = "a/" if re.search(r".*/(.*?)(gallery/|a/)", link) else ""
-            link = f"https://imgur.com/{gallery}{imgur_id}"
+            if link.endswith("/"):
+                link = link.removesuffix("/")
+            if re.search(r".*/(.*?)(gallery/|a/)", link):
+                imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*)?$", link).group(1)
+                link = f"https://api.imgur.com/3/album/{imgur_id}"
+            else:
+                imgur_id = re.match(r".*/(.*?)(?:_d)?(?:\..{0,})?$", link).group(1)
+                link = f"https://api.imgur.com/3/image/{imgur_id}"
         except AttributeError:
             raise SiteDownloaderError(f"Could not extract Imgur ID from {link}")
 
-        res = Imgur.retrieve_url(link, cookies={"over18": "1", "postpagebeta": "0"})
-
-        soup = bs4.BeautifulSoup(res.text, "html.parser")
-        scripts = soup.find_all("script", attrs={"type": "text/javascript"})
-        scripts = [script.string.replace("\n", "") for script in scripts if script.string]
-
-        script_regex = re.compile(r"\s*\(function\(widgetFactory\)\s*{\s*widgetFactory\.mergeConfig\(\'gallery\'")
-        chosen_script = list(filter(lambda s: re.search(script_regex, s), scripts))
-        if len(chosen_script) != 1:
-            raise SiteDownloaderError(f"Could not read page source from {link}")
-
-        chosen_script = chosen_script[0]
-
-        outer_regex = re.compile(r"widgetFactory\.mergeConfig\(\'gallery\', ({.*})\);")
-        inner_regex = re.compile(r"image\s*:(.*),\s*group")
-        try:
-            image_dict = re.search(outer_regex, chosen_script).group(1)
-            image_dict = re.search(inner_regex, image_dict).group(1)
-        except AttributeError:
-            raise SiteDownloaderError(f"Could not find image dictionary in page source")
+        headers = {
+            "referer": "https://imgur.com/",
+            "origin": "https://imgur.com",
+            "content-type": "application/json",
+            "Authorization": "Client-ID 546c25a59c58ad7",
+        }
+        res = Imgur.retrieve_url(link, headers=headers)
 
         try:
-            image_dict = json.loads(image_dict)
+            image_dict = json.loads(res.text)
         except json.JSONDecodeError as e:
-            raise SiteDownloaderError(f"Could not parse received dict as JSON: {e}")
+            raise SiteDownloaderError(f"Could not parse received response as JSON: {e}")
 
-        return image_dict
-
-    @staticmethod
-    def _validate_extension(extension_suffix: str) -> str:
-        extension_suffix = re.sub(r"\?.*", "", extension_suffix)
-        possible_extensions = (".jpg", ".png", ".mp4", ".gif")
-        selection = [ext for ext in possible_extensions if ext == extension_suffix]
-        if len(selection) == 1:
-            return selection[0]
-        else:
-            raise SiteDownloaderError(f'"{extension_suffix}" is not recognized as a valid extension for Imgur')
+        return image_dict["data"]

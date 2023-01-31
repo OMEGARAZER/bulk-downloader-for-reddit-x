@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import json
 import re
@@ -22,11 +23,20 @@ class Redgifs(BaseDownloader):
         return [Resource(self.post, m, Resource.retry_download(m), None) for m in media_urls]
 
     @staticmethod
-    def _get_link(url: str) -> set[str]:
+    def _get_id(url: str) -> str:
         try:
-            redgif_id = re.match(r".*/(.*?)(\..{0,})?$", url).group(1)
+            if url.endswith("/"):
+                url = url.removesuffix("/")
+            redgif_id = re.match(r".*/(.*?)(?:#.*|\?.*|\..{0,})?$", url).group(1).lower()
+            if redgif_id.endswith("-mobile"):
+                redgif_id = redgif_id.removesuffix("-mobile")
         except AttributeError:
             raise SiteDownloaderError(f"Could not extract Redgifs ID from {url}")
+        return redgif_id
+
+    @staticmethod
+    def _get_link(url: str) -> set[str]:
+        redgif_id = Redgifs._get_id(url)
 
         auth_token = json.loads(Redgifs.retrieve_url("https://api.redgifs.com/v2/auth/temporary").text)["token"]
         if not auth_token:

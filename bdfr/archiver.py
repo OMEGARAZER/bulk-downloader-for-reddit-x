@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import json
 import logging
 import re
-from typing import Iterator, Union
+from collections.abc import Iterable, Iterator
+from pathlib import Path
+from time import sleep
+from typing import Union
 
 import dict2xml
 import praw.models
@@ -23,28 +26,33 @@ logger = logging.getLogger(__name__)
 
 
 class Archiver(RedditConnector):
-    def __init__(self, args: Configuration):
-        super(Archiver, self).__init__(args)
+    def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()):
+        super(Archiver, self).__init__(args, logging_handlers)
 
     def download(self):
         for generator in self.reddit_lists:
-            for submission in generator:
-                try:
-                    if (submission.author and submission.author.name in self.args.ignore_user) or (
-                        submission.author is None and "DELETED" in self.args.ignore_user
-                    ):
-                        logger.debug(
-                            f"Submission {submission.id} in {submission.subreddit.display_name} skipped"
-                            f' due to {submission.author.name if submission.author else "DELETED"} being an ignored user'
-                        )
-                        continue
-                    if submission.id in self.excluded_submission_ids:
-                        logger.debug(f"Object {submission.id} in exclusion list, skipping")
-                        continue
-                    logger.debug(f"Attempting to archive submission {submission.id}")
-                    self.write_entry(submission)
-                except prawcore.PrawcoreException as e:
-                    logger.error(f"Submission {submission.id} failed to be archived due to a PRAW exception: {e}")
+            try:
+                for submission in generator:
+                    try:
+                        if (submission.author and submission.author.name in self.args.ignore_user) or (
+                            submission.author is None and "DELETED" in self.args.ignore_user
+                        ):
+                            logger.debug(
+                                f"Submission {submission.id} in {submission.subreddit.display_name} skipped due to"
+                                f" {submission.author.name if submission.author else 'DELETED'} being an ignored user"
+                            )
+                            continue
+                        if submission.id in self.excluded_submission_ids:
+                            logger.debug(f"Object {submission.id} in exclusion list, skipping")
+                            continue
+                        logger.debug(f"Attempting to archive submission {submission.id}")
+                        self.write_entry(submission)
+                    except prawcore.PrawcoreException as e:
+                        logger.error(f"Submission {submission.id} failed to be archived due to a PRAW exception: {e}")
+            except prawcore.PrawcoreException as e:
+                logger.error(f"The submission after {submission.id} failed to download due to a PRAW exception: {e}")
+                logger.debug("Waiting 60 seconds to continue")
+                sleep(60)
 
     def get_submissions_from_link(self) -> list[list[praw.models.Submission]]:
         supplied_submissions = []
@@ -102,13 +110,13 @@ class Archiver(RedditConnector):
 
     def _write_entry_yaml(self, entry: BaseArchiveEntry):
         resource = Resource(entry.source, "", lambda: None, ".yaml")
-        content = yaml.dump(entry.compile())
+        content = yaml.safe_dump(entry.compile())
         self._write_content_to_disk(resource, content)
 
     def _write_content_to_disk(self, resource: Resource, content: str):
         file_path = self.file_name_formatter.format_path(resource, self.download_directory)
         file_path.parent.mkdir(exist_ok=True, parents=True)
-        with open(file_path, "w", encoding="utf-8") as file:
+        with Path(file_path).open(mode="w", encoding="utf-8") as file:
             logger.debug(
                 f"Writing entry {resource.source_submission.id} to file in {resource.extension[1:].upper()}"
                 f" format at {file_path}"

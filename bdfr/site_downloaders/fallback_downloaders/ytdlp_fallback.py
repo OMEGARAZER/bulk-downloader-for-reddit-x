@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import logging
 from typing import Optional
@@ -9,9 +9,7 @@ from praw.models import Submission
 from bdfr.exceptions import NotADownloadableLinkError
 from bdfr.resource import Resource
 from bdfr.site_authenticator import SiteAuthenticator
-from bdfr.site_downloaders.fallback_downloaders.fallback_downloader import (
-    BaseFallbackDownloader,
-)
+from bdfr.site_downloaders.fallback_downloaders.fallback_downloader import BaseFallbackDownloader
 from bdfr.site_downloaders.youtube import Youtube
 
 logger = logging.getLogger(__name__)

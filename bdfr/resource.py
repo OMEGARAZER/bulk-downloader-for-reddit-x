@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import hashlib
 import logging
 import re
 import time
 import urllib.parse
-from typing import Callable, Optional
+from collections.abc import Callable
+from typing import Optional
 
 import _hashlib
 import requests

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from unittest.mock import MagicMock
 
@@ -14,7 +14,7 @@ from bdfr.site_downloaders.pornhub import PornHub
 @pytest.mark.slow
 @pytest.mark.parametrize(
     ("test_url", "expected_hash"),
-    (("https://www.pornhub.com/view_video.php?viewkey=ph6074c59798497", "ad52a0f4fce8f99df0abed17de1d04c7"),),
+    (("https://www.pornhub.com/view_video.php?viewkey=ph5eafee2d174ff", "d15090cbbaa8ee90500a257c7899ff84"),),
 )
 def test_hash_resources_good(test_url: str, expected_hash: str):
     test_submission = MagicMock()

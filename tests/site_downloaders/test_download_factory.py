@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import praw
 import pytest
@@ -31,6 +31,7 @@ from bdfr.site_downloaders.youtube import Youtube
         ),
         ("https://i.redd.it/affyv0axd5k61.png", Direct),
         ("https://i.imgur.com/bZx1SJQ.jpg", Imgur),
+        ("https://i.Imgur.com/bZx1SJQ.jpg", Imgur),
         ("https://imgur.com/BuzvZwb.gifv", Imgur),
         ("https://imgur.com/a/MkxAzeg", Imgur),
         ("https://m.imgur.com/a/py3RW0j", Imgur),
@@ -40,6 +41,8 @@ from bdfr.site_downloaders.youtube import Youtube
         ("https://youtube.com/watch?v=Gv8Wz74FjVA", Youtube),
         ("https://redgifs.com/watch/courageousimpeccablecanvasback", Redgifs),
         ("https://www.gifdeliverynetwork.com/repulsivefinishedandalusianhorse", Redgifs),
+        ("https://thumbs4.redgifs.com/DismalIgnorantDrongo-mobile.mp4", Redgifs),
+        ("https://v3.redgifs.com/watch/kaleidoscopicdaringvenomoussnake", Redgifs),
         ("https://youtu.be/DevfjHOhuFc", Youtube),
         ("https://m.youtube.com/watch?v=kr-FeojxzUM", Youtube),
         ("https://dynasty-scans.com/system/images_images/000/017/819/original/80215103_p0.png?1612232781", Direct),
@@ -65,6 +68,7 @@ def test_factory_lever_good(test_submission_url: str, expected_class: BaseDownlo
         "https://www.google.com",
         "https://www.google.com/test",
         "https://www.google.com/test/",
+        "https://www.tiktok.com/@keriberry.420",
     ),
 )
 def test_factory_lever_bad(test_url: str):

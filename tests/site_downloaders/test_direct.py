@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from unittest.mock import Mock
 
@@ -13,8 +13,11 @@ from bdfr.site_downloaders.direct import Direct
 @pytest.mark.parametrize(
     ("test_url", "expected_hash"),
     (
-        ("https://giant.gfycat.com/DefinitiveCanineCrayfish.mp4", "48f9bd4dbec1556d7838885612b13b39"),
-        ("https://giant.gfycat.com/DazzlingSilkyIguana.mp4", "808941b48fc1e28713d36dd7ed9dc648"),
+        ("https://i.redd.it/q6ebualjxzea1.jpg", "6ec154859c777cb401132bb991cb3635"),
+        (
+            "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3",
+            "3caa342e241ddb7d76fd24a834094101",
+        ),
     ),
 )
 def test_download_resource(test_url: str, expected_hash: str):

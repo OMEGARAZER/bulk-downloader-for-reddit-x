@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import shutil
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
+import prawcore
 import pytest
 from click.testing import CliRunner
 
@@ -68,3 +70,24 @@ def test_cli_scrape_soft_fail(test_args: list[str], tmp_path: Path):
     assert result.exit_code == 0
     assert "Downloaded submission" not in result.output
     assert "Record for entry item" not in result.output
+
+
+@pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.parametrize(
+    ("test_args", "response"),
+    (
+        (["--user", "nasa", "--submitted"], 502),
+        (["--user", "nasa", "--submitted"], 504),
+    ),
+)
+def test_user_serv_fail(test_args: list[str], response: int, tmp_path: Path):
+    runner = CliRunner()
+    test_args = create_basic_args_for_cloner_runner(test_args, tmp_path)
+    with patch("bdfr.connector.sleep", return_value=None):
+        with patch(
+            "bdfr.connector.RedditConnector.check_user_existence",
+            side_effect=prawcore.exceptions.ResponseException(MagicMock(status_code=response)),
+        ):
+            result = runner.invoke(cli, test_args)
+            assert result.exit_code == 0
+            assert f"received {response} HTTP response" in result.output
