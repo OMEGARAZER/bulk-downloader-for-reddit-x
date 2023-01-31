@@ -15,6 +15,7 @@ from bdfr.site_downloaders.imgur import Imgur
     (
         ("https://imgur.com/a/xWZsDDP", ("f551d6e6b0fef2ce909767338612e31b",)),
         ("https://imgur.com/gallery/IjJJdlC", ("740b006cf9ec9d6f734b6e8f5130bdab",)),
+        ("https://imgur.com/gallery/IjJJdlC/", ("740b006cf9ec9d6f734b6e8f5130bdab",)),
         (
             "https://imgur.com/a/dcc84Gt",
             (
@@ -32,6 +33,7 @@ from bdfr.site_downloaders.imgur import Imgur
                 "fb6c913d721c0bbb96aa65d7f560d385",
             ),
         ),
+        ("https://o.imgur.com/jZw9gq2.jpg", ("6d6ea9aa1d98827a05425338afe675bc",)),
         ("https://i.imgur.com/lFJai6i.gifv", ("01a6e79a30bec0e644e5da12365d5071",)),
         ("https://i.imgur.com/ywSyILa.gifv?", ("56d4afc32d2966017c38d98568709b45",)),
         ("https://imgur.com/ubYwpbk.GIFV", ("d4a774aac1667783f9ed3a1bd02fac0c",)),

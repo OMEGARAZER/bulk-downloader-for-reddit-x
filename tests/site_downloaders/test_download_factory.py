@@ -31,6 +31,7 @@ from bdfr.site_downloaders.youtube import Youtube
         ),
         ("https://i.redd.it/affyv0axd5k61.png", Direct),
         ("https://i.imgur.com/bZx1SJQ.jpg", Imgur),
+        ("https://i.Imgur.com/bZx1SJQ.jpg", Imgur),
         ("https://imgur.com/BuzvZwb.gifv", Imgur),
         ("https://imgur.com/a/MkxAzeg", Imgur),
         ("https://m.imgur.com/a/py3RW0j", Imgur),
