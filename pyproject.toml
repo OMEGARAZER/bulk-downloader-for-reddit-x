@@ -64,7 +64,7 @@ bdfr-download = "bdfr.__main__:cli_download"
 line-length = 120
 
 [tool.flake8]
-exclude = ["scripts"]
+exclude = ["scripts/tests"]
 max-line-length = 120
 show-source = true
 statistics = true
