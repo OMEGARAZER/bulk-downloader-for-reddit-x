@@ -154,6 +154,7 @@ class FileNameFormatter:
         max_path_length = max_path - len(ending) - len(str(root)) - 1
 
         out = Path(root, filename + ending)
+        safe_ending = re.match(r".*\..*", ending)
         while any(
             [
                 len(filename) > max_file_part_length_chars,
@@ -162,6 +163,8 @@ class FileNameFormatter:
             ]
         ):
             filename = filename[:-1]
+            if not safe_ending and filename[-1] != ".":
+                filename = filename[:-1] + "."
             out = Path(root, filename + ending)
 
         return out
