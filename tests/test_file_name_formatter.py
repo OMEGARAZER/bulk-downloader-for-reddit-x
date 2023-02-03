@@ -519,3 +519,19 @@ def test_name_submission(
     results = test_formatter.format_resource_paths(test_resources, Path())
     results = set([r[0].name for r in results])
     assert results == expected_names
+
+
+@pytest.mark.parametrize(
+    ("test_filename", "test_ending", "expected_end"),
+    (
+        ("A" * 300 + ".", "_1.mp4", "A_1.mp4"),
+        ("A" * 300 + ".", ".mp4", "A.mp4"),
+        ("A" * 300 + ".", "mp4", "A.mp4"),
+    ),
+)
+def test_shortened_file_name_ending(
+    test_filename: str, test_ending: str, expected_end: str, test_formatter: FileNameFormatter
+):
+    result = test_formatter.limit_file_name_length(test_filename, test_ending, Path("."))
+    assert result.name.endswith(expected_end)
+    assert len(str(result)) <= FileNameFormatter.find_max_path_length()
