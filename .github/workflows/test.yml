@@ -7,12 +7,14 @@ on:
       - "**.md"
       - ".markdown_style.rb"
       - ".mdlrc"
+      - "scripts/"
   pull_request:
     branches: [ master, development ]
     paths-ignore:
       - "**.md"
       - ".markdown_style.rb"
       - ".mdlrc"
+      - "scripts/"
 
 jobs:
   test:
