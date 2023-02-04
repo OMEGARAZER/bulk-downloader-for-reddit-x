@@ -117,10 +117,10 @@ def cli_download(context: click.Context, **_):
         reddit_downloader = RedditDownloader(config, [stream])
         reddit_downloader.download()
     except Exception:
-        logger.exception("Downloader exited unexpectedly")
+        logger.exception(f"Downloader exited unexpectedly - BDFR Downloader v{__version__}")
         raise
     else:
-        logger.info("Program complete")
+        logger.info(f"Program complete - BDFR Downloader v{__version__}")
 
 
 @cli.command("archive")
@@ -138,10 +138,10 @@ def cli_archive(context: click.Context, **_):
         reddit_archiver = Archiver(config, [stream])
         reddit_archiver.download()
     except Exception:
-        logger.exception("Archiver exited unexpectedly")
+        logger.exception(f"Archiver exited unexpectedly - BDFR Archiver v{__version__}")
         raise
     else:
-        logger.info("Program complete")
+        logger.info(f"Program complete - BDFR Archiver v{__version__}")
 
 
 @cli.command("clone")
@@ -160,10 +160,10 @@ def cli_clone(context: click.Context, **_):
         reddit_scraper = RedditCloner(config, [stream])
         reddit_scraper.download()
     except Exception:
-        logger.exception("Scraper exited unexpectedly")
+        logger.exception("Scraper exited unexpectedly - BDFR Scraper v{__version__}")
         raise
     else:
-        logger.info("Program complete")
+        logger.info("Program complete - BDFR Cloner v{__version__}")
 
 
 @cli.command("completion")
