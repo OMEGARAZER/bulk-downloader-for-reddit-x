@@ -37,7 +37,7 @@ class Vidble(BaseDownloader):
         if not re.search(r"vidble.com/(show/|album/|watch\?v)", url):
             url = re.sub(r"/(\w*?)$", r"/show/\1", url)
 
-        page = requests.get(url)
+        page = requests.get(url, timeout=10)
         soup = bs4.BeautifulSoup(page.text, "html.parser")
         content_div = soup.find("div", attrs={"id": "ContentPlaceHolder1_divContent"})
         images = content_div.find_all("img")

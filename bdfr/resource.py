@@ -49,7 +49,7 @@ class Resource:
             self.create_hash()
 
     def create_hash(self):
-        self.hash = hashlib.md5(self.content)
+        self.hash = hashlib.md5(self.content, usedforsecurity=False)
 
     def _determine_extension(self) -> Optional[str]:
         extension_pattern = re.compile(r".*(\..{3,5})$")
@@ -68,7 +68,7 @@ class Resource:
             max_wait_time = 300
         while True:
             try:
-                response = requests.get(url, headers=headers)
+                response = requests.get(url, headers=headers, timeout=10)
                 if re.match(r"^2\d{2}", str(response.status_code)) and response.content:
                     return response.content
                 elif response.status_code in (408, 429):
