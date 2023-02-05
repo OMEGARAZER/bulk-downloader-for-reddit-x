@@ -233,11 +233,11 @@ The following options apply only to the `download` command. This command downloa
     - The default is 120 seconds
     - See [Rate Limiting](#rate-limiting) for details
 - `--no-dupes`
-    - This flag will not redownload files if they were already downloaded in the current run
+    - This flag will skip writing a file to disk if that file was already downloaded in the current run
     - This is calculated by MD5 hash
 - `--search-existing`
     - This will make the BDFR compile the hashes for every file in `directory`
-    - The hashes are used to remove duplicates if `--no-dupes` is supplied or make hard links if `--make-hard-links` is supplied
+    - The hashes are used to skip duplicate files if `--no-dupes` is supplied or make hard links if `--make-hard-links` is supplied
     - **The use of this option is highly discouraged due to inefficiency**
 - `--file-scheme`
     - Sets the scheme for files
