@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import logging
 
@@ -12,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class CommentArchiveEntry(BaseArchiveEntry):
     def __init__(self, comment: praw.models.Comment):
-        super(CommentArchiveEntry, self).__init__(comment)
+        super().__init__(comment)
 
     def compile(self) -> dict:
         self.source.refresh()

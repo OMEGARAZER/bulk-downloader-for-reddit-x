@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import logging
 from argparse import Namespace
@@ -14,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class Configuration(Namespace):
     def __init__(self):
-        super(Configuration, self).__init__()
+        super().__init__()
         self.authenticate = False
         self.config = None
         self.opts: Optional[str] = None

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import configparser
 import logging
@@ -83,13 +82,13 @@ class OAuth2Authenticator:
 
     @staticmethod
     def send_message(client: socket.socket, message: str = ""):
-        client.send(f"HTTP/1.1 200 OK\r\n\r\n{message}".encode("utf-8"))
+        client.send(f"HTTP/1.1 200 OK\r\n\r\n{message}".encode())
         client.close()
 
 
 class OAuth2TokenManager(praw.reddit.BaseTokenManager):
     def __init__(self, config: configparser.ConfigParser, config_location: Path):
-        super(OAuth2TokenManager, self).__init__()
+        super().__init__()
         self.config = config
         self.config_location = config_location
 
