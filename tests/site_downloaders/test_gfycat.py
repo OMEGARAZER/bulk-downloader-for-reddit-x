@@ -9,6 +9,13 @@ from bdfr.site_downloaders.gfycat import Gfycat
 
 
 @pytest.mark.online
+def test_auth_cache():
+    auth1 = Gfycat._get_auth_token()
+    auth2 = Gfycat._get_auth_token()
+    assert auth1 == auth2
+
+
+@pytest.mark.online
 @pytest.mark.parametrize(
     ("test_url", "expected_url"),
     (

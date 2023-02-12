@@ -9,6 +9,13 @@ from bdfr.resource import Resource
 from bdfr.site_downloaders.redgifs import Redgifs
 
 
+@pytest.mark.online
+def test_auth_cache():
+    auth1 = Redgifs._get_auth_token()
+    auth2 = Redgifs._get_auth_token()
+    assert auth1 == auth2
+
+
 @pytest.mark.parametrize(
     ("test_url", "expected"),
     (

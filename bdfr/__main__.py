@@ -81,7 +81,7 @@ def _check_version(context, param, value):
     if not value or context.resilient_parsing:
         return
     current = __version__
-    latest = requests.get("https://pypi.org/pypi/bdfr/json").json()["info"]["version"]
+    latest = requests.get("https://pypi.org/pypi/bdfr/json", timeout=10).json()["info"]["version"]
     print(f"You are currently using v{current} the latest is v{latest}")
     context.exit()
 

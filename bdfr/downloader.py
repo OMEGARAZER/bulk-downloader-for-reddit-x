@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 def _calc_hash(existing_file: Path):
     chunk_size = 1024 * 1024
-    md5_hash = hashlib.md5()
+    md5_hash = hashlib.md5(usedforsecurity=False)
     with existing_file.open("rb") as file:
         chunk = file.read(chunk_size)
         while chunk:

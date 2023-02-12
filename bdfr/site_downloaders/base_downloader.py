@@ -27,10 +27,21 @@ class BaseDownloader(ABC):
     @staticmethod
     def retrieve_url(url: str, cookies: dict = None, headers: dict = None) -> requests.Response:
         try:
-            res = requests.get(url, cookies=cookies, headers=headers)
+            res = requests.get(url, cookies=cookies, headers=headers, timeout=10)
         except requests.exceptions.RequestException as e:
             logger.exception(e)
             raise SiteDownloaderError(f"Failed to get page {url}")
+        if res.status_code != 200:
+            raise ResourceNotFound(f"Server responded with {res.status_code} to {url}")
+        return res
+
+    @staticmethod
+    def post_url(url: str, cookies: dict = None, headers: dict = None, payload: dict = None) -> requests.Response:
+        try:
+            res = requests.post(url, cookies=cookies, headers=headers, json=payload, timeout=10)
+        except requests.exceptions.RequestException as e:
+            logger.exception(e)
+            raise SiteDownloaderError(f"Failed to post to {url}")
         if res.status_code != 200:
             raise ResourceNotFound(f"Server responded with {res.status_code} to {url}")
         return res
