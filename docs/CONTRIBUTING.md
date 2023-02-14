@@ -10,11 +10,15 @@ All communication on GitHub, Discord, email, or any other medium must conform to
 
 **Before opening a new issue**, be sure that no issues regarding your problem already exist. If a similar issue exists, try to contribute to the issue.
 
+**If you are asking a question** about the functioning of the BDFR or the interface, please use the discussions page. Bug reports are not the right medium for asking and answering questions, and the discussions page makes it much easier to discuss, answer, and save questions and responses for others going forwards.
+
 ### Bugs
 
 When opening an issue about a bug, **please provide the full log file for the run in which the bug occurred**. This log file is named `log_output.txt` in the configuration folder. Check the [README](../README.md) for information on where this is. This log file will contain all the information required for the developers to recreate the bug.
 
 If you do not have or cannot find the log file, then at minimum please provide the **Reddit ID for the submission** or comment which caused the issue. Also copy in the command that you used to run the BDFR from the command line, as that will also provide helpful information when trying to find and fix the bug. If needed, more information will be asked in the thread of the bug.
+
+Adding this information is **not optional**. If a bug report is opened without this information, it cannot be replicated by developers. The logs will be asked for once and if they are not supplied, the issue will be closed due to lack of information.
 
 ### Feature requests
 
