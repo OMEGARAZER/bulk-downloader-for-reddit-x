@@ -7,9 +7,10 @@ assignees: ''
 
 ---
 
+- [ ] I have read the [Opening an issue](https://github.com/aliparlakci/bulk-downloader-for-reddit/blob/master/docs/CONTRIBUTING.md#opening-an-issue)
 - [ ] I am reporting a bug.
 - [ ] I am running the latest version of BDfR
-- [ ] I have read the [Opening an issue](https://github.com/aliparlakci/bulk-downloader-for-reddit/blob/master/docs/CONTRIBUTING.md#opening-an-issue)
+- [ ] I am not asking a question about the BDFR (please use Discussions for this)
 
 ## Description
 
