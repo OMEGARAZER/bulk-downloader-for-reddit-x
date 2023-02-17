@@ -21,12 +21,15 @@ def test_auth_cache():
     (
         ("https://gfycat.com/definitivecaninecrayfish", "https://giant.gfycat.com/DefinitiveCanineCrayfish.mp4"),
         ("https://gfycat.com/dazzlingsilkyiguana", "https://giant.gfycat.com/DazzlingSilkyIguana.mp4"),
-        ("https://gfycat.com/WearyComposedHairstreak", "https://thumbs4.redgifs.com/WearyComposedHairstreak.mp4"),
+        ("https://gfycat.com/WearyComposedHairstreak", "https://thumbs44.redgifs.com/WearyComposedHairstreak.mp4"),
         (
             "https://thumbs.gfycat.com/ComposedWholeBullfrog-size_restricted.gif",
-            "https://thumbs4.redgifs.com/ComposedWholeBullfrog.mp4",
+            "https://thumbs44.redgifs.com/ComposedWholeBullfrog.mp4",
         ),
-        ("https://giant.gfycat.com/ComposedWholeBullfrog.mp4", "https://thumbs4.redgifs.com/ComposedWholeBullfrog.mp4"),
+        (
+            "https://giant.gfycat.com/ComposedWholeBullfrog.mp4",
+            "https://thumbs44.redgifs.com/ComposedWholeBullfrog.mp4",
+        ),
     ),
 )
 def test_get_link(test_url: str, expected_url: str):
