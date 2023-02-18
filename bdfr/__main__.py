@@ -77,12 +77,16 @@ def _add_options(opts: list):
     return wrap
 
 
-def _check_version(context, param, value):
+def _check_version(context, _param, value):
     if not value or context.resilient_parsing:
         return
     current = __version__
-    latest = requests.get("https://pypi.org/pypi/bdfr/json", timeout=10).json()["info"]["version"]
-    print(f"You are currently using v{current} the latest is v{latest}")
+    try:
+        latest = requests.get("https://pypi.org/pypi/bdfr/json", timeout=10).json()["info"]["version"]
+        print(f"You are currently using v{current} the latest is v{latest}")
+    except TimeoutError:
+        logger.exception(f"Timeout reached fetching current version from Pypi - BDFR v{current}")
+        raise
     context.exit()
 
 

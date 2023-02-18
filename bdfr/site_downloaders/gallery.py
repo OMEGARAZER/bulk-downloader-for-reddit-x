@@ -3,7 +3,6 @@
 import logging
 from typing import Optional
 
-import requests
 from praw.models import Submission
 
 from bdfr.exceptions import SiteDownloaderError
@@ -41,8 +40,7 @@ class Gallery(BaseDownloader):
             possible_extensions = (".jpg", ".png", ".gif", ".gifv", ".jpeg")
             for extension in possible_extensions:
                 test_url = f"https://i.redd.it/{image_id}{extension}"
-                response = requests.head(test_url, timeout=10)
-                if response.status_code == 200:
+                if Gallery.head_url(test_url).status_code == 200:
                     out.append(test_url)
                     break
         return out
