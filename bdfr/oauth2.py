@@ -33,7 +33,7 @@ class OAuth2Authenticator:
         known_scopes.append("*")
         for scope in wanted_scopes:
             if scope not in known_scopes:
-                raise BulkDownloaderException(f"Scope {scope} is not known to reddit")
+                raise BulkDownloaderException(f"Scope {scope!r} is not known to reddit")
 
     @staticmethod
     def split_scopes(scopes: str) -> set[str]:

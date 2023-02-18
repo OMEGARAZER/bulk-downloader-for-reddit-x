@@ -63,7 +63,7 @@ class Configuration(Namespace):
             self.parse_yaml_options(context.params["opts"])
         for arg_key in context.params.keys():
             if not hasattr(self, arg_key):
-                logger.warning(f"Ignoring an unknown CLI argument: {arg_key}")
+                logger.warning(f"Ignoring an unknown CLI argument: {arg_key!r}")
                 continue
             val = context.params[arg_key]
             if val is None or val == ():
@@ -84,6 +84,6 @@ class Configuration(Namespace):
                 return
         for arg_key, val in opts.items():
             if not hasattr(self, arg_key):
-                logger.warning(f"Ignoring an unknown YAML argument: {arg_key}")
+                logger.warning(f"Ignoring an unknown YAML argument: {arg_key!r}")
                 continue
             setattr(self, arg_key, val)
