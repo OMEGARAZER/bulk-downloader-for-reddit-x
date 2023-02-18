@@ -59,10 +59,10 @@ class OAuth2Authenticator:
 
         if state != params["state"]:
             self.send_message(client)
-            raise RedditAuthenticationError(f'State mismatch in OAuth2. Expected: {state} Received: {params["state"]}')
+            raise RedditAuthenticationError(f"State mismatch in OAuth2. Expected: {state} Received: {params['state']}")
         elif "error" in params:
             self.send_message(client)
-            raise RedditAuthenticationError(f'Error in OAuth2: {params["error"]}')
+            raise RedditAuthenticationError(f"Error in OAuth2: {params['error']}")
 
         self.send_message(client, "<script>alert('You can go back to terminal window now.')</script>")
         refresh_token = reddit.auth.authorize(params["code"])

@@ -125,7 +125,7 @@ class RedditConnector(metaclass=ABCMeta):
         disabled_modules = self.split_args_input(disabled_modules)
         disabled_modules = {name.strip().lower() for name in disabled_modules}
         self.args.disable_module = disabled_modules
-        logger.debug(f'Disabling the following modules: {", ".join(self.args.disable_module)}')
+        logger.debug(f"Disabling the following modules: {', '.join(self.args.disable_module)}")
 
     def create_reddit_instance(self):
         if self.args.authenticate:
@@ -301,7 +301,7 @@ class RedditConnector(metaclass=ABCMeta):
                 logger.log(9, f"Resolved user to {resolved_name}")
                 return resolved_name
             else:
-                logger.warning('To use "me" as a user, an authenticated Reddit instance must be used')
+                logger.warning("To use 'me' as a user, an authenticated Reddit instance must be used")
         else:
             return in_name
 

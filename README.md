@@ -80,11 +80,11 @@ bdfr download ./path/to/output --user reddituser --submitted -L 100
 ```
 
 ```bash
-bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme '{POSTID}'
+bdfr download ./path/to/output --user me --saved --authenticate -L 25 --file-scheme "{POSTID}"
 ```
 
 ```bash
-bdfr download ./path/to/output --subreddit 'Python, all, mindustry' -L 10 --make-hard-links
+bdfr download ./path/to/output --subreddit "Python, all, mindustry" -L 10 --make-hard-links
 ```
 
 ```bash
@@ -92,7 +92,7 @@ bdfr archive ./path/to/output --user reddituser --submitted --all-comments --com
 ```
 
 ```bash
-bdfr archive ./path/to/output --subreddit all --format yaml -L 500 --folder-scheme ''
+bdfr archive ./path/to/output --subreddit all --format yaml -L 500 --folder-scheme ""
 ```
 
 Alternatively, you can pass options through a YAML file.
@@ -191,13 +191,13 @@ The following options are common between both the `archive` and `download` comma
     - This is the name of a multireddit to add as a source
     - Can be specified multiple times
         - This can be done by using `-m` multiple times
-        - Multireddits can also be used to provide CSV multireddits e.g. `-m 'chess, favourites'`
+        - Multireddits can also be used to provide CSV multireddits e.g. `-m "chess, favourites"`
     - The specified multireddits must all belong to the user specified with the `--user` option
 - `-s, --subreddit`
     - This adds a subreddit as a source
     - Can be used mutliple times
         - This can be done by using `-s` multiple times
-        - Subreddits can also be used to provide CSV subreddits e.g. `-m 'all, python, mindustry'`
+        - Subreddits can also be used to provide CSV subreddits e.g. `-m "all, python, mindustry"`
 - `-t, --time`
     - This is the time filter that will be applied to all applicable sources
     - This option does not apply to upvoted or saved posts when scraping from these sources

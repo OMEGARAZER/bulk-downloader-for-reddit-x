@@ -82,7 +82,7 @@ class DownloadFactory:
             "php3",
             "xhtml",
         )
-        if re.match(rf'(?i).*/.*\.({"|".join(web_extensions)})$', url):
+        if re.match(rf"(?i).*/.*\.({'|'.join(web_extensions)})$", url):
             return True
         else:
             return False
