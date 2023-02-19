@@ -39,6 +39,7 @@ def test_get_link(test_url: str, expected_urls: tuple[str]):
     (
         ("https://www.erome.com/a/vqtPuLXh", 1),
         ("https://www.erome.com/a/4tP3KI6F", 1),
+        ("https://www.erome.com/a/WNyK674a", 41),
     ),
 )
 def test_download_resource(test_url: str, expected_hashes_len: int):
