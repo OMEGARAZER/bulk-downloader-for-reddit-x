@@ -4,7 +4,6 @@ import json
 import re
 from typing import Optional
 
-import requests
 from cachetools import TTLCache, cached
 from praw.models import Submission
 
@@ -67,7 +66,7 @@ class Redgifs(BaseDownloader):
         out = set()
         try:
             if response_json["gif"]["type"] == 1:  # type 1 is a video
-                if requests.head(response_json["gif"]["urls"]["hd"], headers=headers, timeout=10).ok:
+                if Redgifs.head_url(response_json["gif"]["urls"]["hd"], headers=headers).status_code == 200:
                     out.add(response_json["gif"]["urls"]["hd"])
                 else:
                     out.add(response_json["gif"]["urls"]["sd"])

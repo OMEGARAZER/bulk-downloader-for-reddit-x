@@ -24,11 +24,14 @@ class OAuth2Authenticator:
 
     @staticmethod
     def _check_scopes(wanted_scopes: set[str]):
-        response = requests.get(
-            "https://www.reddit.com/api/v1/scopes.json",
-            headers={"User-Agent": "fetch-scopes test"},
-            timeout=10,
-        )
+        try:
+            response = requests.get(
+                "https://www.reddit.com/api/v1/scopes.json",
+                headers={"User-Agent": "fetch-scopes test"},
+                timeout=10,
+            )
+        except TimeoutError:
+            raise BulkDownloaderException("Reached timeout fetching scopes")
         known_scopes = [scope for scope, data in response.json().items()]
         known_scopes.append("*")
         for scope in wanted_scopes:
