@@ -94,7 +94,7 @@ class Archiver(RedditConnector):
         elif self.args.format == "yaml":
             self._write_entry_yaml(archive_entry)
         else:
-            raise ArchiverError(f"Unknown format {self.args.format} given")
+            raise ArchiverError(f"Unknown format {self.args.format!r} given")
         logger.info(f"Record for entry item {praw_item.id} written to disk")
 
     def _write_entry_json(self, entry: BaseArchiveEntry):

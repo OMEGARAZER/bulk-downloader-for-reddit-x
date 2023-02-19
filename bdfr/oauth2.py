@@ -36,7 +36,7 @@ class OAuth2Authenticator:
         known_scopes.append("*")
         for scope in wanted_scopes:
             if scope not in known_scopes:
-                raise BulkDownloaderException(f"Scope {scope} is not known to reddit")
+                raise BulkDownloaderException(f"Scope {scope!r} is not known to reddit")
 
     @staticmethod
     def split_scopes(scopes: str) -> set[str]:
@@ -62,10 +62,10 @@ class OAuth2Authenticator:
 
         if state != params["state"]:
             self.send_message(client)
-            raise RedditAuthenticationError(f'State mismatch in OAuth2. Expected: {state} Received: {params["state"]}')
+            raise RedditAuthenticationError(f"State mismatch in OAuth2. Expected: {state} Received: {params['state']}")
         elif "error" in params:
             self.send_message(client)
-            raise RedditAuthenticationError(f'Error in OAuth2: {params["error"]}')
+            raise RedditAuthenticationError(f"Error in OAuth2: {params['error']}")
 
         self.send_message(client, "<script>alert('You can go back to terminal window now.')</script>")
         refresh_token = reddit.auth.authorize(params["code"])

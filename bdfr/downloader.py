@@ -66,7 +66,7 @@ class RedditDownloader(RedditConnector):
         ):
             logger.debug(
                 f"Submission {submission.id} in {submission.subreddit.display_name} skipped"
-                f' due to {submission.author.name if submission.author else "DELETED"} being an ignored user'
+                f" due to {submission.author.name if submission.author else 'DELETED'} being an ignored user"
             )
             return
         elif self.args.min_score and submission.score < self.args.min_score:

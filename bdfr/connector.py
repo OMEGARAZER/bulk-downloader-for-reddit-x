@@ -115,7 +115,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.args.filename_restriction_scheme = self.cfg_parser.get(
                 "DEFAULT", "filename_restriction_scheme", fallback=None
             )
-            logger.debug(f"Setting filename restriction scheme to '{self.args.filename_restriction_scheme}'")
+            logger.debug(f"Setting filename restriction scheme to {self.args.filename_restriction_scheme!r}")
         # Update config on disk
         with Path(self.config_location).open(mode="w") as file:
             self.cfg_parser.write(file)
@@ -125,7 +125,7 @@ class RedditConnector(metaclass=ABCMeta):
         disabled_modules = self.split_args_input(disabled_modules)
         disabled_modules = {name.strip().lower() for name in disabled_modules}
         self.args.disable_module = disabled_modules
-        logger.debug(f'Disabling the following modules: {", ".join(self.args.disable_module)}')
+        logger.debug(f"Disabling the following modules: {', '.join(self.args.disable_module)}")
 
     def create_reddit_instance(self):
         if self.args.authenticate:
@@ -239,7 +239,7 @@ class RedditConnector(metaclass=ABCMeta):
         pattern = re.compile(r"^(?:https://www\.reddit\.com/)?(?:r/)?(.*?)/?$")
         match = re.match(pattern, subreddit)
         if not match:
-            raise errors.BulkDownloaderException(f"Could not find subreddit name in string {subreddit}")
+            raise errors.BulkDownloaderException(f"Could not find subreddit name in string {subreddit!r}")
         return match.group(1)
 
     @staticmethod
@@ -285,7 +285,7 @@ class RedditConnector(metaclass=ABCMeta):
                             )
                         )
                         logger.debug(
-                            f'Added submissions from subreddit {reddit} with the search term "{self.args.search}"'
+                            f"Added submissions from subreddit {reddit} with the search term {self.args.search!r}"
                         )
                     else:
                         out.append(self.create_filtered_listing_generator(reddit))
@@ -301,7 +301,7 @@ class RedditConnector(metaclass=ABCMeta):
                 logger.log(9, f"Resolved user to {resolved_name}")
                 return resolved_name
             else:
-                logger.warning('To use "me" as a user, an authenticated Reddit instance must be used')
+                logger.warning("To use 'me' as a user, an authenticated Reddit instance must be used")
         else:
             return in_name
 

@@ -186,7 +186,7 @@ def cli_completion(shell: str, uninstall: bool):
         Completion(shell).uninstall()
         return
     if shell not in ("all", "bash", "fish", "zsh"):
-        print(f"{shell} is not a valid option.")
+        print(f"{shell!r} is not a valid option.")
         print("Options: all, bash, fish, zsh")
         return
     if click.confirm(f"Would you like to install {shell} completions for BDFR"):
