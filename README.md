@@ -370,7 +370,7 @@ Modules can be disabled through the command line interface for the BDFR or more 
 - `Vidble`
 - `VReddit` (Reddit Video Post)
 - `Youtube`
-- `YoutubeDlFallback`
+- `YtdlpFallback` (Youtube DL Fallback)
 
 ### Rate Limiting
 
