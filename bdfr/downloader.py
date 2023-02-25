@@ -123,12 +123,12 @@ class RedditDownloader(RedditConnector):
                 )
                 return
             resource_hash = res.hash.hexdigest()
-            destination.parent.mkdir(parents=True, exist_ok=True)
             if resource_hash in self.master_hash_list:
                 if self.args.no_dupes:
                     logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")
                     return
                 elif self.args.make_hard_links:
+                    destination.parent.mkdir(parents=True, exist_ok=True)
                     try:
                         destination.hardlink_to(self.master_hash_list[resource_hash])
                     except AttributeError:
@@ -138,6 +138,7 @@ class RedditDownloader(RedditConnector):
                         f" in submission {submission.id}"
                     )
                     return
+            destination.parent.mkdir(parents=True, exist_ok=True)
             try:
                 with destination.open("wb") as file:
                     file.write(res.content)
