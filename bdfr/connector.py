@@ -8,6 +8,7 @@ import logging.handlers
 import re
 import shutil
 import socket
+import sqlite3
 from abc import ABCMeta, abstractmethod
 from collections.abc import Callable, Iterable, Iterator
 from datetime import datetime
@@ -87,6 +88,11 @@ class RedditConnector(metaclass=ABCMeta):
         self.args.link = list(itertools.chain(self.args.link, self.read_id_files(self.args.include_id_file)))
 
         self.master_hash_list = {}
+        if self.args.db or self.args.db_file:
+            self.args.db = True if not self.args.db else self.args.db
+            logger.debug("DB option selected, setting no-dupes active")
+            self.args.no_dupes = True
+            self.load_db()
         self.authenticator = self.create_authenticator()
         logger.log(9, "Created site authenticator")
 
@@ -207,6 +213,35 @@ class RedditConnector(metaclass=ABCMeta):
         if not self.config_location:
             raise errors.BulkDownloaderException("Could not find a configuration file to load")
         self.cfg_parser.read(self.config_location)
+
+    def load_db(self) -> None:
+        if self.args.db_file:
+            if (db_path := Path(self.args.db_file)).exists():
+                logger.debug(f"Loading DB from {self.args.db_file}")
+                self.db = sqlite3.connect(db_path)
+                return
+            else:
+                with importlib.resources.path("bdfr", "bdfr.db") as path:
+                    logger.info(f"DB not found at {self.args.db_file} loading clean DB")
+                    shutil.copy(path, Path(self.args.db_file))
+                    self.db = sqlite3.connect(self.args.db_file)
+                    return
+        possible_paths = [
+            Path("./bdfr.db"),
+            Path(self.config_directory, "bdfr.db"),
+        ]
+        self.db = None
+        for path in possible_paths:
+            if path.resolve().expanduser().exists():
+                logger.debug(f"Loading DB from {path}")
+                self.db = sqlite3.connect(path)
+                break
+        if not self.db:
+            with importlib.resources.path("bdfr", "bdfr.db") as path:
+                db_path = Path(self.config_directory, "bdfr.db")
+                logger.info(f"No DB found, loading clean DB to {db_path}")
+                shutil.copy(path, Path(self.config_directory, "bdfr.db"))
+                self.db = sqlite3.connect(db_path)
 
     def create_file_logger(self) -> logging.handlers.RotatingFileHandler:
         if self.args.log is None:
