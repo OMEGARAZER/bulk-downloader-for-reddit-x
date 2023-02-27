@@ -40,7 +40,7 @@ class Imgur(BaseDownloader):
             if link.endswith("/"):
                 link = link.removesuffix("/")
             if re.search(r".*/(.*?)(gallery/|a/)", link):
-                imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*)?$", link).group(1)
+                imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*|\..{3,4})?$", link).group(1)
                 link = f"https://api.imgur.com/3/album/{imgur_id}"
             else:
                 imgur_id = re.match(r".*/(.*?)(?:_d)?(?:\..{0,})?$", link).group(1)
