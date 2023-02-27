@@ -2,19 +2,21 @@ name: Python Test
 
 on:
   push:
-    branches: [ master, development ]
     paths-ignore:
       - "**.md"
       - ".markdown_style.rb"
       - ".mdlrc"
-      - "scripts/"
+      - "scripts/**"
   pull_request:
-    branches: [ master, development ]
     paths-ignore:
       - "**.md"
       - ".markdown_style.rb"
       - ".mdlrc"
-      - "scripts/"
+      - "scripts/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
 
 jobs:
   test:

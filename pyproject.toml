@@ -3,14 +3,13 @@ requires = ["setuptools>=65.6.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bdfr"
+name = "bdfrx"
 description = "Downloads and archives content from reddit"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {file = "LICENSE"}
 keywords = ["reddit", "download", "archive",]
-authors = [{name = "Ali Parlakci", email = "parlakciali@gmail.com"}]
-maintainers = [{name = "Serene Arc", email = "serenical@gmail.com"}]
+authors = [{name = "OMEGARAZER", email = "bdfrx.python@gmail.com"}]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
@@ -55,10 +54,10 @@ dev = [
 "Bug Reports" = "https://github.com/aliparlakci/bulk-downloader-for-reddit/issues"
 
 [project.scripts]
-bdfr = "bdfr.__main__:cli"
-bdfr-archive = "bdfr.__main__:cli_archive"
-bdfr-clone = "bdfr.__main__:cli_clone"
-bdfr-download = "bdfr.__main__:cli_download"
+bdfrx = "bdfr.__main__:cli"
+bdfrx-archive = "bdfr.__main__:cli_archive"
+bdfrx-clone = "bdfr.__main__:cli_clone"
+bdfrx-download = "bdfr.__main__:cli_download"
 
 [tool.black]
 line-length = 120
@@ -86,6 +85,9 @@ markers = [
     "slow: test is slow to run",
     "authenticated: test requires an authenticated Reddit instance",
 ]
+
+[tool.refurb]
+python-version = [3.9]
 
 [tool.ruff]
 exclude = ["scripts/tests"]
