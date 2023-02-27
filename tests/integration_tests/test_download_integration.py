@@ -2,6 +2,7 @@
 
 import shutil
 from pathlib import Path
+from sys import platform
 from unittest.mock import MagicMock, patch
 
 import prawcore
@@ -425,6 +426,7 @@ def test_cli_download_user_reddit_server_error(test_args: list[str], response: i
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "darwin", reason="Test hangs on macos github")
 @pytest.mark.parametrize(
     "test_args",
     (
