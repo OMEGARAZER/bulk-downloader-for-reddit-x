@@ -16,7 +16,6 @@ class Configuration(Namespace):
         super().__init__()
         self.authenticate = False
         self.config = None
-        self.opts: Optional[str] = None
         self.directory: str = "."
         self.disable_module: list[str] = []
         self.exclude_id = []
@@ -31,18 +30,19 @@ class Configuration(Namespace):
         self.log: Optional[str] = None
         self.make_hard_links = False
         self.max_wait_time = None
+        self.min_score = None
+        self.max_score = None
+        self.min_score_ratio = None
+        self.max_score_ratio = None
         self.multireddit: list[str] = []
         self.no_dupes: bool = False
+        self.opts: Optional[str] = None
         self.saved: bool = False
         self.search: Optional[str] = None
         self.search_existing: bool = False
         self.skip: list[str] = []
         self.skip_domain: list[str] = []
         self.skip_subreddit: list[str] = []
-        self.min_score = None
-        self.max_score = None
-        self.min_score_ratio = None
-        self.max_score_ratio = None
         self.sort: str = "hot"
         self.submitted: bool = False
         self.subscribed: bool = False
