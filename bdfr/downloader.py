@@ -65,11 +65,11 @@ class RedditDownloader(RedditConnector):
     def _download_submission(self, submission: praw.models.Submission) -> None:
         if self.args.db:
             with self.db:
-                if self.db.execute("SELECT link FROM link WHERE link=?;", (submission.url,)).fetchone():
-                    logger.debug(f"Submission {submission.id} link exists in the DB, skipping")
-                    return
                 if self.db.execute("SELECT post_id FROM post_id WHERE post_id=?;", (submission.id,)).fetchone():
                     logger.debug(f"Object {submission.id} in the DB, skipping")
+                    return
+                if self.db.execute("SELECT link FROM link WHERE link=?;", (submission.url,)).fetchone():
+                    logger.debug(f"Submission {submission.id} link exists in the DB, skipping")
                     return
         elif submission.id in self.excluded_submission_ids:
             logger.debug(f"Object {submission.id} in exclusion list, skipping")

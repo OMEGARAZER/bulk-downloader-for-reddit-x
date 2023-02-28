@@ -36,7 +36,7 @@ dynamic = ["version"]
 
 [tool.setuptools]
 dynamic = {"version" = {attr = "bdfr.__version__"}}
-packages = ["bdfr", "bdfr.archive_entry", "bdfr.site_downloaders", "bdfr.site_downloaders.fallback_downloaders",]
+packages = ["bdfr", "bdfr.site_downloaders", "bdfr.site_downloaders.fallback_downloaders",]
 data-files = {"config" = ["bdfr/default_config.cfg", "bdfr/bdfr.db",]}
 
 [project.optional-dependencies]
@@ -49,9 +49,9 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://aliparlakci.github.io/bulk-downloader-for-reddit"
-"Source" = "https://github.com/aliparlakci/bulk-downloader-for-reddit"
-"Bug Reports" = "https://github.com/aliparlakci/bulk-downloader-for-reddit/issues"
+"Homepage" = "https://omegarazer.github.io/bulk-downloader-for-reddit-x"
+"Source" = "https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x"
+"Bug Reports" = "https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x/issues"
 
 [project.scripts]
 bdfrx = "bdfr.__main__:cli"

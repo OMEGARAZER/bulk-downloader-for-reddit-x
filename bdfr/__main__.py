@@ -84,10 +84,10 @@ def _check_version(context: click.core.Context, _param, value: bool) -> None:
         return
     current = __version__
     try:
-        latest = requests.get("https://pypi.org/pypi/bdfr/json", timeout=10).json()["info"]["version"]
+        latest = requests.get("https://pypi.org/pypi/bdfrx/json", timeout=10).json()["info"]["version"]
         print(f"You are currently using v{current} the latest is v{latest}")
     except TimeoutError:
-        logger.exception(f"Timeout reached fetching current version from Pypi - BDFR v{current}")
+        logger.exception(f"Timeout reached fetching current version from Pypi - BDFRx v{current}")
         raise
     context.exit()
 
@@ -103,7 +103,7 @@ def _check_version(context: click.core.Context, _param, value: bool) -> None:
     help="Check version and exit.",
 )
 def cli() -> None:
-    """BDFR is used to download and archive content from Reddit."""
+    """BDFRx is used to download content from Reddit."""
     pass
 
 
@@ -122,10 +122,10 @@ def cli_download(context: click.Context, **_) -> None:
         reddit_downloader = RedditDownloader(config, [stream])
         reddit_downloader.download()
     except Exception:
-        logger.exception(f"Downloader exited unexpectedly - BDFR Downloader v{__version__}")
+        logger.exception(f"Downloader exited unexpectedly - BDFRx Downloader v{__version__}")
         raise
     else:
-        logger.info(f"Program complete - BDFR Downloader v{__version__}")
+        logger.info(f"Program complete - BDFRx Downloader v{__version__}")
 
 
 @cli.command("archive")
@@ -177,21 +177,21 @@ def cli_clone(context: click.Context, **_) -> None:
 @click.option("-u", "--uninstall", is_flag=True, default=False, help="Uninstall completion")
 def cli_completion(shell: str, uninstall: bool) -> None:
     """\b
-    Installs shell completions for BDFR.
+    Installs shell completions for BDFRx.
     Options: all, bash, fish, zsh
     Default: all"""
     shell = shell.lower()
     if sys.platform == "win32":
         print("Completions are not currently supported on Windows.")
         return
-    if uninstall and click.confirm(f"Would you like to uninstall {shell} completions for BDFR"):
+    if uninstall and click.confirm(f"Would you like to uninstall {shell} completions for BDFRx"):
         Completion(shell).uninstall()
         return
     if shell not in ("all", "bash", "fish", "zsh"):
         print(f"{shell!r} is not a valid option.")
         print("Options: all, bash, fish, zsh")
         return
-    if click.confirm(f"Would you like to install {shell} completions for BDFR"):
+    if click.confirm(f"Would you like to install {shell} completions for BDFRx"):
         Completion(shell).install()
 
 
