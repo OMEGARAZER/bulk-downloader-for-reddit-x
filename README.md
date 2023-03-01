@@ -44,6 +44,7 @@ If you want to use the source code or make contributions, refer to [CONTRIBUTING
 BDFRx differs from the base BDFR in a few ways:
 
 - Does not contain the Archive and Clone modes (Currently still available but are not maintained and ***will*** be removed with the 1.0 release)
+- Uses the `bdfrx` config directory by default (Will be changed with the 1.0 release)
 - Option to use an Sqlite3 database to store hashes, links and post ID's to be filtered in future runs
 
 ## Usage
@@ -79,7 +80,7 @@ bdfrx download ./path/to/output --subreddit "Python, all, mindustry" -L 10 --mak
 Alternatively, you can pass options through a YAML file.
 
 ```bash
-bdfr download ./path/to/output --opts my_opts.yaml
+bdfrx download ./path/to/output --opts my_opts.yaml
 ```
 
 For example, running it with the following file
@@ -97,7 +98,7 @@ subreddit:
 would be equilavent to (take note that in YAML there is `file_scheme` instead of `file-scheme`):
 
 ```bash
-bdfr download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
+bdfrx download ./path/to/output --skip mp4 --skip avi --file-scheme "{UPVOTES}_{REDDITOR}_{POSTID}_{DATE}" -L 10 -S top --subreddit EarthPorn --subreddit CityPorn
 ```
 
 Any option that can be specified multiple times should be formatted like subreddit is above.
@@ -107,12 +108,12 @@ In cases when the same option is specified both in the YAML file and in as a com
 ## Options
 
 - `directory`
-    - This is the directory to which the BDFR will download and place all files
+    - This is the directory to which BDFRx will download and place all files
 - `--authenticate`
-    - This flag will make the BDFR attempt to use an authenticated Reddit session
+    - This flag will make BDFRx attempt to use an authenticated Reddit session
     - See [Authentication](#authentication-and-security) for more details
 - `--config`
-    - If the path to a configuration file is supplied with this option, the BDFR will use the specified config
+    - If the path to a configuration file is supplied with this option, BDFRx will use the specified config
     - See [Configuration Files](#configuration) for more details
 - `--db`
     - Connects to a sqlite3 db to save hashes, paths and links to be reused
@@ -156,13 +157,13 @@ In cases when the same option is specified both in the YAML file and in as a com
     - This is the limit on the number of submissions retrieve
     - Default is max possible
     - Note that this limit applies to **each source individually** e.g. if a `--limit` of 10 and three subreddits are provided, then 30 total submissions will be scraped
-    - If it is not supplied, then the BDFR will default to the maximum allowed by Reddit, roughly 1000 posts. **We cannot bypass this.**
+    - If it is not supplied, then BDFRx will default to the maximum allowed by Reddit, roughly 1000 posts. **This cannot be bypassed.**
 - `-l, --link`
     - This is a direct link to a submission to download, either as a URL or an ID
     - Can be specified multiple times
 - `--log`
     - This allows one to specify the location of the logfile
-    - This must be done when running multiple instances of the BDFR, see [Multiple Instances](#multiple-instances) below
+    - This must be done when running multiple instances of BDFRx, see [Multiple Instances](#multiple-instances) below
 - `--make-hard-links`
     - This flag will create hard links to an existing file when a duplicate is downloaded in the current run
     - This will make the file appear in multiple directories while only taking the space of a single instance
@@ -192,13 +193,13 @@ In cases when the same option is specified both in the YAML file and in as a com
     - Has higher prority than the global config file but lower than command-line arguments.
     - See [opts_example.yaml](./opts_example.yaml) for an example file.
 - `--saved`
-    - This option will make the BDFR use the supplied user's saved posts list as a download source
+    - This option will make BDFRx use the supplied user's saved posts list as a download source
     - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
 - `--search`
     - This will apply the input search term to specific lists when scraping submissions
     - A search term can only be applied when using the `--subreddit` and `--multireddit` flags
 - `--search-existing`
-    - This will make the BDFR compile the hashes for every file in `directory`
+    - This will make BDFRx compile the hashes for every file in `directory`
     - The hashes are used to skip duplicate files if `--no-dupes` is supplied or make hard links if `--make-hard-links` is supplied
     - **The use of this option is highly discouraged due to inefficiency**
 - `--skip`
@@ -213,7 +214,7 @@ In cases when the same option is specified both in the YAML file and in as a com
     - Can be specified multiple times
     - Also accepts CSV subreddit names
 - `-S, --sort`
-    - This is the sort type for each applicable submission source supplied to the BDFR
+    - This is the sort type for each applicable submission source supplied to BDFRx
     - This option does not apply to upvoted or saved posts when scraping from these sources
     - The following options are available:
         - `controversial`
@@ -258,36 +259,36 @@ In cases when the same option is specified both in the YAML file and in as a com
 
 ## Common Command Tricks
 
-A common use case is for subreddits/users to be loaded from a file. The BDFR supports this via YAML file options (`--opts my_opts.yaml`).
+A common use case is for subreddits/users to be loaded from a file. BDFRx supports this via YAML file options (`--opts my_opts.yaml`).
 
 Alternatively, you can use the command-line [xargs](https://en.wikipedia.org/wiki/Xargs) function.
 For a list of users `users.txt` (one user per line), type:
 
 ```bash
-cat users.txt | xargs -L 1 echo --user | xargs -L 50 bdfr download <ARGS>
+cat users.txt | xargs -L 1 echo --user | xargs -L 50 bdfrx download <ARGS>
 ```
 
 The part `-L 50` is to make sure that the character limit for a single line isn't exceeded, but may not be necessary. This can also be used to load subreddits from a file, simply exchange `--user` with `--subreddit` and so on.
 
 ## Authentication and Security
 
-The BDFR uses OAuth2 authentication to connect to Reddit if authentication is required. This means that it is a secure, token-based system for making requests. This also means that the BDFR only has access to specific parts of the account authenticated, by default only saved posts, upvoted posts, and the identity of the authenticated account. Note that authentication is not required unless accessing private things like upvoted posts, saved posts, and private multireddits.
+BDFRx uses OAuth2 authentication to connect to Reddit if authentication is required. This means that it is a secure, token-based system for making requests. This also means that BDFRx only has access to specific parts of the account authenticated, by default only saved posts, upvoted posts, and the identity of the authenticated account. Note that authentication is not required unless accessing private things like upvoted posts, saved posts, and private multireddits.
 
-To authenticate, the BDFR will first look for a token in the configuration file that signals that there's been a previous authentication. If this is not there, then the BDFR will attempt to register itself with your account. This is normal, and if you run the program, it will pause and show a Reddit URL. Click on this URL and it will take you to Reddit, where the permissions being requested will be shown. Read this and **confirm that there are no more permissions than needed to run the program**. You should not grant unneeded permissions; by default, the BDFR only requests permission to read your saved or upvoted submissions and identify as you.
+To authenticate, BDFRx will first look for a token in the configuration file that signals that there's been a previous authentication. If this is not there, then BDFRx will attempt to register itself with your account. This is normal, and if you run the program, it will pause and show a Reddit URL. Click on this URL and it will take you to Reddit, where the permissions being requested will be shown. Read this and **confirm that there are no more permissions than needed to run the program**. You should not grant unneeded permissions; by default, BDFRx only requests permission to read your saved or upvoted submissions and identify as you.
 
-If the permissions look safe, confirm it, and the BDFR will save a token that will allow it to authenticate with Reddit from then on.
+If the permissions look safe, confirm it, and BDFRx will save a token that will allow it to authenticate with Reddit from then on.
 
 ## Changing Permissions
 
-Most users will not need to do anything extra to use any of the current features. However, if additional features such as scraping messages, PMs, etc are added in the future, these will require additional scopes. Additionally, advanced users may wish to use the BDFR with their own API key and secret. There is normally no need to do this, but it *is* allowed by the BDFR.
+Most users will not need to do anything extra to use any of the current features. However, if additional features such as scraping messages, PMs, etc are added in the future, these will require additional scopes. Additionally, advanced users may wish to use BDFRx with their own API key and secret. There is normally no need to do this, but it *is* allowed by BDFRx.
 
-The configuration file for the BDFR contains the API secret and key, as well as the scopes that the BDFR will request when registering itself to a Reddit account via OAuth2. These can all be changed if the user wishes, however do not do so if you don't know what you are doing. The defaults are specifically chosen to have a very low security risk if your token were to be compromised, however unlikely that actually is. Never grant more permissions than you absolutely need.
+The configuration file for BDFRx contains the API secret and key, as well as the scopes that BDFRx will request when registering itself to a Reddit account via OAuth2. These can all be changed if the user wishes, however do not do so if you don't know what you are doing. The defaults are specifically chosen to have a very low security risk if your token were to be compromised, however unlikely that actually is. Never grant more permissions than you absolutely need.
 
 For more details on the configuration file and the values therein, see [Configuration Files](#configuration).
 
 ## Folder and File Name Schemes
 
-The naming and folder schemes for the BDFR are both completely customisable. A number of different fields can be given which will be replaced with properties from a submission when downloading it. The scheme format takes the form of `{KEY}`, where `KEY` is a string from the below list.
+The naming and folder schemes for BDFRx are both completely customisable. A number of different fields can be given which will be replaced with properties from a submission when downloading it. The scheme format takes the form of `{KEY}`, where `KEY` is a string from the below list.
 
 - `DATE`
 - `FLAIR`
@@ -304,11 +305,11 @@ Each of these can be enclosed in curly bracket, `{}`, and included in the name. 
 
 At least one key *must* be included in the file scheme, otherwise an error will be thrown. The folder scheme however, can be null or a simple static string. In the former case, all files will be placed in the folder specified with the `directory` argument. If the folder scheme is a static string, then all submissions will be placed in a folder of that name. In both cases, there will be no separation between all submissions.
 
-It is highly recommended that the file name scheme contain the parameter `{POSTID}` as this is **the only parameter guaranteed to be unique**. No combination of other keys will necessarily be unique and may result in posts being skipped as the BDFR will see files by the same name and skip the download, assuming that they are already downloaded.
+It is highly recommended that the file name scheme contain the parameter `{POSTID}` as this is **the only parameter guaranteed to be unique**. No combination of other keys will necessarily be unique and may result in posts being skipped as BDFRx will see files by the same name and skip the download, assuming that they are already downloaded.
 
 ## Configuration
 
-The configuration files are, by default, stored in the configuration directory for the user. This differs depending on the OS that the BDFR is being run on. For Windows, this will be:
+The configuration files are, by default, stored in the configuration directory for the user. This differs depending on the OS that BDFRx is being run on. For Windows, this will be:
 
 - `C:\Users\<User>\AppData\Local\BDFR\bdfr`
 
@@ -324,11 +325,11 @@ Lastly, on a Linux system, this will be:
 
 - `~/.config/bdfr/`
 
-The logging output for each run of the BDFR will be saved to this directory in the file `log_output.txt`. If you need to submit a bug, it is this file that you will need to submit with the report.
+The logging output for each run of BDFRx will be saved to this directory in the file `log_output.txt`. If you need to submit a bug, it is this file that you will need to submit with the report.
 
 ### Configuration File
 
-The `config.cfg` is the file that supplies the BDFR with the configuration to use. At the moment, the following keys **must** be included in the configuration file supplied.
+The `config.cfg` is the file that supplies BDFRx with the configuration to use. At the moment, the following keys **must** be included in the configuration file supplied.
 
 - `client_id`
 - `client_secret`
@@ -342,9 +343,9 @@ The following keys are optional, and defaults will be used if they cannot be fou
 - `disabled_modules`
 - `filename-restriction-scheme`
 
-All of these should not be modified unless you know what you're doing, as the default values will enable the BDFR to function just fine. A configuration is included in the BDFR when it is installed, and this will be placed in the configuration directory as the default.
+All of these should not be modified unless you know what you're doing, as the default values will enable BDFRx to function just fine. A configuration is included in BDFRx when it is installed, and this will be placed in the configuration directory as the default.
 
-Most of these values have to do with OAuth2 configuration and authorisation. The key `backup_log_count` however has to do with the log rollover. The logs in the configuration directory can be verbose and for long runs of the BDFR, can grow quite large. To combat this, the BDFR will overwrite previous logs. This value determines how many previous run logs will be kept. The default is 3, which means that the BDFR will keep at most three past logs plus the current one. Any runs past this will overwrite the oldest log file, called "rolling over". If you want more records of past runs, increase this number.
+Most of these values have to do with OAuth2 configuration and authorisation. The key `backup_log_count` however has to do with the log rollover. The logs in the configuration directory can be verbose and for long runs of BDFRx, can grow quite large. To combat this, BDFRx will overwrite previous logs. This value determines how many previous run logs will be kept. The default is 3, which means that BDFRx will keep at most three past logs plus the current one. Any runs past this will overwrite the oldest log file, called "rolling over". If you want more records of past runs, increase this number.
 
 #### Time Formatting Customisation
 
@@ -354,9 +355,9 @@ The format can be specified through the [format codes](https://docs.python.org/3
 
 #### Disabling Modules
 
-The individual modules of the BDFR, used to download submissions from websites, can be disabled. This is helpful especially in the case of the fallback downloaders, since the `--skip-domain` option cannot be effectively used in these cases. For example, the Youtube-DL downloader can retrieve data from hundreds of websites and domains; thus the only way to fully disable it is via the `--disable-module` option.
+The individual modules of BDFRx, used to download submissions from websites, can be disabled. This is helpful especially in the case of the fallback downloaders, since the `--skip-domain` option cannot be effectively used in these cases. For example, the Youtube-DL downloader can retrieve data from hundreds of websites and domains; thus the only way to fully disable it is via the `--disable-module` option.
 
-Modules can be disabled through the command line interface for the BDFR or more permanently in the configuration file via the `disabled_modules` option. The list of downloaders that can be disabled are the following. Note that they are case-insensitive.
+Modules can be disabled through the command line interface for BDFRx or more permanently in the configuration file via the `disabled_modules` option. The list of downloaders that can be disabled are the following. Note that they are case-insensitive.
 
 - `Direct`
 - `DelayForReddit`
@@ -376,35 +377,35 @@ Modules can be disabled through the command line interface for the BDFR or more 
 
 The option `max_wait_time` has to do with retrying downloads. There are certain HTTP errors that mean that no amount of requests will return the wanted data, but some errors are from rate-limiting. This is when a single client is making so many requests that the remote website cuts the client off to preserve the function of the site. This is a common situation when downloading many resources from the same site. It is polite and best practice to obey the website's wishes in these cases.
 
-To this end, the BDFR will sleep for a time before retrying the download, giving the remote server time to "rest". This is done in 60 second increments. For example, if a rate-limiting-related error is given, the BDFR will sleep for 60 seconds before retrying. Then, if the same type of error occurs, it will sleep for another 120 seconds, then 180 seconds, and so on.
+To this end, BDFRx will sleep for a time before retrying the download, giving the remote server time to "rest". This is done in 60 second increments. For example, if a rate-limiting-related error is given, BDFRx will sleep for 60 seconds before retrying. Then, if the same type of error occurs, it will sleep for another 120 seconds, then 180 seconds, and so on.
 
-The option `--max-wait-time` and the configuration option `max_wait_time` both specify the maximum time the BDFR will wait. If both are present, the command-line option takes precedence. For instance, the default is 120, so the BDFR will wait for 60 seconds, then 120 seconds, and then move one. **Note that this results in a total time of 180 seconds trying the same download**. If you wish to try to bypass the rate-limiting system on the remote site, increasing the maximum wait time may help. However, note that the actual wait times increase exponentially if the resource is not downloaded i.e. specifying a max value of 300 (5 minutes), can make the BDFR pause for 15 minutes on one submission, not 5, in the worst case.
+The option `--max-wait-time` and the configuration option `max_wait_time` both specify the maximum time BDFRx will wait. If both are present, the command-line option takes precedence. For instance, the default is 120, so BDFRx will wait for 60 seconds, then 120 seconds, and then move one. **Note that this results in a total time of 180 seconds trying the same download**. If you wish to try to bypass the rate-limiting system on the remote site, increasing the maximum wait time may help. However, note that the actual wait times increase exponentially if the resource is not downloaded i.e. specifying a max value of 300 (5 minutes), can make BDFRx pause for 15 minutes on one submission, not 5, in the worst case.
 
 ## Multiple Instances
 
-The BDFR can be run in multiple instances with multiple configurations, either concurrently or consecutively. The use of scripting files facilitates this the easiest, either Powershell on Windows operating systems or Bash elsewhere. This allows multiple scenarios to be run with data being scraped from different sources, as any two sets of scenarios might be mutually exclusive i.e. it is not possible to download any combination of data from a single run of the BDFR. To download from multiple users for example, multiple runs of the BDFR are required.
+BDFRx can be run in multiple instances with multiple configurations, either concurrently or consecutively. The use of scripting files facilitates this the easiest, either Powershell on Windows operating systems or Bash elsewhere. This allows multiple scenarios to be run with data being scraped from different sources, as any two sets of scenarios might be mutually exclusive i.e. it is not possible to download any combination of data from a single run of BDFRx. To download from multiple users for example, multiple runs of BDFRx are required.
 
 Running these scenarios consecutively is done easily, like any single run. Configuration files that differ may be specified with the `--config` option to switch between tokens, for example. Otherwise, almost all configuration for data sources can be specified per-run through the command line.
 
-Running scenarios concurrently (at the same time) however, is more complicated. The BDFR will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of the BDFR running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
+Running scenarios concurrently (at the same time) however, is more complicated. BDFRx will look to a single, static place to put the detailed log files, in a directory with the configuration file specified above. If there are multiple instances, or processes, of BDFRx running at the same time, they will all be trying to write to a single file. On Linux and other UNIX based operating systems, this will succeed, though there is a substantial risk that the logfile will be useless due to garbled and jumbled data. On Windows however, attempting this will raise an error that crashes the program as Windows forbids multiple processes from accessing the same file.
 
-The way to fix this is to use the `--log` option to manually specify where the logfile is to be stored. If the given location is unique to each instance of the BDFR, then it will run fine.
+The way to fix this is to use the `--log` option to manually specify where the logfile is to be stored. If the given location is unique to each instance of BDFRx, then it will run fine.
 
 ## Filesystem Restrictions
 
 Different filesystems have different restrictions for what files and directories can be named. Thesse are separated into two broad categories: Linux-based filesystems, which have very few restrictions; and Windows-based filesystems, which are much more restrictive in terms if forbidden characters and length of paths.
 
-During the normal course of operation, the BDFR detects what filesystem it is running on and formats any filenames and directories to conform to the rules that are expected of it. However, there are cases where this will fail. When running on a Linux-based machine, or another system where the home filesystem is permissive, and accessing a share or drive with a less permissive system, the BDFR will assume that the *home* filesystem's rules apply. For example, when downloading to a SAMBA share from Ubuntu, there will be errors as SAMBA is more restrictive than Ubuntu.
+During the normal course of operation, BDFRx detects what filesystem it is running on and formats any filenames and directories to conform to the rules that are expected of it. However, there are cases where this will fail. When running on a Linux-based machine, or another system where the home filesystem is permissive, and accessing a share or drive with a less permissive system, BDFRx will assume that the *home* filesystem's rules apply. For example, when downloading to a SAMBA share from Ubuntu, there will be errors as SAMBA is more restrictive than Ubuntu.
 
-The best option would be to always download to a filesystem that is as permission as possible, such as an NFS share or ext4 drive. However, when this is not possible, the BDFR allows for the restriction scheme to be manually specified at either the command-line or in the configuration file. At the command-line, this is done with `--filename-restriction-scheme windows`, or else an option by the same name in the configuration file.
+The best option would be to always download to a filesystem that is as permission as possible, such as an NFS share or ext4 drive. However, when this is not possible, BDFRx allows for the restriction scheme to be manually specified at either the command-line or in the configuration file. At the command-line, this is done with `--filename-restriction-scheme windows`, or else an option by the same name in the configuration file.
 
 ## Manipulating Logfiles
 
-The logfiles that the BDFR outputs are consistent and quite detailed and in a format that is amenable to regex. To this end, a number of bash scripts have been [included here](./scripts). They show examples for how to extract successfully downloaded IDs, failed IDs, and more besides.
+The logfiles that BDFRx outputs are consistent and quite detailed and in a format that is amenable to regex. To this end, a number of bash scripts have been [included here](./scripts). They show examples for how to extract successfully downloaded IDs, failed IDs, and more besides.
 
 ## Unsaving posts
 
-Back in v1 there was an option to unsave posts from your account when downloading, but it was removed from the core BDFR on v2 as it is considered a read-only tool. However, for those missing this functionality, a script was created that uses the log files to achieve this. There is info on how to use this on the README.md file on the scripts subdirectory.
+Back in BDFR v1 there was an option to unsave posts from your account when downloading, but it was removed from the core BDFR on v2 as it is considered a read-only tool. However, for those missing this functionality, a script was created that uses the log files to achieve this. There is info on how to use this on the README.md file on the scripts subdirectory.
 
 ## List of currently supported sources
 
