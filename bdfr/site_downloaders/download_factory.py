@@ -84,5 +84,4 @@ class DownloadFactory:
         )
         if re.match(rf"(?i).*/.*\.({'|'.join(web_extensions)})$", url):
             return True
-        else:
-            return False
+        return False

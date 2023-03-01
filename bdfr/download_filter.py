@@ -19,8 +19,7 @@ class DownloadFilter:
             return False
         elif not self._check_domain(url):
             return False
-        else:
-            return True
+        return True
 
     def check_resource(self, res: Resource) -> bool:
         if not self._check_extension(res.extension):
@@ -37,8 +36,7 @@ class DownloadFilter:
         if re.match(pattern, resource_extension):
             logger.log(9, f"Url {resource_extension!r} matched with {pattern!r}")
             return False
-        else:
-            return True
+        return True
 
     def _check_domain(self, url: str) -> bool:
         if not self.excluded_domains:
@@ -48,5 +46,4 @@ class DownloadFilter:
         if re.match(pattern, url):
             logger.log(9, f"Url {url!r} matched with {pattern!r}")
             return False
-        else:
-            return True
+        return True

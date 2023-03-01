@@ -87,7 +87,7 @@ markers = [
 ]
 
 [tool.refurb]
-python-version = [3.9]
+python_version = "3.9"
 
 [tool.ruff]
 exclude = ["scripts/tests"]

@@ -531,6 +531,6 @@ def test_name_submission(
 def test_shortened_file_name_ending(
     test_filename: str, test_ending: str, expected_end: str, test_formatter: FileNameFormatter
 ):
-    result = test_formatter.limit_file_name_length(test_filename, test_ending, Path("."))
+    result = test_formatter.limit_file_name_length(test_filename, test_ending, Path())
     assert result.name.endswith(expected_end)
     assert len(str(result)) <= FileNameFormatter.find_max_path_length()

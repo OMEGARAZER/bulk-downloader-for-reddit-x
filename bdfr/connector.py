@@ -379,8 +379,7 @@ class RedditConnector(metaclass=ABCMeta):
                 except (errors.BulkDownloaderException, praw.exceptions.PRAWException, prawcore.PrawcoreException) as e:
                     logger.error(f"Failed to get submissions for multireddit {multi}: {e}")
             return out
-        else:
-            return []
+        return []
 
     def create_filtered_listing_generator(
         self, reddit_source: Union[praw.models.Subreddit, praw.models.Multireddit, praw.models.Redditor.submissions]
@@ -388,8 +387,7 @@ class RedditConnector(metaclass=ABCMeta):
         sort_function = self.determine_sort_function()
         if self.sort_filter in (RedditTypes.SortType.TOP, RedditTypes.SortType.CONTROVERSIAL):
             return sort_function(reddit_source, limit=self.args.limit, time_filter=self.time_filter.value)
-        else:
-            return sort_function(reddit_source, limit=self.args.limit)
+        return sort_function(reddit_source, limit=self.args.limit)
 
     def get_user_data(self) -> list[Iterator]:
         if any([self.args.submitted, self.args.upvoted, self.args.saved]):
@@ -425,8 +423,7 @@ class RedditConnector(metaclass=ABCMeta):
                     logger.debug("Waiting 60 seconds to continue")
                     sleep(60)
             return generators
-        else:
-            return []
+        return []
 
     def check_user_existence(self, name: str) -> None:
         user = self.reddit_instance.redditor(name=name)

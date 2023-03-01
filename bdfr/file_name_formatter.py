@@ -98,8 +98,7 @@ class FileNameFormatter:
         input_time = datetime.datetime.fromtimestamp(timestamp)
         if self.time_format_string.upper().strip() == "ISO":
             return input_time.isoformat()
-        else:
-            return input_time.strftime(self.time_format_string)
+        return input_time.strftime(self.time_format_string)
 
     def _generate_name_dict_from_comment(self, comment: Comment) -> dict:
         comment_attributes = {
@@ -212,8 +211,7 @@ class FileNameFormatter:
                     " not guaranteed to be be unique without {POSTID}"
                 )
             return True
-        else:
-            return False
+        return False
 
     @staticmethod
     def _format_for_windows(input_string: str) -> str:
