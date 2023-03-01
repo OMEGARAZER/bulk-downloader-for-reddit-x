@@ -7,8 +7,6 @@ import click
 import requests
 
 from bdfr import __version__
-from bdfr.archiver import Archiver
-from bdfr.cloner import RedditCloner
 from bdfr.completion import Completion
 from bdfr.configuration import Configuration
 from bdfr.downloader import RedditDownloader
@@ -61,12 +59,6 @@ _downloader_options = [
     click.option("--skip", multiple=True, default=None),
     click.option("--skip-domain", multiple=True, default=None),
     click.option("--skip-subreddit", multiple=True, default=None),
-]
-
-_archiver_options = [
-    click.option("--all-comments", is_flag=True, default=None),
-    click.option("--comment-context", is_flag=True, default=None),
-    click.option("-f", "--format", type=click.Choice(("xml", "json", "yaml")), default=None),
 ]
 
 
@@ -126,49 +118,6 @@ def cli_download(context: click.Context, **_) -> None:
         raise
     else:
         logger.info(f"Program complete - BDFRx Downloader v{__version__}")
-
-
-@cli.command("archive")
-@_add_options(_common_options)
-@_add_options(_archiver_options)
-@click.help_option("-h", "--help")
-@click.pass_context
-def cli_archive(context: click.Context, **_) -> None:
-    """Used to archive post data from Reddit."""
-    config = Configuration()
-    config.process_click_arguments(context)
-    silence_module_loggers()
-    stream = make_console_logging_handler(config.verbose)
-    try:
-        reddit_archiver = Archiver(config, [stream])
-        reddit_archiver.download()
-    except Exception:
-        logger.exception(f"Archiver exited unexpectedly - BDFR Archiver v{__version__}")
-        raise
-    else:
-        logger.info(f"Program complete - BDFR Archiver v{__version__}")
-
-
-@cli.command("clone")
-@_add_options(_common_options)
-@_add_options(_archiver_options)
-@_add_options(_downloader_options)
-@click.help_option("-h", "--help")
-@click.pass_context
-def cli_clone(context: click.Context, **_) -> None:
-    """Combines archive and download commands."""
-    config = Configuration()
-    config.process_click_arguments(context)
-    silence_module_loggers()
-    stream = make_console_logging_handler(config.verbose)
-    try:
-        reddit_scraper = RedditCloner(config, [stream])
-        reddit_scraper.download()
-    except Exception:
-        logger.exception("Scraper exited unexpectedly - BDFR Scraper v{__version__}")
-        raise
-    else:
-        logger.info("Program complete - BDFR Cloner v{__version__}")
 
 
 @cli.command("completion")

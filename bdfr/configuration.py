@@ -55,11 +55,6 @@ class Configuration(Namespace):
         self.user: list[str] = []
         self.verbose: int = 0
 
-        # Archiver-specific options
-        self.all_comments = False
-        self.format = "json"
-        self.comment_context: bool = False
-
     def process_click_arguments(self, context: click.Context) -> None:
         if context.params.get("opts") is not None:
             self.parse_yaml_options(context.params["opts"])

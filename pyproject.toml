@@ -26,7 +26,6 @@ dependencies = [
     "beautifulsoup4>=4.10.0",
     "cachetools>=5.3.0",
     "click>=8.0.0",
-    "dict2xml>=1.7.0",
     "praw>=7.2.0",
     "pyyaml>=5.4.1",
     "requests>=2.28.2",
@@ -36,7 +35,7 @@ dynamic = ["version"]
 
 [tool.setuptools]
 dynamic = {"version" = {attr = "bdfr.__version__"}}
-packages = ["bdfr", "bdfr.archive_entry", "bdfr.site_downloaders", "bdfr.site_downloaders.fallback_downloaders",]
+packages = ["bdfr", "bdfr.site_downloaders", "bdfr.site_downloaders.fallback_downloaders",]
 data-files = {"config" = ["bdfr/default_config.cfg", "bdfr/bdfr.db",]}
 
 [project.optional-dependencies]
