@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -e "$1" ]; then
+if [ -e "$1" ] && [ -f "$1" ]; then
     file="$1"
 else
     echo "CANNOT FIND LOG FILE"
