@@ -76,15 +76,9 @@ The BDFRx project uses several tools to manage the code of the project. These in
 - [black](https://github.com/psf/black)
 - [markdownlint (mdl)](https://github.com/markdownlint/markdownlint)
 - [ruff](https://github.com/charliermarsh/ruff)
-- [tox](https://tox.wiki/en/latest/)
 - [pre-commit](https://github.com/pre-commit/pre-commit)
 
 The first three tools are formatters. These change the code to the standards expected for the BDFRx project. The configuration details for these tools are contained in the [pyproject.toml](../pyproject.toml) file for the project.
-
-The tool `tox` is used to run tests and tools on demand and has the following environments:
-
-- `format`
-- `format_check`
 
 The tool `pre-commit` runs the three formatting tools automatically when a commit is made. This is to ensure that all code submitted for this project is formatted acceptably. Note that any PR that does not follow the formatting guide will not be accepted. For information on how to use pre-commit to avoid this, see [the pre-commit documentation](https://pre-commit.com/).
 

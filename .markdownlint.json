@@ -1,0 +1,10 @@
+{
+    "default": true,
+    "line_length": false,
+    "MD007": {
+        "indent": 4
+    },
+    "MD029": {
+        "style": "ordered"
+    }
+}

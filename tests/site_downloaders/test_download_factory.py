@@ -24,8 +24,10 @@ from bdfr.site_downloaders.youtube import Youtube
     ("test_submission_url", "expected_class"),
     (
         (
-            "https://www.reddit.com/r/TwoXChromosomes/comments/lu29zn/i_refuse_to_live_my_life"
-            "_in_anything_but_comfort/",
+            (
+                "https://www.reddit.com/r/TwoXChromosomes/comments/lu29zn/"
+                "i_refuse_to_live_my_life_in_anything_but_comfort/"
+            ),
             SelfPost,
         ),
         ("https://i.redd.it/affyv0axd5k61.png", Direct),

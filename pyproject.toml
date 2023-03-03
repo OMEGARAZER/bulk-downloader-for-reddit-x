@@ -43,8 +43,7 @@ dev = [
     "black>=23.1.0",
     "pre-commit>=3.0.4",
     "pytest>=7.2.1",
-    "ruff>=0.0.252",
-    "tox>=3.27.1",
+    "ruff>=0.0.253",
 ]
 
 [project.urls]
@@ -59,6 +58,7 @@ bdfrx-clone = "bdfr.__main__:cli_clone"
 bdfrx-download = "bdfr.__main__:cli_download"
 
 [tool.black]
+preview = true
 line-length = 120
 
 [tool.flake8]
@@ -90,6 +90,7 @@ python_version = "3.9"
 
 [tool.ruff]
 exclude = ["scripts/tests"]
+fixable = ["I"]
 flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
 format = "grouped"
