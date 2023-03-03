@@ -1,0 +1,74 @@
+name: "Bug Report"
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+
+assignees:
+  - "OMEGARAZER"
+
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for submitting a bug report for BDFRx. Please fill out the information below so we can fix your issue as quickly as possible.
+
+  - type: checkboxes
+    id: tested-development
+    attributes:
+      label: Has your issue been fixed on the master branch?
+      description: It is possible that your issue has already been fixed on `master`, but not released to pypi. There could also already be an issue open for your issue.
+      options:
+        - label: Have you read the [Opening an issue](https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x/blob/master/docs/CONTRIBUTING.md#opening-an-issue)
+        - label: Have you checked if your issue still exists on the `master` branch? See [here](https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x/blob/master/docs/CONTRIBUTING.md#testing-the-newest-updates-from-github) for instructions to install the development branch.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: The Bug
+      description: Please decribe the issue you are having. The ID of the post causing the issue and the last ~50 lines of the log file will greatly assist in resolving the issue.
+      value: |
+        Running BDFRx with this command:
+
+        ```bash
+        # Your BDFRx command here
+        ```
+
+        Causes this error:
+
+        ```
+        # The last lines of your log file here
+        ```
+
+        But it should...
+
+    validations:
+      required: true
+
+  - type: input
+    id: bdfrx-version
+    attributes:
+      label: BDFRx version
+      description: What is the output of `bdfrx --version`?
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      description: What is the output of `python --version`?
+    validations:
+      required: true
+
+  - type: input
+    id: os-type
+    attributes:
+      label: OS type
+      description: What Operating System are you using?
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra-info
+    attributes:
+      label: Extra Info
+      description: Is there any extra information you would like to add?

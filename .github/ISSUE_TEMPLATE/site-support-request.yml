@@ -1,0 +1,25 @@
+name: "Site Support Request"
+description: Suggest a site for BDFRx to support
+title: "[Site]: "
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for showing an interest in wanting to improve BDFRx.
+
+  - type: input
+    id: site
+    attributes:
+      label: Site
+      description: Please provide the URL for the site you'd like support for in BDFRx.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reddit-link
+    attributes:
+      label: Reddit link/ID
+      description: Please provide Reddit links or IDs that uses this domain.
+    validations:
+      required: true

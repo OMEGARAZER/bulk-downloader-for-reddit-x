@@ -12,6 +12,18 @@ All communication on GitHub, Discord, email, or any other medium must conform to
 
 **If you are asking a question** about the functioning of BDFRx or the interface, please use the discussions page. Bug reports are not the right medium for asking and answering questions, and the discussions page makes it much easier to discuss, answer, and save questions and responses for others going forwards.
 
+#### Testing the newest updates from Github <!-- markdownlint-disable-line MD001 -->
+
+If you would like to test the newest updates to see if your bug has been fixed or you want to run on the bleeding edge you can install directly from Github with one of the following commands ([pipx](https://pypa.github.io/pipx/) is preferred)
+
+```bash
+pipx install git+https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x.git
+```
+
+```bash
+pip install git+https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x.git
+```
+
 ### Bugs
 
 When opening an issue about a bug, **please provide the full log file for the run in which the bug occurred**. This log file is named `log_output.txt` in the configuration folder. Check the [README](../README.md) for information on where this is. This log file will contain all the information required for the developers to recreate the bug.
@@ -49,7 +61,7 @@ BDFRx is built in a way that it can be packaged and installed via `pip`. This pl
 To install the program, clone the repository and run pip inside the project's root directory:
 
 ```bash
-git clone --branch development https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x.git
+git clone https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x.git
 cd ./bulk-downloader-for-reddit-x
 python3 -m pip install -e .
 ```

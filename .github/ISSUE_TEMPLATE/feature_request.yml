@@ -1,0 +1,25 @@
+name: "Feature Request"
+description: Suggest a feature for BDFRx
+title: "[Feature]: "
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for showing an interest in wanting to improve BDFRx.
+
+  - type: textarea
+    id: brief
+    attributes:
+      label: Overview
+      description: Give a brief (couple sentence max) description of your proposed feature for BDFRx.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the changes you would like to see in more detail. Include images, examples, or any other applicable information which helps convey your proposed change.
+    validations:
+      required: true
