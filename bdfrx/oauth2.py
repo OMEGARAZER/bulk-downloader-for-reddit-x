@@ -16,17 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 class OAuth2Authenticator:
-    def __init__(self, wanted_scopes: set[str], client_id: str) -> None:
-        self._check_scopes(wanted_scopes)
+    def __init__(self, wanted_scopes: set[str], client_id: str, user_agent: str) -> None:
+        self._check_scopes(wanted_scopes, user_agent)
         self.scopes = wanted_scopes
         self.client_id = client_id
 
     @staticmethod
-    def _check_scopes(wanted_scopes: set[str]) -> None:
+    def _check_scopes(wanted_scopes: set[str], user_agent: str) -> None:
         try:
             response = requests.get(
                 "https://www.reddit.com/api/v1/scopes.json",
-                headers={"User-Agent": "fetch-scopes test"},
+                headers={"User-Agent": user_agent},
                 timeout=10,
             )
         except TimeoutError:
@@ -50,7 +50,7 @@ class OAuth2Authenticator:
             client_secret=None,
         )
         state = str(random.randint(0, 65000))
-        url = reddit.auth.url(self.scopes, state, "permanent")
+        url = reddit.auth.url(scopes=self.scopes, state=state, duration="permanent")
         logger.warning("Authentication action required before the program can proceed")
         logger.warning(f"Authenticate at {url}")
 
