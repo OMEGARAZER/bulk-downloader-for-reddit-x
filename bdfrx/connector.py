@@ -23,12 +23,12 @@ import praw.exceptions
 import praw.models
 import prawcore
 
-from bdfr import exceptions as errors
-from bdfr.configuration import Configuration
-from bdfr.download_filter import DownloadFilter
-from bdfr.file_name_formatter import FileNameFormatter
-from bdfr.oauth2 import OAuth2Authenticator, OAuth2TokenManager
-from bdfr.site_authenticator import SiteAuthenticator
+from bdfrx import exceptions as errors
+from bdfrx.configuration import Configuration
+from bdfrx.download_filter import DownloadFilter
+from bdfrx.file_name_formatter import FileNameFormatter
+from bdfrx.oauth2 import OAuth2Authenticator, OAuth2TokenManager
+from bdfrx.site_authenticator import SiteAuthenticator
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +54,7 @@ class RedditTypes:
 class RedditConnector(metaclass=ABCMeta):
     def __init__(self, args: Configuration, logging_handlers: Iterable[logging.Handler] = ()) -> None:
         self.args = args
-        self.config_directories = appdirs.AppDirs("bdfr", "BDFR")
+        self.config_directories = appdirs.AppDirs("bdfrx", "BDFRx")
         self.determine_directories()
         self.load_config()
         self.read_config()
@@ -144,7 +144,6 @@ class RedditConnector(metaclass=ABCMeta):
                 oauth2_authenticator = OAuth2Authenticator(
                     scopes,
                     self.cfg_parser.get("DEFAULT", "client_id"),
-                    self.cfg_parser.get("DEFAULT", "client_secret"),
                 )
                 token = oauth2_authenticator.retrieve_new_token()
                 self.cfg_parser["DEFAULT"]["user_token"] = token
@@ -155,7 +154,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.authenticated = True
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
-                client_secret=self.cfg_parser.get("DEFAULT", "client_secret"),
+                client_secret=None,
                 user_agent=socket.gethostname(),
                 token_manager=token_manager,
             )
@@ -164,7 +163,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.authenticated = False
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
-                client_secret=self.cfg_parser.get("DEFAULT", "client_secret"),
+                client_secret=None,
                 user_agent=socket.gethostname(),
             )
 
@@ -207,7 +206,7 @@ class RedditConnector(metaclass=ABCMeta):
                 logger.debug(f"Loading configuration from {path}")
                 break
         if not self.config_location:
-            with importlib.resources.path("bdfr", "default_config.cfg") as path:
+            with importlib.resources.path("bdfrx", "default_config.cfg") as path:
                 self.config_location = path
                 shutil.copy(self.config_location, Path(self.config_directory, "default_config.cfg"))
         if not self.config_location:
@@ -221,14 +220,14 @@ class RedditConnector(metaclass=ABCMeta):
                 self.db = sqlite3.connect(db_path)
                 return
             else:
-                with importlib.resources.path("bdfr", "bdfr.db") as path:
+                with importlib.resources.path("bdfrx", "bdfrx.db") as path:
                     logger.info(f"DB not found at {self.args.db_file} loading clean DB")
                     shutil.copy(path, Path(self.args.db_file))
                     self.db = sqlite3.connect(self.args.db_file)
                     return
         possible_paths = [
-            Path("./bdfr.db"),
-            Path(self.config_directory, "bdfr.db"),
+            Path("./bdfrx.db"),
+            Path(self.config_directory, "bdfrx.db"),
         ]
         self.db = None
         for path in possible_paths:
@@ -237,10 +236,10 @@ class RedditConnector(metaclass=ABCMeta):
                 self.db = sqlite3.connect(path)
                 break
         if not self.db:
-            with importlib.resources.path("bdfr", "bdfr.db") as path:
-                db_path = Path(self.config_directory, "bdfr.db")
+            with importlib.resources.path("bdfrx", "bdfrx.db") as path:
+                db_path = Path(self.config_directory, "bdfrx.db")
                 logger.info(f"No DB found, loading clean DB to {db_path}")
-                shutil.copy(path, Path(self.config_directory, "bdfr.db"))
+                shutil.copy(path, Path(self.config_directory, "bdfrx.db"))
                 self.db = sqlite3.connect(db_path)
 
     def create_file_logger(self) -> logging.handlers.RotatingFileHandler:
@@ -262,7 +261,7 @@ class RedditConnector(metaclass=ABCMeta):
             except PermissionError:
                 logger.critical(
                     "Cannot rollover logfile, make sure this is the only "
-                    "BDFR process or specify alternate logfile location"
+                    "BDFRx process or specify alternate logfile location"
                 )
                 raise
         formatter = logging.Formatter("[%(asctime)s - %(name)s - %(levelname)s] - %(message)s")
@@ -296,7 +295,7 @@ class RedditConnector(metaclass=ABCMeta):
                     subscribed_subreddits = list(self.reddit_instance.user.subreddits(limit=None))
                     subscribed_subreddits = {s.display_name for s in subscribed_subreddits}
                 except prawcore.InsufficientScope:
-                    logger.error("BDFR has insufficient scope to access subreddit lists")
+                    logger.error("BDFRx has insufficient scope to access subreddit lists")
             else:
                 logger.error("Cannot find subscribed subreddits without an authenticated instance")
         if self.args.subreddit or subscribed_subreddits:

@@ -3,8 +3,8 @@
 import praw
 import pytest
 
-from bdfr.resource import Resource
-from bdfr.site_downloaders.self_post import SelfPost
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.self_post import SelfPost
 
 
 @pytest.mark.online

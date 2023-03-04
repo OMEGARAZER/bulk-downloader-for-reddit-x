@@ -6,8 +6,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from bdfr.exceptions import BulkDownloaderException
-from bdfr.oauth2 import OAuth2Authenticator, OAuth2TokenManager
+from bdfrx.exceptions import BulkDownloaderException
+from bdfrx.oauth2 import OAuth2Authenticator, OAuth2TokenManager
 
 
 @pytest.fixture()

@@ -10,8 +10,8 @@ from typing import Optional, Union
 
 from praw.models import Comment, Submission
 
-from bdfr.exceptions import BulkDownloaderException
-from bdfr.resource import Resource
+from bdfrx.exceptions import BulkDownloaderException
+from bdfrx.resource import Resource
 
 logger = logging.getLogger(__name__)
 

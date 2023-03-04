@@ -23,7 +23,7 @@ By default, if the second argument is not supplied, the script will write the re
 An example of the script being run on a Linux machine is the following:
 
 ```bash
-./extract_successful_ids.sh ~/.config/bdfr/log_output.txt
+./extract_successful_ids.sh ~/.config/bdfrx/log_output.txt
 ```
 
 ## Extract all Failed IDs
@@ -40,7 +40,7 @@ By default, if the second argument is not supplied, the script will write the re
 An example of the script being run on a Linux machine is the following:
 
 ```bash
-./extract_failed_ids.sh ~/.config/bdfr/log_output.txt
+./extract_failed_ids.sh ~/.config/bdfrx/log_output.txt
 ```
 
 ## Converting BDFRv1 Timestamps to BDFRv2/BDFRx Timestamps

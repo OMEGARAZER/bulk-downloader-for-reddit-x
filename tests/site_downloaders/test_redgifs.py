@@ -5,8 +5,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from bdfr.resource import Resource
-from bdfr.site_downloaders.redgifs import Redgifs
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.redgifs import Redgifs
 
 
 @pytest.mark.online

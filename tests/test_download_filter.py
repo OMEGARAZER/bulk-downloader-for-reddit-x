@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from bdfr.download_filter import DownloadFilter
-from bdfr.resource import Resource
+from bdfrx.download_filter import DownloadFilter
+from bdfrx.resource import Resource
 
 
 @pytest.fixture()

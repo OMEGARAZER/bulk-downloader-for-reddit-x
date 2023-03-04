@@ -4,8 +4,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from bdfr.resource import Resource
-from bdfr.site_downloaders.imgur import Imgur
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.imgur import Imgur
 
 
 @pytest.mark.online

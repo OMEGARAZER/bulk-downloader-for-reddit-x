@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from bdfr.configuration import Configuration
+from bdfrx.configuration import Configuration
 
 
 @pytest.mark.parametrize(

@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from bdfr.site_downloaders.erome import Erome
+from bdfrx.site_downloaders.erome import Erome
 
 
 @pytest.mark.online

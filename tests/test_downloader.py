@@ -7,10 +7,10 @@ from unittest.mock import MagicMock, patch
 import praw.models
 import pytest
 
-from bdfr.__main__ import make_console_logging_handler
-from bdfr.configuration import Configuration
-from bdfr.connector import RedditConnector
-from bdfr.downloader import RedditDownloader
+from bdfrx.__main__ import make_console_logging_handler
+from bdfrx.configuration import Configuration
+from bdfrx.connector import RedditConnector
+from bdfrx.downloader import RedditDownloader
 
 
 def add_console_handler():
@@ -44,7 +44,7 @@ def downloader_mock(args: Configuration):
         (("aaaaaa", "bbbbbb", "cccccc"), ("aaaaaa",), 2),
     ),
 )
-@patch("bdfr.site_downloaders.download_factory.DownloadFactory.pull_lever")
+@patch("bdfrx.site_downloaders.download_factory.DownloadFactory.pull_lever")
 def test_excluded_ids(
     mock_function: MagicMock,
     test_ids: tuple[str],

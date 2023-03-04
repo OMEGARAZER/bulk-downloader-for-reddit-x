@@ -9,12 +9,12 @@ import praw
 import praw.models
 import pytest
 
-from bdfr.configuration import Configuration
-from bdfr.connector import RedditConnector, RedditTypes
-from bdfr.download_filter import DownloadFilter
-from bdfr.exceptions import BulkDownloaderException
-from bdfr.file_name_formatter import FileNameFormatter
-from bdfr.site_authenticator import SiteAuthenticator
+from bdfrx.configuration import Configuration
+from bdfrx.connector import RedditConnector, RedditTypes
+from bdfrx.download_filter import DownloadFilter
+from bdfrx.exceptions import BulkDownloaderException
+from bdfrx.file_name_formatter import FileNameFormatter
+from bdfrx.site_authenticator import SiteAuthenticator
 
 
 @pytest.fixture()

@@ -5,11 +5,11 @@ from typing import Optional
 
 from praw.models import Submission
 
-from bdfr.exceptions import NotADownloadableLinkError
-from bdfr.resource import Resource
-from bdfr.site_authenticator import SiteAuthenticator
-from bdfr.site_downloaders.fallback_downloaders.fallback_downloader import BaseFallbackDownloader
-from bdfr.site_downloaders.youtube import Youtube
+from bdfrx.exceptions import NotADownloadableLinkError
+from bdfrx.resource import Resource
+from bdfrx.site_authenticator import SiteAuthenticator
+from bdfrx.site_downloaders.fallback_downloaders.fallback_downloader import BaseFallbackDownloader
+from bdfrx.site_downloaders.youtube import Youtube
 
 logger = logging.getLogger(__name__)
 

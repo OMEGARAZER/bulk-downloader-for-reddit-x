@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-from bdfr.site_downloaders.base_downloader import BaseDownloader
+from bdfrx.site_downloaders.base_downloader import BaseDownloader
 
 
 class BaseFallbackDownloader(BaseDownloader, ABC):

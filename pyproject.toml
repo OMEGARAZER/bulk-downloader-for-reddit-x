@@ -34,9 +34,9 @@ dependencies = [
 dynamic = ["version"]
 
 [tool.setuptools]
-dynamic = {"version" = {attr = "bdfr.__version__"}}
-packages = ["bdfr", "bdfr.site_downloaders", "bdfr.site_downloaders.fallback_downloaders",]
-data-files = {"config" = ["bdfr/default_config.cfg", "bdfr/bdfr.db",]}
+dynamic = {"version" = {attr = "bdfrx.__version__"}}
+packages = ["bdfrx", "bdfrx.site_downloaders", "bdfrx.site_downloaders.fallback_downloaders",]
+data-files = {"config" = ["bdfrx/default_config.cfg", "bdfrx/bdfrx.db",]}
 
 [project.optional-dependencies]
 dev = [
@@ -52,10 +52,10 @@ dev = [
 "Bug Reports" = "https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x/issues"
 
 [project.scripts]
-bdfrx = "bdfr.__main__:cli"
-bdfrx-archive = "bdfr.__main__:cli_archive"
-bdfrx-clone = "bdfr.__main__:cli_clone"
-bdfrx-download = "bdfr.__main__:cli_download"
+bdfrx = "bdfrx.__main__:cli"
+bdfrx-archive = "bdfrx.__main__:cli_archive"
+bdfrx-clone = "bdfrx.__main__:cli_clone"
+bdfrx-download = "bdfrx.__main__:cli_download"
 
 [tool.black]
 preview = true

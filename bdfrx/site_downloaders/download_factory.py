@@ -3,21 +3,21 @@
 import re
 import urllib.parse
 
-from bdfr.exceptions import NotADownloadableLinkError
-from bdfr.site_downloaders.base_downloader import BaseDownloader
-from bdfr.site_downloaders.delay_for_reddit import DelayForReddit
-from bdfr.site_downloaders.direct import Direct
-from bdfr.site_downloaders.erome import Erome
-from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
-from bdfr.site_downloaders.gallery import Gallery
-from bdfr.site_downloaders.gfycat import Gfycat
-from bdfr.site_downloaders.imgur import Imgur
-from bdfr.site_downloaders.pornhub import PornHub
-from bdfr.site_downloaders.redgifs import Redgifs
-from bdfr.site_downloaders.self_post import SelfPost
-from bdfr.site_downloaders.vidble import Vidble
-from bdfr.site_downloaders.vreddit import VReddit
-from bdfr.site_downloaders.youtube import Youtube
+from bdfrx.exceptions import NotADownloadableLinkError
+from bdfrx.site_downloaders.base_downloader import BaseDownloader
+from bdfrx.site_downloaders.delay_for_reddit import DelayForReddit
+from bdfrx.site_downloaders.direct import Direct
+from bdfrx.site_downloaders.erome import Erome
+from bdfrx.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
+from bdfrx.site_downloaders.gallery import Gallery
+from bdfrx.site_downloaders.gfycat import Gfycat
+from bdfrx.site_downloaders.imgur import Imgur
+from bdfrx.site_downloaders.pornhub import PornHub
+from bdfrx.site_downloaders.redgifs import Redgifs
+from bdfrx.site_downloaders.self_post import SelfPost
+from bdfrx.site_downloaders.vidble import Vidble
+from bdfrx.site_downloaders.vreddit import VReddit
+from bdfrx.site_downloaders.youtube import Youtube
 
 
 class DownloadFactory:

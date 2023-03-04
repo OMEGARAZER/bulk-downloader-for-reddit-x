@@ -7,9 +7,9 @@ from typing import Optional
 import requests
 from praw.models import Submission
 
-from bdfr.exceptions import ResourceNotFound, SiteDownloaderError
-from bdfr.resource import Resource
-from bdfr.site_authenticator import SiteAuthenticator
+from bdfrx.exceptions import ResourceNotFound, SiteDownloaderError
+from bdfrx.resource import Resource
+from bdfrx.site_authenticator import SiteAuthenticator
 
 logger = logging.getLogger(__name__)
 

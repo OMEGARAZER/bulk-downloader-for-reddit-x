@@ -17,10 +17,10 @@ import praw.exceptions
 import praw.models
 import prawcore
 
-from bdfr import exceptions as errors
-from bdfr.configuration import Configuration
-from bdfr.connector import RedditConnector
-from bdfr.site_downloaders.download_factory import DownloadFactory
+from bdfrx import exceptions as errors
+from bdfrx.configuration import Configuration
+from bdfrx.connector import RedditConnector
+from bdfrx.site_downloaders.download_factory import DownloadFactory
 
 logger = logging.getLogger(__name__)
 

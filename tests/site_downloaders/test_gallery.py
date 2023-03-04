@@ -3,8 +3,8 @@
 import praw
 import pytest
 
-from bdfr.exceptions import SiteDownloaderError
-from bdfr.site_downloaders.gallery import Gallery
+from bdfrx.exceptions import SiteDownloaderError
+from bdfrx.site_downloaders.gallery import Gallery
 
 
 @pytest.mark.online

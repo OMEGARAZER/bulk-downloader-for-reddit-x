@@ -11,11 +11,11 @@ from unittest.mock import MagicMock
 import praw.models
 import pytest
 
-from bdfr.file_name_formatter import FileNameFormatter
-from bdfr.resource import Resource
-from bdfr.site_downloaders.base_downloader import BaseDownloader
-from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
-from bdfr.site_downloaders.self_post import SelfPost
+from bdfrx.file_name_formatter import FileNameFormatter
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.base_downloader import BaseDownloader
+from bdfrx.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
+from bdfrx.site_downloaders.self_post import SelfPost
 
 
 @pytest.fixture()
@@ -488,7 +488,7 @@ def test_get_max_path_length():
 
 def test_windows_max_path(tmp_path: Path):
     with unittest.mock.patch("platform.system", return_value="Windows"):
-        with unittest.mock.patch("bdfr.file_name_formatter.FileNameFormatter.find_max_path_length", return_value=260):
+        with unittest.mock.patch("bdfrx.file_name_formatter.FileNameFormatter.find_max_path_length", return_value=260):
             mock = MagicMock()
             mock.max_path = 260
             result = FileNameFormatter.limit_file_name_length(mock, "test" * 100, "_1.png", tmp_path)

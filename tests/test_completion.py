@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
-from bdfr.completion import Completion
+from bdfrx.completion import Completion
 
 
 @pytest.mark.skipif(sys.platform == "win32", reason="Completions are not currently supported on Windows.")

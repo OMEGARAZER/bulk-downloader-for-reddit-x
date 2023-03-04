@@ -7,14 +7,14 @@ from pathlib import Path
 import praw
 import pytest
 
-from bdfr.oauth2 import OAuth2TokenManager
+from bdfrx.oauth2 import OAuth2TokenManager
 
 
 @pytest.fixture(scope="session")
 def reddit_instance():
     rd = praw.Reddit(
-        client_id="U-6gk4ZCh3IeNQ",
-        client_secret="7CZHY6AmKweZME5s50SfDGylaPg",
+        client_id="0vIJGSRQEHgi_r0esNWvjg",
+        client_secret=None,
         user_agent="test",
     )
     return rd
@@ -32,7 +32,7 @@ def authenticated_reddit_instance():
     token_manager = OAuth2TokenManager(cfg_parser, test_config_path)
     reddit_instance = praw.Reddit(
         client_id=cfg_parser.get("DEFAULT", "client_id"),
-        client_secret=cfg_parser.get("DEFAULT", "client_secret"),
+        client_secret=None,
         user_agent=socket.gethostname(),
         token_manager=token_manager,
     )

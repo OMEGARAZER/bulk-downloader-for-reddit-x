@@ -12,7 +12,7 @@ import _hashlib
 import requests
 from praw.models import Submission
 
-from bdfr.exceptions import BulkDownloaderException
+from bdfrx.exceptions import BulkDownloaderException
 
 logger = logging.getLogger(__name__)
 

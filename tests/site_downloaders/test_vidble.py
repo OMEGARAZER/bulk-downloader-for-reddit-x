@@ -4,8 +4,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from bdfr.resource import Resource
-from bdfr.site_downloaders.vidble import Vidble
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.vidble import Vidble
 
 
 @pytest.mark.parametrize(("test_url", "expected"), (("/RDFbznUvcN_med.jpg", "/RDFbznUvcN.jpg"),))

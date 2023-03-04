@@ -17,16 +17,16 @@ Included in this README are a few example Bash tricks to get certain behaviour. 
 
 *Bulk Downloader for Reddit x* needs Python version 3.9 or above. Please update Python before installation to meet the requirement.
 
-Then, you can install it via pip with:
+Then, you can install it via [pipx](https://pypa.github.io/pipx) with:
+
+```bash
+pipx install bdfrx
+```
+
+or via pip with:
 
 ```bash
 python3 -m pip install bdfrx --upgrade
-```
-
-or via [pipx](https://pypa.github.io/pipx) with:
-
-```bash
-python3 -m pipx install bdfrx
 ```
 
 **To update BDFRx**, run the above command again for pip or `pipx upgrade bdfrx` for pipx installations.
@@ -43,9 +43,10 @@ If you want to use the source code or make contributions, refer to [CONTRIBUTING
 
 BDFRx differs from the base BDFR in a few ways:
 
-- Does not contain the Archive and Clone modes (Currently still available but are not maintained and ***will*** be removed with the 1.0 release)
-- Uses the `bdfrx` config directory by default (Will be changed with the 1.0 release)
+- Does not contain the Archive and Clone modes (If you require these modes you can try v0.9.1, provided *as is* or use the base [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) project)
 - Option to use an Sqlite3 database to store hashes, links and post ID's to be filtered in future runs
+- Uses the `bdfrx` config directory by default as well as a different client_id which does not require the use of the client_secret
+    - You will not be able to use the BDFR id/secret/token, you will need to authorize with the new client_id
 
 ## Usage
 
@@ -311,19 +312,19 @@ It is highly recommended that the file name scheme contain the parameter `{POSTI
 
 The configuration files are, by default, stored in the configuration directory for the user. This differs depending on the OS that BDFRx is being run on. For Windows, this will be:
 
-- `C:\Users\<User>\AppData\Local\BDFR\bdfr`
+- `C:\Users\<User>\AppData\Local\BDFRx\bdfrx`
 
 If Python has been installed through the Windows Store, the folder will appear in a different place. Note that the hash included in the file path may change from installation to installation.
 
-- `C:\Users\<User>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\Local\BDFR\bdfr`
+- `C:\Users\<User>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\Local\BDFRx\bdfrx`
 
 On Mac OSX, this will be:
 
-- `~/Library/Application Support/bdfr`.
+- `~/Library/Application Support/bdfrx`.
 
 Lastly, on a Linux system, this will be:
 
-- `~/.config/bdfr/`
+- `~/.config/bdfrx/`
 
 The logging output for each run of BDFRx will be saved to this directory in the file `log_output.txt`. If you need to submit a bug, it is this file that you will need to submit with the report.
 
@@ -332,7 +333,6 @@ The logging output for each run of BDFRx will be saved to this directory in the 
 The `config.cfg` is the file that supplies BDFRx with the configuration to use. At the moment, the following keys **must** be included in the configuration file supplied.
 
 - `client_id`
-- `client_secret`
 - `scopes`
 
 The following keys are optional, and defaults will be used if they cannot be found.

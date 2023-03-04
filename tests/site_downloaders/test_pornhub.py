@@ -4,9 +4,9 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from bdfr.exceptions import SiteDownloaderError
-from bdfr.resource import Resource
-from bdfr.site_downloaders.pornhub import PornHub
+from bdfrx.exceptions import SiteDownloaderError
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.pornhub import PornHub
 
 
 @pytest.mark.online

@@ -4,8 +4,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from bdfr.resource import Resource
-from bdfr.site_downloaders.delay_for_reddit import DelayForReddit
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.delay_for_reddit import DelayForReddit
 
 
 @pytest.mark.online

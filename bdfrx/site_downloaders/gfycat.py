@@ -7,10 +7,10 @@ from typing import Optional
 from cachetools import TTLCache, cached
 from praw.models import Submission
 
-from bdfr.exceptions import SiteDownloaderError
-from bdfr.resource import Resource
-from bdfr.site_authenticator import SiteAuthenticator
-from bdfr.site_downloaders.redgifs import Redgifs
+from bdfrx.exceptions import SiteDownloaderError
+from bdfrx.resource import Resource
+from bdfrx.site_authenticator import SiteAuthenticator
+from bdfrx.site_downloaders.redgifs import Redgifs
 
 
 class Gfycat(Redgifs):

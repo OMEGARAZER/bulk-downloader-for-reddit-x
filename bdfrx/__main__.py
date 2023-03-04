@@ -6,10 +6,10 @@ import sys
 import click
 import requests
 
-from bdfr import __version__
-from bdfr.completion import Completion
-from bdfr.configuration import Configuration
-from bdfr.downloader import RedditDownloader
+from bdfrx import __version__
+from bdfrx.completion import Completion
+from bdfrx.configuration import Configuration
+from bdfrx.downloader import RedditDownloader
 
 logger = logging.getLogger()
 

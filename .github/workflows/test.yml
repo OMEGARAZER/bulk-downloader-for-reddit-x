@@ -50,7 +50,7 @@ jobs:
 
     - name: Black formatting check
       run: |
-        black bdfr tests --check
+        black --check bdfrx tests scripts/*.py
 
     - name: Critical ruff lint
       run: |
@@ -58,7 +58,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest -m "not slow" --verbose --cov=./bdfr/ --cov-report term:skip-covered --cov-report html
+        pytest -m "not slow" --verbose --cov=./bdfrx/ --cov-report term:skip-covered --cov-report html
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v3

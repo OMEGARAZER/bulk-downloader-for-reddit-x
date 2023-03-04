@@ -4,9 +4,9 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from bdfr.exceptions import NotADownloadableLinkError
-from bdfr.resource import Resource
-from bdfr.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
+from bdfrx.exceptions import NotADownloadableLinkError
+from bdfrx.resource import Resource
+from bdfrx.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 
 
 @pytest.mark.online
