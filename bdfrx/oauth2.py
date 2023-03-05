@@ -5,6 +5,7 @@ import logging
 import random
 import re
 import socket
+import webbrowser
 from pathlib import Path
 
 import praw
@@ -52,7 +53,11 @@ class OAuth2Authenticator:
         state = str(random.randint(0, 65000))
         url = reddit.auth.url(scopes=self.scopes, state=state, duration="permanent")
         logger.warning("Authentication action required before the program can proceed")
-        logger.warning(f"Authenticate at {url}")
+        logger.warning(f"Authenticate at {url!r} if your browser does not open it for you")
+        try:
+            webbrowser.open_new_tab(url=url)
+        except webbrowser.Error:
+            logger.debug("Exception opening browser")
 
         client = self.receive_connection()
         data = client.recv(1024).decode("utf-8")
@@ -66,8 +71,10 @@ class OAuth2Authenticator:
             self.send_message(client)
             raise RedditAuthenticationError(f"Error in OAuth2: {params['error']}")
 
-        self.send_message(client, "<script>alert('You can go back to terminal window now.')</script>")
         refresh_token = reddit.auth.authorize(params["code"])
+        self.send_message(
+            client, f"Refresh token: {refresh_token}<script>alert('You can go back to terminal window now.')</script>"
+        )
         return refresh_token
 
     @staticmethod
