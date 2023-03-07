@@ -90,7 +90,7 @@ def test_download_resource(test_url: str, expected_hashes: set[str]):
     results = test_site.find_resources()
     assert all([isinstance(res, Resource) for res in results])
     [res.download() for res in results]
-    hashes = set([res.hash.hexdigest() for res in results])
+    hashes = {res.hash.hexdigest() for res in results}
     assert hashes == set(expected_hashes)
 
 
@@ -126,5 +126,5 @@ def test_hd_soft_fail(test_url: str, expected_link: set[str], expected_hash: set
     results = test_site.find_resources()
     assert all([isinstance(res, Resource) for res in results])
     [res.download() for res in results]
-    hashes = set([res.hash.hexdigest() for res in results])
+    hashes = {res.hash.hexdigest() for res in results}
     assert hashes == set(expected_hash)

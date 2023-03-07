@@ -92,5 +92,5 @@ def test_find_resources(test_url: str, expected_hashes: set[str]):
     results = downloader.find_resources()
     assert all([isinstance(res, Resource) for res in results])
     [res.download() for res in results]
-    hashes = set([res.hash.hexdigest() for res in results])
+    hashes = {res.hash.hexdigest() for res in results}
     assert hashes == set(expected_hashes)

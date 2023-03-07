@@ -148,7 +148,7 @@ class FileNameFormatter:
             filename = filename[: possible_id.start()]
         max_path = self.max_path
         max_file_part_length_chars = 255 - len(ending)
-        max_file_part_length_bytes = 255 - len(ending.encode("utf-8"))
+        max_file_part_length_bytes = 255 - len(ending.encode())
         max_path_length = max_path - len(ending) - len(str(root)) - 1
 
         out = Path(root, filename + ending)
@@ -156,7 +156,7 @@ class FileNameFormatter:
         while any(
             [
                 len(filename) > max_file_part_length_chars,
-                len(filename.encode("utf-8")) > max_file_part_length_bytes,
+                len(filename.encode()) > max_file_part_length_bytes,
                 len(str(out)) > max_path_length,
             ]
         ):
@@ -185,7 +185,7 @@ class FileNameFormatter:
         out = []
         if len(resources) == 1:
             try:
-                out.append((self.format_path(resources[0], destination_directory, None), resources[0]))
+                out.append((self.format_path(resources[0], destination_directory), resources[0]))
             except BulkDownloaderException as e:
                 logger.error(f"Could not generate file path for resource {resources[0].url}: {e}")
                 logger.exception("Could not generate file path")

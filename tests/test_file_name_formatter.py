@@ -222,7 +222,7 @@ def test_format_multiple_resources():
         mocks.append(new_mock)
     test_formatter = FileNameFormatter("{TITLE}", "", "ISO")
     results = test_formatter.format_resource_paths(mocks, Path())
-    results = set([str(res[0].name) for res in results])
+    results = {str(res[0].name) for res in results}
     expected = {"test_1.png", "test_2.png", "test_3.png", "test_4.png"}
     assert results == expected
 
@@ -516,7 +516,7 @@ def test_name_submission(
     test_resources = test_downloader(test_submission).find_resources()
     test_formatter = FileNameFormatter("{TITLE}", "", "")
     results = test_formatter.format_resource_paths(test_resources, Path())
-    results = set([r[0].name for r in results])
+    results = {r[0].name for r in results}
     assert results == expected_names
 
 
