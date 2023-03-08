@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import configparser
-import socket
+import platform
 from pathlib import Path
 
 import praw
@@ -33,7 +33,7 @@ def authenticated_reddit_instance():
     reddit_instance = praw.Reddit(
         client_id=cfg_parser.get("DEFAULT", "client_id"),
         client_secret=None,
-        user_agent=socket.gethostname(),
+        user_agent=praw.const.USER_AGENT_FORMAT.format(":".join([platform.uname()[0], __package__, "test"])),
         token_manager=token_manager,
     )
     return reddit_instance

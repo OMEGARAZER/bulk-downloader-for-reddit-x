@@ -17,10 +17,11 @@ logger = logging.getLogger(__name__)
 
 
 class OAuth2Authenticator:
-    def __init__(self, wanted_scopes: set[str], client_id: str, user_agent: str) -> None:
+    def __init__(self, wanted_scopes: set[str], client_id: str, client_secret: str, user_agent: str) -> None:
         self._check_scopes(wanted_scopes, user_agent)
         self.scopes = wanted_scopes
         self.client_id = client_id
+        self.client_secret = client_secret
 
     @staticmethod
     def _check_scopes(wanted_scopes: set[str], user_agent: str) -> None:
@@ -48,7 +49,7 @@ class OAuth2Authenticator:
             redirect_uri="http://localhost:7634",
             user_agent="obtain_refresh_token for BDFRx",
             client_id=self.client_id,
-            client_secret=None,
+            client_secret=self.client_secret,
         )
         state = str(random.randint(0, 65000))
         url = reddit.auth.url(scopes=self.scopes, state=state, duration="permanent")

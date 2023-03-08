@@ -144,7 +144,10 @@ class RedditConnector(metaclass=ABCMeta):
                 scopes = self.cfg_parser.get("DEFAULT", "scopes", fallback="identity, history, read, save")
                 scopes = OAuth2Authenticator.split_scopes(scopes)
                 oauth2_authenticator = OAuth2Authenticator(
-                    scopes, self.cfg_parser.get("DEFAULT", "client_id"), user_agent=self.user_agent
+                    scopes,
+                    self.cfg_parser.get("DEFAULT", "client_id"),
+                    self.cfg_parser.get("DEFAULT", "client_secret", fallback=None),
+                    user_agent=self.user_agent,
                 )
                 token = oauth2_authenticator.retrieve_new_token()
                 self.cfg_parser["DEFAULT"]["user_token"] = token
@@ -155,7 +158,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.authenticated = True
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
-                client_secret=None,
+                client_secret=self.cfg_parser.get("DEFAULT", "client_secret", fallback=None),
                 user_agent=self.user_agent,
                 token_manager=token_manager,
             )
@@ -164,7 +167,7 @@ class RedditConnector(metaclass=ABCMeta):
             self.authenticated = False
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
-                client_secret=None,
+                client_secret=self.cfg_parser.get("DEFAULT", "client_secret", fallback=None),
                 user_agent=self.user_agent,
             )
 
