@@ -36,7 +36,7 @@ dynamic = ["version"]
 [tool.setuptools]
 dynamic = {"version" = {attr = "bdfrx.__version__"}}
 packages = ["bdfrx", "bdfrx.site_downloaders", "bdfrx.site_downloaders.fallback_downloaders",]
-data-files = {"config" = ["bdfrx/default_config.cfg", "bdfrx/bdfrx.db",]}
+package-data = {"bdfrx" = ["default_config.cfg", "bdfrx.db",]}
 
 [project.optional-dependencies]
 dev = [
