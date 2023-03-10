@@ -115,5 +115,5 @@ class OAuth2TokenManager(praw.reddit.BaseTokenManager):
     def post_refresh_callback(self, authorizer: praw.reddit.Authorizer) -> None:
         self.config.set("DEFAULT", "user_token", authorizer.refresh_token)
         with Path(self.config_location).open(mode="w") as file:
-            self.config.write(file, True)
+            self.config.write(file, space_around_delimiters=True)
         logger.log(9, f"Written OAuth2 token from authoriser to {self.config_location}")

@@ -71,7 +71,7 @@ def _add_options(opts: list):  # noqa: ANN202
     return wrap
 
 
-def _check_version(context: click.core.Context, _param, value: bool) -> None:
+def _check_version(context: click.core.Context, _param, value: bool) -> None:  # noqa: FBT001
     if not value or context.resilient_parsing:
         return
     current = __version__
@@ -124,16 +124,17 @@ def cli_download(context: click.Context, **_) -> None:
 @click.argument("shell", type=click.Choice(("all", "bash", "fish", "zsh"), case_sensitive=False), default="all")
 @click.help_option("-h", "--help")
 @click.option("-u", "--uninstall", is_flag=True, default=False, help="Uninstall completion")
-def cli_completion(shell: str, uninstall: bool) -> None:
+@click.pass_context
+def cli_completion(context: click.Context, **_) -> None:
     """\b
     Installs shell completions for BDFRx.
     Options: all, bash, fish, zsh
     Default: all"""
-    shell = shell.lower()
+    shell = context.params["shell"].lower()
     if sys.platform == "win32":
         print("Completions are not currently supported on Windows.")
         return
-    if uninstall and click.confirm(f"Would you like to uninstall {shell} completions for BDFRx"):
+    if context.params["uninstall"] and click.confirm(f"Would you like to uninstall {shell} completions for BDFRx"):
         Completion(shell).uninstall()
         return
     if shell not in ("all", "bash", "fish", "zsh"):
