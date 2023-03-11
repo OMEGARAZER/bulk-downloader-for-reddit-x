@@ -97,7 +97,7 @@ format = "grouped"
 ignore = ["ANN101","B904","N818","RET505"]
 line-length = 120
 per-file-ignores={"tests/*"=["ANN","FBT","S101","S105","S106"], "scripts/*"=["INP","S105","S106"]}
-select = ["ANN","B","BLE","E","ERA","F","FBT","I","ICN","INP","ISC","N","PT","PTH","Q","RUF","S","TID","UP","W","YTT"]
+select = ["A","ANN","B","BLE","E","ERA","F","FBT","I","ICN","INP","ISC","N","PT","PTH","Q","RUF","S","TID","UP","W","YTT"]
 show-fixes = true
 show-source = true
 target-version = "py39"

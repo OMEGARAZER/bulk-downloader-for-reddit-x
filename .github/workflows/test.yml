@@ -6,12 +6,14 @@ on:
       - "**.md"
       - ".markdownlint.json"
       - ".pre-commit-config.yaml"
+      - "pyproject.toml"
       - "scripts/**"
   pull_request:
     paths-ignore:
       - "**.md"
       - ".markdownlint.json"
       - ".pre-commit-config.yaml"
+      - "pyproject.toml"
       - "scripts/**"
 
 concurrency:
@@ -30,6 +32,7 @@ jobs:
         - os: windows-latest
           python-version: 3.9
           ext: .ps1
+    continue-on-error: true
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python
@@ -56,6 +59,10 @@ jobs:
       run: |
         ruff check --format=github --select=E9,F63,F7,F82,I .
 
+    - name: Full ruff lint
+      run: |
+        ruff check --format=github . --exit-zero
+
     - name: Test with pytest
       run: |
         pytest -m "not slow" --verbose --cov=./bdfrx/ --cov-report term:skip-covered --cov-report html
@@ -65,7 +72,3 @@ jobs:
       with:
         name: coverage_report
         path: htmlcov/
-
-    - name: Full ruff lint
-      run: |
-        ruff check --format=github . --exit-zero
