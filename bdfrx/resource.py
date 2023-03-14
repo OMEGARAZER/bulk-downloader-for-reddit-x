@@ -78,7 +78,11 @@ class Resource:
                     raise BulkDownloaderException(
                         f"Unrecoverable error requesting resource: HTTP Code {response.status_code}"
                     )
-            except (requests.exceptions.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
+            except (
+                requests.exceptions.ConnectionError,
+                requests.exceptions.ChunkedEncodingError,
+                requests.exceptions.Timeout,
+            ) as e:
                 logger.warning(f"Error occured downloading from {url}, waiting {current_wait_time} seconds: {e}")
                 time.sleep(current_wait_time)
                 if current_wait_time < max_wait_time:
