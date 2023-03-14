@@ -1,6 +1,16 @@
 name: Security
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - ".pre-commit-config.yaml"
+  pull_request:
+    paths:
+      - "**.py"
+      - "pyproject.toml"
+      - ".pre-commit-config.yaml"
 
 jobs:
   Safety:

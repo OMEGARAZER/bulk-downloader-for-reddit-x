@@ -86,7 +86,7 @@ pre-commit install
 The BDFRx project uses several tools to manage the code of the project. These include:
 
 - [black](https://github.com/psf/black)
-- [markdownlint (mdl)](https://github.com/markdownlint/markdownlint)
+- [markdownlint](https://github.com/igorshubovych/markdownlint-cli)
 - [ruff](https://github.com/charliermarsh/ruff)
 - [pre-commit](https://github.com/pre-commit/pre-commit)
 

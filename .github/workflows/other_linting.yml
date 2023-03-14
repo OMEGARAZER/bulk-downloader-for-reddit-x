@@ -1,0 +1,29 @@
+name: Other Linting
+
+on:
+  push:
+    paths:
+      - "**.md"
+      - ".markdownlint.json"
+  pull_request:
+    paths:
+      - "**.md"
+      - ".markdownlint.json"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup NPM
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: |
+        npm install -g markdownlint-cli
+
+    - name: Markdownlint
+      run: |
+        markdownlint '**/*.md'
