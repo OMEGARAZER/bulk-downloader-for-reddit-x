@@ -139,14 +139,18 @@ class RedditConnector(metaclass=ABCMeta):
     def create_reddit_instance(self) -> None:
         if self.args.authenticate:
             logger.debug("Using authenticated Reddit instance")
+            client_id = self.cfg_parser.get("DEFAULT", "client_id")
+            client_secret = self.cfg_parser.get("DEFAULT", "client_secret", fallback=None)
+            if client_secret and client_secret.lower() == "none":
+                client_secret = None
             if not self.cfg_parser.has_option("DEFAULT", "user_token"):
                 logger.log(9, "Commencing OAuth2 authentication")
                 scopes = self.cfg_parser.get("DEFAULT", "scopes", fallback="identity, history, read, save")
                 scopes = OAuth2Authenticator.split_scopes(scopes)
                 oauth2_authenticator = OAuth2Authenticator(
-                    scopes,
-                    self.cfg_parser.get("DEFAULT", "client_id"),
-                    self.cfg_parser.get("DEFAULT", "client_secret", fallback=None),
+                    scopes=scopes,
+                    client_id=client_id,
+                    client_secret=client_secret,
                     user_agent=self.user_agent,
                 )
                 token = oauth2_authenticator.retrieve_new_token()
@@ -157,17 +161,20 @@ class RedditConnector(metaclass=ABCMeta):
 
             self.authenticated = True
             self.reddit_instance = praw.Reddit(
-                client_id=self.cfg_parser.get("DEFAULT", "client_id"),
-                client_secret=self.cfg_parser.get("DEFAULT", "client_secret", fallback=None),
+                client_id=client_id,
+                client_secret=client_secret,
                 user_agent=self.user_agent,
                 token_manager=token_manager,
             )
         else:
             logger.debug("Using unauthenticated Reddit instance")
             self.authenticated = False
+            client_secret = self.cfg_parser.get("DEFAULT", "client_secret", fallback=None)
+            if client_secret and client_secret.lower() == "none":
+                client_secret = None
             self.reddit_instance = praw.Reddit(
                 client_id=self.cfg_parser.get("DEFAULT", "client_id"),
-                client_secret=self.cfg_parser.get("DEFAULT", "client_secret", fallback=None),
+                client_secret=client_secret,
                 user_agent=self.user_agent,
             )
 
