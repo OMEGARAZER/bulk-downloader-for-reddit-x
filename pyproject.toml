@@ -74,6 +74,11 @@ multi_line_output = 3
 line_length = 120
 indent = 4
 
+[tool.mypy]
+python_version = "3.9"
+show_column_numbers = true
+show_error_context = true
+
 [tool.pytest.ini_options]
 minversion = "7.1"
 addopts = "--strict-markers"
@@ -89,15 +94,15 @@ markers = [
 python_version = "3.9"
 
 [tool.ruff]
-exclude = ["scripts/tests"]
-fixable = ["I"]
+extend-exclude = ["scripts/tests"]
 flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
 format = "grouped"
 ignore = ["ANN101","B904","N818","RET505"]
 line-length = 120
-per-file-ignores={"tests/*"=["ANN","FBT","S101","S105","S106"], "scripts/*"=["INP","S105","S106"]}
+per-file-ignores = {"tests/*" = ["ANN","FBT","S101","S105","S106"], "scripts/*" = ["INP","S105","S106"]}
 select = ["A","ANN","B","BLE","E","ERA","F","FBT","I","ICN","INP","ISC","N","PT","PTH","Q","RUF","S","TID","UP","W","YTT"]
 show-fixes = true
 show-source = true
 target-version = "py39"
+task-tags = ["TODO","TOFIX"]

@@ -2,19 +2,11 @@ name: Python Test
 
 on:
   push:
-    paths-ignore:
-      - "**.md"
-      - ".markdownlint.json"
-      - ".pre-commit-config.yaml"
-      - "pyproject.toml"
-      - "scripts/**"
+    paths:
+      - "**.py"
   pull_request:
-    paths-ignore:
-      - "**.md"
-      - ".markdownlint.json"
-      - ".pre-commit-config.yaml"
-      - "pyproject.toml"
-      - "scripts/**"
+    paths:
+      - "**.py"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.sha }}
@@ -42,26 +34,18 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade black pip pytest pytest-cov ruff
+        python -m pip install --upgrade pip pytest pytest-cov ruff
         pip install .
+
+    - name: Critical ruff lint
+      run: |
+        ruff check --format=github --select=E9,F63,F7,F82 .
 
     - name: Make configuration for tests
       env:
         REDDIT_TOKEN: ${{ secrets.REDDIT_TEST_TOKEN }}
       run: |
         ./devscripts/configure${{ matrix.ext }}
-
-    - name: Black formatting check
-      run: |
-        black --check bdfrx tests scripts/*.py
-
-    - name: Critical ruff lint
-      run: |
-        ruff check --format=github --select=E9,F63,F7,F82,I .
-
-    - name: Full ruff lint
-      run: |
-        ruff check --format=github . --exit-zero
 
     - name: Test with pytest
       run: |
