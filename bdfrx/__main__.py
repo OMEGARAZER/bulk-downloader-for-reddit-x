@@ -76,7 +76,7 @@ def _check_version(context: click.core.Context, _param, value: bool) -> None:  #
         return
     current = __version__
     try:
-        latest = requests.get("https://pypi.org/pypi/bdfrx/json", timeout=10).json()["info"]["version"]
+        latest = requests.get("https://pypi.org/pypi/bdfrx/json", timeout=16).json()["info"]["version"]
         print(f"You are currently using v{current} the latest is v{latest}")
     except TimeoutError:
         logger.exception(f"Timeout reached fetching current version from Pypi - BDFRx v{current}")

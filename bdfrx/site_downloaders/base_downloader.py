@@ -27,7 +27,7 @@ class BaseDownloader(ABC):
     @staticmethod
     def retrieve_url(url: str, cookies: dict = None, headers: dict = None) -> requests.Response:
         try:
-            res = requests.get(url, cookies=cookies, headers=headers, timeout=10)
+            res = requests.get(url, cookies=cookies, headers=headers, timeout=16)
         except requests.exceptions.RequestException as e:
             logger.exception(e)
             raise SiteDownloaderError(f"Failed to get page {url}")
@@ -41,7 +41,7 @@ class BaseDownloader(ABC):
     @staticmethod
     def post_url(url: str, cookies: dict = None, headers: dict = None, payload: dict = None) -> requests.Response:
         try:
-            res = requests.post(url, cookies=cookies, headers=headers, json=payload, timeout=10)
+            res = requests.post(url, cookies=cookies, headers=headers, json=payload, timeout=16)
         except requests.exceptions.RequestException as e:
             logger.exception(e)
             raise SiteDownloaderError(f"Failed to post to {url}")
@@ -55,7 +55,7 @@ class BaseDownloader(ABC):
     @staticmethod
     def head_url(url: str, cookies: dict = None, headers: dict = None) -> requests.Response:
         try:
-            res = requests.head(url, cookies=cookies, headers=headers, timeout=10)
+            res = requests.head(url, cookies=cookies, headers=headers, timeout=16)
         except requests.exceptions.RequestException as e:
             logger.exception(e)
             raise SiteDownloaderError(f"Failed to check head at {url}")

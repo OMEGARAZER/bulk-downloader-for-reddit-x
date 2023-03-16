@@ -29,7 +29,7 @@ class OAuth2Authenticator:
             response = requests.get(
                 "https://www.reddit.com/api/v1/scopes.json",
                 headers={"User-Agent": user_agent},
-                timeout=10,
+                timeout=16,
             )
         except TimeoutError:
             raise BulkDownloaderException("Reached timeout fetching scopes")
