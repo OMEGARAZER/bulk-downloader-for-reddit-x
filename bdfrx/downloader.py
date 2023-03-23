@@ -58,19 +58,20 @@ class RedditDownloader(RedditConnector):
                 logger.error(f"The submission after {submission.id} failed to download due to a PRAW exception: {e}")
                 logger.debug("Waiting 60 seconds to continue")
                 sleep(60)
+            if self.args.db:
+                self.db.commit()
         if self.args.db:
             self.db.commit()
             self.db.close()
 
     def _download_submission(self, submission: praw.models.Submission) -> None:
         if self.args.db:
-            with self.db:
-                if self.db.execute("SELECT post_id FROM post_id WHERE post_id=?;", (submission.id,)).fetchone():
-                    logger.debug(f"Object {submission.id} in the DB, skipping")
-                    return
-                if self.db.execute("SELECT link FROM link WHERE link=?;", (submission.url,)).fetchone():
-                    logger.debug(f"Submission {submission.id} link exists in the DB, skipping")
-                    return
+            if self.db.execute("SELECT post_id FROM post_id WHERE post_id=?;", (submission.id,)).fetchone():
+                logger.debug(f"Object {submission.id} in the DB, skipping")
+                return
+            if self.db.execute("SELECT link FROM link WHERE link=?;", (submission.url,)).fetchone():
+                logger.debug(f"Submission {submission.id} link exists in the DB, skipping")
+                return
         elif submission.id in self.excluded_submission_ids:
             logger.debug(f"Object {submission.id} in exclusion list, skipping")
             return
@@ -140,27 +141,26 @@ class RedditDownloader(RedditConnector):
                 return
             resource_hash = res.hash.hexdigest()
             if self.args.db:
-                with self.db:
-                    if hard_link := self.db.execute("SELECT path FROM hash WHERE hash=?;", (resource_hash,)).fetchone():
-                        if self.args.make_hard_links:
-                            destination.parent.mkdir(parents=True, exist_ok=True)
-                            hard_link = hard_link[0].strip()
-                            try:
-                                destination.hardlink_to(hard_link)
-                            except AttributeError:
-                                hard_link.link_to(destination)
-                            self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
-                            logger.info(
-                                f"Hard link made linking {destination} to {hard_link} in submission {submission.id}"
-                            )
-                            return
-                        else:
-                            self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
-                            self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
-                            logger.info(
-                                f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere"
-                            )
-                            return
+                if hard_link := self.db.execute("SELECT path FROM hash WHERE hash=?;", (resource_hash,)).fetchone():
+                    if self.args.make_hard_links:
+                        destination.parent.mkdir(parents=True, exist_ok=True)
+                        hard_link = hard_link[0].strip()
+                        try:
+                            destination.hardlink_to(hard_link)
+                        except AttributeError:
+                            hard_link.link_to(destination)
+                        self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
+                        logger.info(
+                            f"Hard link made linking {destination} to {hard_link} in submission {submission.id}"
+                        )
+                        return
+                    else:
+                        self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
+                        self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
+                        logger.info(
+                            f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere"
+                        )
+                        return
             if resource_hash in self.master_hash_list:
                 if self.args.no_dupes:
                     logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")
@@ -188,11 +188,10 @@ class RedditDownloader(RedditConnector):
             creation_time = time.mktime(datetime.fromtimestamp(submission.created_utc).timetuple())
             os.utime(destination, (creation_time, creation_time))
             if self.args.db:
-                with self.db:
-                    self.db.execute("INSERT INTO hash (hash, path) values(?, ?);", (resource_hash, str(destination)))
-                    self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
-                    self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
-                    logger.debug(f"Hash added to DB: {resource_hash} with link: {submission.url}")
+                self.db.execute("INSERT INTO hash (hash, path) values(?, ?);", (resource_hash, str(destination)))
+                self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
+                self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
+                logger.debug(f"Hash added to DB: {resource_hash} with link: {submission.url}")
             else:
                 self.master_hash_list[resource_hash] = destination
                 logger.debug(f"Hash added to master list: {resource_hash}")
