@@ -14,7 +14,7 @@ from bdfrx.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFall
     ("test_url", "expected"),
     (
         ("https://www.reddit.com/r/specializedtools/comments/n2nw5m/bamboo_splitter/", True),
-        ("https://www.youtube.com/watch?v=P19nvJOmqCc", True),
+        ("https://www.youtube.com/watch?v=DWUbA501CO4", True),
         ("https://www.example.com/test", False),
         ("https://milesmatrix.bandcamp.com/album/la-boum/", False),
         ("https://v.redd.it/dlr54z8p182a1", True),
