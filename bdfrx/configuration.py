@@ -62,11 +62,11 @@ class Configuration(Namespace):
             if not hasattr(self, arg_key):
                 logger.warning(f"Ignoring an unknown CLI argument: {arg_key!r}")
                 continue
-            val = context.params[arg_key]
-            if val is None or val == ():
+            click_value = context.params[arg_key]
+            if click_value is None or click_value == ():
                 # don't overwrite with an empty value
                 continue
-            setattr(self, arg_key, val)
+            setattr(self, arg_key, click_value)
 
     def parse_yaml_options(self, file_path: str) -> None:
         yaml_file_loc = Path(file_path)
@@ -79,8 +79,8 @@ class Configuration(Namespace):
             except yaml.YAMLError as e:
                 logger.error(f"Could not parse YAML options file: {e}")
                 return
-        for arg_key, val in opts.items():
+        for arg_key, yaml_value in opts.items():
             if not hasattr(self, arg_key):
                 logger.warning(f"Ignoring an unknown YAML argument: {arg_key!r}")
                 continue
-            setattr(self, arg_key, val)
+            setattr(self, arg_key, yaml_value)
