@@ -250,8 +250,8 @@ def test_get_subreddit_time_verification(
     results = [sub for res1 in results for sub in res1]
     assert all([isinstance(res1, praw.models.Submission) for res1 in results])
     nowtime = datetime.now()
-    for r in results:
-        result_time = datetime.fromtimestamp(r.created_utc)
+    for result in results:
+        result_time = datetime.fromtimestamp(result.created_utc)
         time_diff = nowtime - result_time
         assert time_diff < (test_delta + timedelta(minutes=1))
 

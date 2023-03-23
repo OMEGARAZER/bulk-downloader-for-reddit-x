@@ -57,11 +57,11 @@ def test_excluded_ids(
     mock_function.return_value.__name__ = "test"
     test_submissions = []
     for test_id in test_ids:
-        m = MagicMock()
-        m.id = test_id
-        m.subreddit.display_name.return_value = "https://www.example.com/"
-        m.__class__ = praw.models.Submission
-        test_submissions.append(m)
+        mock = MagicMock()
+        mock.id = test_id
+        mock.subreddit.display_name.return_value = "https://www.example.com/"
+        mock.__class__ = praw.models.Submission
+        test_submissions.append(mock)
     downloader_mock.reddit_lists = [test_submissions]
     for submission in test_submissions:
         RedditDownloader._download_submission(downloader_mock, submission)
