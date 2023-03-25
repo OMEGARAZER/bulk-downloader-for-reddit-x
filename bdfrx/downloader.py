@@ -72,7 +72,7 @@ class RedditDownloader(RedditConnector):
             if self.db.execute("SELECT link FROM link WHERE link=?;", (submission.url,)).fetchone():
                 logger.debug(f"Submission {submission.id} link exists in the DB, skipping")
                 return
-        elif submission.id in self.excluded_submission_ids:
+        if submission.id in self.excluded_submission_ids:
             logger.debug(f"Object {submission.id} in exclusion list, skipping")
             return
         elif submission.subreddit.display_name.lower() in self.args.skip_subreddit:
