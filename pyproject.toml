@@ -95,6 +95,7 @@ python_version = "3.9"
 
 [tool.ruff]
 extend-exclude = ["scripts/tests"]
+external = ["FURB123"]
 flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
 format = "grouped"

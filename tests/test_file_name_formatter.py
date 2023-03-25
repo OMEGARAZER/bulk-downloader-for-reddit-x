@@ -55,7 +55,7 @@ def do_test_path_equality(result: Path, expected: str) -> bool:
         expected = Path(*expected)
     else:
         expected = Path(expected)
-    return str(result).endswith(str(expected))  # noqa: FURB123,RUF100
+    return str(result).endswith(str(expected))  # noqa: FURB123
 
 
 @pytest.fixture(scope="session")
