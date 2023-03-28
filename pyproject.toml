@@ -115,6 +115,7 @@ select = [
     "COM",  # flake8-commas
     "E",  # Pycodestyle
     "ERA",  # eradicate
+    "EXE",  # flake8-executable
     "F",  # Pyflakes
     "FBT",  # flake8-boolean-trap
     "I",  # Isort
@@ -127,6 +128,7 @@ select = [
     "Q",  # flake8-quotes
     "RUF",  # Ruff
     "S",  # flake8-bandit
+    "T10",  # flake8-debugger
     "TID",  # flake8-tidy-imports
     "UP",  # pyupgrade
     "W",  # Pycodestyle

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import platform
 import sys
 import unittest.mock

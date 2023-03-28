@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import hashlib
 import logging.handlers
 import os

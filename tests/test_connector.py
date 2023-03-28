@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from collections.abc import Iterator
 from datetime import datetime, timedelta
 from pathlib import Path

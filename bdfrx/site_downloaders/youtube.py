@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import logging
 import tempfile
 from collections.abc import Callable

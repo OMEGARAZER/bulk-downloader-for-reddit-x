@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import configparser
 from pathlib import Path
 from unittest.mock import MagicMock

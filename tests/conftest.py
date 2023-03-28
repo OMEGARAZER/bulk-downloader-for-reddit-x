@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import configparser
 import platform
 from pathlib import Path
