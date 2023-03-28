@@ -63,7 +63,7 @@ class OAuth2Authenticator:
         client = self.receive_connection()
         data = client.recv(1024).decode("utf-8")
         param_tokens = data.split(" ", 2)[1].split("?", 1)[1].split("&")
-        params = {key: value for (key, value) in [token.split("=") for token in param_tokens]}
+        params = dict([token.split("=") for token in param_tokens])
 
         if state != params["state"]:
             self.send_message(client)
