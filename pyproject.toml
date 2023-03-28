@@ -99,10 +99,38 @@ external = ["FURB123"]
 flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
 format = "grouped"
-ignore = ["ANN101","B904","N818","RET505"]
+ignore = [
+    "ANN101",  # missing-type-self
+    "B904",  # raise-without-from-inside-except
+    "N818",  # error-suffix-on-exception-name
+]
 line-length = 120
 per-file-ignores = {"tests/*" = ["ANN","FBT","S101","S105","S106"], "scripts/*" = ["INP","S105","S106"]}
-select = ["A","ANN","B","BLE","E","ERA","F","FBT","I","ICN","INP","ISC","N","PT","PTH","Q","RUF","S","TID","UP","W","YTT"]
+select = [
+    "A",  # flake8-builtins
+    "ANN",  # flake8-annotations
+    "B",  # flake8-bugbear
+    "BLE",  # flake8-blind-except
+    "COM",  # flake8-commas
+    "E",  # Pycodestyle
+    "ERA",  # eradicate
+    "F",  # Pyflakes
+    "FBT",  # flake8-boolean-trap
+    "I",  # Isort
+    "ICN",  # flake8-import-conventions
+    "INP",  # flake8-no-pep420
+    "ISC",  # flake8-implicit-str-concat
+    "N",  # pep8-naming
+    "PT",  # flake8-pytest-style
+    "PTH",  # flake8-use-pathlib
+    "Q",  # flake8-quotes
+    "RUF",  # Ruff
+    "S",  # flake8-bandit
+    "TID",  # flake8-tidy-imports
+    "UP",  # pyupgrade
+    "W",  # Pycodestyle
+    "YTT",  # flake8-2020
+]
 show-fixes = true
 show-source = true
 target-version = "py39"

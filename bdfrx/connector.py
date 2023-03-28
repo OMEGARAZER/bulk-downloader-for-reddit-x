@@ -122,7 +122,9 @@ class RedditConnector(metaclass=ABCMeta):
             self.args.disable_module = [self.cfg_parser.get("DEFAULT", "disabled_modules", fallback="")]
         if not self.args.filename_restriction_scheme:
             self.args.filename_restriction_scheme = self.cfg_parser.get(
-                "DEFAULT", "filename_restriction_scheme", fallback=None
+                "DEFAULT",
+                "filename_restriction_scheme",
+                fallback=None,
             )
             logger.debug(f"Setting filename restriction scheme to {self.args.filename_restriction_scheme!r}")
         # Update config on disk
@@ -271,8 +273,10 @@ class RedditConnector(metaclass=ABCMeta):
                 file_handler.doRollover()
             except PermissionError:
                 logger.critical(
-                    "Cannot rollover logfile, make sure this is the only "
-                    "BDFRx process or specify alternate logfile location"
+                    (
+                        "Cannot rollover logfile, make sure this is the only "
+                        "BDFRx process or specify alternate logfile location"
+                    ),
                 )
                 raise
         formatter = logging.Formatter("[%(asctime)s - %(name)s - %(levelname)s] - %(message)s")
@@ -328,10 +332,10 @@ class RedditConnector(metaclass=ABCMeta):
                                 sort=self.sort_filter.name.lower(),
                                 limit=self.args.limit,
                                 time_filter=self.time_filter.value,
-                            )
+                            ),
                         )
                         logger.debug(
-                            f"Added submissions from subreddit {reddit} with the search term {self.args.search!r}"
+                            f"Added submissions from subreddit {reddit} with the search term {self.args.search!r}",
                         )
                     else:
                         out.append(self.create_filtered_listing_generator(reddit))
@@ -392,7 +396,8 @@ class RedditConnector(metaclass=ABCMeta):
         return []
 
     def create_filtered_listing_generator(
-        self, reddit_source: Union[praw.models.Subreddit, praw.models.Multireddit, praw.models.Redditor.submissions]
+        self,
+        reddit_source: Union[praw.models.Subreddit, praw.models.Multireddit, praw.models.Redditor.submissions],
     ) -> Iterator:
         sort_function = self.determine_sort_function()
         if self.sort_filter in (RedditTypes.SortType.TOP, RedditTypes.SortType.CONTROVERSIAL):
@@ -417,7 +422,7 @@ class RedditConnector(metaclass=ABCMeta):
                         generators.append(
                             self.create_filtered_listing_generator(
                                 self.reddit_instance.redditor(user).submissions,
-                            )
+                            ),
                         )
                     if not self.authenticated and any((self.args.upvoted, self.args.saved)):
                         logger.warning("Accessing user lists requires authentication")
@@ -448,7 +453,10 @@ class RedditConnector(metaclass=ABCMeta):
 
     def create_file_name_formatter(self) -> FileNameFormatter:
         return FileNameFormatter(
-            self.args.file_scheme, self.args.folder_scheme, self.args.time_format, self.args.filename_restriction_scheme
+            self.args.file_scheme,
+            self.args.folder_scheme,
+            self.args.time_format,
+            self.args.filename_restriction_scheme,
         )
 
     def create_time_filter(self) -> RedditTypes.TimeType:

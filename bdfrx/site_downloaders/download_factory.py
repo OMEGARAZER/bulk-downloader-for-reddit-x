@@ -31,7 +31,7 @@ class DownloadFactory:
         elif re.match(r"(thumbs\.|giant\.)?gfycat\.", sanitised_url):
             return Gfycat
         elif re.match(r".*/.*\.[a-zA-Z34]{3,4}(\?[\w;&=]*)?$", sanitised_url) and not DownloadFactory.is_web_resource(
-            sanitised_url
+            sanitised_url,
         ):
             return Direct
         elif re.match(r"erome\.com.*", sanitised_url):

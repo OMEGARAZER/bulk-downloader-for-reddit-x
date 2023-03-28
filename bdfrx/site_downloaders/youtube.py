@@ -66,7 +66,7 @@ class Youtube(BaseDownloader):
         with yt_dlp.YoutubeDL(
             {
                 "logger": yt_logger,
-            }
+            },
         ) as ydl:
             try:
                 result = ydl.extract_info(url, download=False)

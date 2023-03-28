@@ -156,7 +156,10 @@ def test_format_name_real(
     ),
 )
 def test_format_full(
-    format_string_directory: str, format_string_file: str, expected: str, reddit_submission: praw.models.Submission
+    format_string_directory: str,
+    format_string_file: str,
+    expected: str,
+    reddit_submission: praw.models.Submission,
 ):
     test_resource = Resource(reddit_submission, "i.reddit.com/blabla.png", lambda: None)
     test_formatter = FileNameFormatter(format_string_file, format_string_directory, "ISO")
@@ -175,7 +178,9 @@ def test_format_full(
     ),
 )
 def test_format_full_conform(
-    format_string_directory: str, format_string_file: str, reddit_submission: praw.models.Submission
+    format_string_directory: str,
+    format_string_file: str,
+    reddit_submission: praw.models.Submission,
 ):
     test_resource = Resource(reddit_submission, "i.reddit.com/blabla.png", lambda: None)
     test_formatter = FileNameFormatter(format_string_file, format_string_directory, "ISO")
@@ -259,7 +264,10 @@ def test_limit_filename_length(test_filename: str, test_ending: str, test_format
     ),
 )
 def test_preserve_id_append_when_shortening(
-    test_filename: str, test_ending: str, expected_end: str, test_formatter: FileNameFormatter
+    test_filename: str,
+    test_ending: str,
+    expected_end: str,
+    test_formatter: FileNameFormatter,
 ):
     result = test_formatter.limit_file_name_length(test_filename, test_ending, Path())
     assert len(result.name) <= 255
@@ -529,7 +537,10 @@ def test_name_submission(
     ),
 )
 def test_shortened_file_name_ending(
-    test_filename: str, test_ending: str, expected_end: str, test_formatter: FileNameFormatter
+    test_filename: str,
+    test_ending: str,
+    expected_end: str,
+    test_formatter: FileNameFormatter,
 ):
     result = test_formatter.limit_file_name_length(test_filename, test_ending, Path())
     assert result.name.endswith(expected_end)

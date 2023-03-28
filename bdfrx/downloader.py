@@ -82,18 +82,20 @@ class RedditDownloader(RedditConnector):
             submission.author is None and "DELETED" in self.args.ignore_user
         ):
             logger.debug(
-                f"Submission {submission.id} in {submission.subreddit.display_name} skipped"
-                f" due to {submission.author.name if submission.author else 'DELETED'} being an ignored user"
+                (
+                    f"Submission {submission.id} in {submission.subreddit.display_name} skipped"
+                    f" due to {submission.author.name if submission.author else 'DELETED'} being an ignored user"
+                ),
             )
             return
         elif self.args.min_score and submission.score < self.args.min_score:
             logger.debug(
-                f"Submission {submission.id} filtered due to score {submission.score} < [{self.args.min_score}]"
+                f"Submission {submission.id} filtered due to score {submission.score} < [{self.args.min_score}]",
             )
             return
         elif self.args.max_score and self.args.max_score < submission.score:
             logger.debug(
-                f"Submission {submission.id} filtered due to score {submission.score} > [{self.args.max_score}]"
+                f"Submission {submission.id} filtered due to score {submission.score} > [{self.args.max_score}]",
             )
             return
         elif (self.args.min_score_ratio and submission.upvote_ratio < self.args.min_score_ratio) or (
@@ -135,8 +137,10 @@ class RedditDownloader(RedditConnector):
                 res.download({"max_wait_time": self.args.max_wait_time})
             except errors.BulkDownloaderException as e:
                 logger.error(
-                    f"Failed to download resource {res.url} in submission {submission.id} "
-                    f"with downloader {downloader_class.__name__}: {e}"
+                    (
+                        f"Failed to download resource {res.url} in submission {submission.id} "
+                        f"with downloader {downloader_class.__name__}: {e}"
+                    ),
                 )
                 return
             resource_hash = res.hash.hexdigest()
@@ -151,14 +155,14 @@ class RedditDownloader(RedditConnector):
                             hard_link.link_to(destination)
                         self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
                         logger.info(
-                            f"Hard link made linking {destination} to {hard_link} in submission {submission.id}"
+                            f"Hard link made linking {destination} to {hard_link} in submission {submission.id}",
                         )
                         return
                     else:
                         self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
                         self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
                         logger.info(
-                            f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere"
+                            f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere",
                         )
                         return
             if resource_hash in self.master_hash_list:
@@ -172,8 +176,10 @@ class RedditDownloader(RedditConnector):
                     except AttributeError:
                         self.master_hash_list[resource_hash].link_to(destination)
                     logger.info(
-                        f"Hard link made linking {destination} to {self.master_hash_list[resource_hash]}"
-                        f" in submission {submission.id}"
+                        (
+                            f"Hard link made linking {destination} to {self.master_hash_list[resource_hash]}"
+                            f" in submission {submission.id}"
+                        ),
                     )
                     return
             destination.parent.mkdir(parents=True, exist_ok=True)
@@ -199,7 +205,8 @@ class RedditDownloader(RedditConnector):
 
     @staticmethod
     def scan_existing_files(
-        directory: Path, db: Union[sqlite3.Connection, None] = None
+        directory: Path,
+        db: Union[sqlite3.Connection, None] = None,
     ) -> Union[dict[str, Path], None]:
         files = []
         for dirpath, _dirnames, filenames in os.walk(directory):

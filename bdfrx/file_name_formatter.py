@@ -158,7 +158,7 @@ class FileNameFormatter:
                 len(filename) > max_file_part_length_chars,
                 len(filename.encode()) > max_file_part_length_bytes,
                 len(str(out)) > max_path_length,
-            ]
+            ],
         ):
             filename = filename[:-1]
             if not safe_ending and filename[-1] != ".":
@@ -207,8 +207,10 @@ class FileNameFormatter:
         if result:
             if "POSTID" not in test_string:
                 logger.warning(
-                    "Some files might not be downloaded due to name conflicts as filenames are"
-                    " not guaranteed to be be unique without {POSTID}"
+                    (
+                        "Some files might not be downloaded due to name conflicts as filenames are"
+                        " not guaranteed to be be unique without {POSTID}"
+                    ),
                 )
             return True
         return False

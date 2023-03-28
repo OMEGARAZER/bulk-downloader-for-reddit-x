@@ -30,7 +30,7 @@ class Gfycat(Redgifs):
         }
         payload = {"access_key": "Anr96uuqt9EdamSCwK4txKPjMsf2M95Rfa5FLLhPFucu8H5HTzeutyAa"}
         token = json.loads(
-            Gfycat.post_url("https://weblogin.gfycat.com/oauth/webtoken", headers=headers, payload=payload).text
+            Gfycat.post_url("https://weblogin.gfycat.com/oauth/webtoken", headers=headers, payload=payload).text,
         )["access_token"]
         return token
 

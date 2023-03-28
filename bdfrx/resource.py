@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
 
 class Resource:
     def __init__(
-        self, source_submission: Submission, url: str, download_function: Callable, extension: str = None
+        self,
+        source_submission: Submission,
+        url: str,
+        download_function: Callable,
+        extension: str = None,
     ) -> None:
         self.source_submission = source_submission
         self.content: Optional[bytes] = None
@@ -76,7 +80,7 @@ class Resource:
                     raise requests.exceptions.ConnectionError(f"Response code {response.status_code}")
                 else:
                     raise BulkDownloaderException(
-                        f"Unrecoverable error requesting resource: HTTP Code {response.status_code}"
+                        f"Unrecoverable error requesting resource: HTTP Code {response.status_code}",
                     )
             except (
                 requests.exceptions.ConnectionError,

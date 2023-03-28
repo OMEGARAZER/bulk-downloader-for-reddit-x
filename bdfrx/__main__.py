@@ -35,7 +35,10 @@ _common_options = [
     click.option("--saved", is_flag=True, default=None),
     click.option("--search", type=str, default=None),
     click.option(
-        "-S", "--sort", type=click.Choice(("hot", "top", "new", "controversial", "rising", "relevance")), default=None
+        "-S",
+        "--sort",
+        type=click.Choice(("hot", "top", "new", "controversial", "rising", "relevance")),
+        default=None,
     ),
     click.option("--submitted", is_flag=True, default=None),
     click.option("-s", "--subreddit", type=str, multiple=True, default=None),

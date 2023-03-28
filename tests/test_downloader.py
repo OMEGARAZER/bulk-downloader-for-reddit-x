@@ -72,7 +72,10 @@ def test_excluded_ids(
 @pytest.mark.reddit
 @pytest.mark.parametrize("test_submission_id", ("m1hqw6",))
 def test_mark_hard_link(
-    test_submission_id: str, downloader_mock: MagicMock, tmp_path: Path, reddit_instance: praw.Reddit
+    test_submission_id: str,
+    downloader_mock: MagicMock,
+    tmp_path: Path,
+    reddit_instance: praw.Reddit,
 ):
     downloader_mock.reddit_instance = reddit_instance
     downloader_mock.args.make_hard_links = True
@@ -155,7 +158,10 @@ def test_download_submission_hash_exists(
 @pytest.mark.online
 @pytest.mark.reddit
 def test_download_submission_file_exists(
-    downloader_mock: MagicMock, reddit_instance: praw.Reddit, tmp_path: Path, capsys: pytest.CaptureFixture
+    downloader_mock: MagicMock,
+    reddit_instance: praw.Reddit,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
 ):
     add_console_handler()
     downloader_mock.reddit_instance = reddit_instance

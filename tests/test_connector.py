@@ -30,7 +30,8 @@ def downloader_mock(args: Configuration):
     downloader_mock.args = args
     downloader_mock.sanitise_subreddit_name = RedditConnector.sanitise_subreddit_name
     downloader_mock.create_filtered_listing_generator = lambda x: RedditConnector.create_filtered_listing_generator(
-        downloader_mock, x
+        downloader_mock,
+        x,
     )
     downloader_mock.split_args_input = RedditConnector.split_args_input
     downloader_mock.master_hash_list = {}
@@ -170,7 +171,9 @@ def test_create_authenticator(downloader_mock: MagicMock):
     ),
 )
 def test_get_submissions_from_link(
-    test_submission_ids: list[str], reddit_instance: praw.Reddit, downloader_mock: MagicMock
+    test_submission_ids: list[str],
+    reddit_instance: praw.Reddit,
+    downloader_mock: MagicMock,
 ):
     downloader_mock.args.link = test_submission_ids
     downloader_mock.reddit_instance = reddit_instance
