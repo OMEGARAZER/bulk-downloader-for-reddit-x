@@ -126,7 +126,9 @@ select = [
     "PIE",  # flake8-pie
     "PT",   # flake8-pytest-style
     "PTH",  # flake8-use-pathlib
+    "PYI",  # flake8-pyi
     "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
     "RUF",  # Ruff
     "S",    # flake8-bandit
     "SLF",  # flake8-self

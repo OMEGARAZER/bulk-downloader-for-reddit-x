@@ -23,7 +23,7 @@ class PornHub(Youtube):
         if video_attributes := super().get_video_attributes(self.post.url):
             extension = video_attributes["ext"]
         else:
-            raise SiteDownloaderError()
+            raise SiteDownloaderError
 
         out = Resource(
             self.post,
