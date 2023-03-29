@@ -88,7 +88,7 @@ def test_find_resources(test_url: str, expected_hashes: set[str]):
     mock_download.url = test_url
     downloader = Vidble(mock_download)
     results = downloader.find_resources()
-    assert all([isinstance(res, Resource) for res in results])
+    assert all(isinstance(res, Resource) for res in results)
     [res.download() for res in results]
     hashes = {res.hash.hexdigest() for res in results}
     assert hashes == set(expected_hashes)

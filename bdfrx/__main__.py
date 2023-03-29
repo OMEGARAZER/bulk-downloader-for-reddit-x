@@ -99,7 +99,6 @@ def _check_version(context: click.core.Context, _param, value: bool) -> None:  #
 )
 def cli() -> None:
     """BDFRx is used to download content from Reddit."""
-    pass
 
 
 @cli.command("download")

@@ -27,7 +27,7 @@ from bdfrx.site_downloaders.erome import Erome
 )
 def test_get_link(test_url: str, expected_urls: tuple[str]):
     result = Erome._get_links(test_url)
-    assert all([any([re.match(p, r) for r in result]) for p in expected_urls])
+    assert all(any(re.match(p, r) for r in result) for p in expected_urls)
 
 
 @pytest.mark.online

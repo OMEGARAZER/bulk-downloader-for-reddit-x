@@ -38,8 +38,8 @@ def downloader_mock(args: Configuration):
 
 def assert_all_results_are_submissions(result_limit: int, results: list[Iterator]) -> list:
     results = [sub for res in results for sub in res]
-    assert all([isinstance(res, praw.models.Submission) for res in results])
-    assert not any([isinstance(m, MagicMock) for m in results])
+    assert all(isinstance(res, praw.models.Submission) for res in results)
+    assert not any(isinstance(m, MagicMock) for m in results)
     if result_limit is not None:
         assert len(results) == result_limit
     return results
@@ -47,8 +47,8 @@ def assert_all_results_are_submissions(result_limit: int, results: list[Iterator
 
 def assert_all_results_are_submissions_or_comments(result_limit: int, results: list[Iterator]) -> list:
     results = [sub for res in results for sub in res]
-    assert all([isinstance(res, (praw.models.Submission, praw.models.Comment)) for res in results])
-    assert not any([isinstance(m, MagicMock) for m in results])
+    assert all(isinstance(res, (praw.models.Submission, praw.models.Comment)) for res in results)
+    assert not any(isinstance(m, MagicMock) for m in results)
     if result_limit is not None:
         assert len(results) == result_limit
     return results
@@ -176,7 +176,7 @@ def test_get_submissions_from_link(
     downloader_mock.args.link = test_submission_ids
     downloader_mock.reddit_instance = reddit_instance
     results = RedditConnector.get_submissions_from_link(downloader_mock)
-    assert all([isinstance(sub, praw.models.Submission) for res in results for sub in res])
+    assert all(isinstance(sub, praw.models.Submission) for res in results for sub in res)
     assert len(results[0]) == len(test_submission_ids)
 
 
@@ -215,10 +215,10 @@ def test_get_subreddit_normal(
     results = RedditConnector.get_subreddits(downloader_mock)
     test_subreddits = downloader_mock.split_args_input(test_subreddits)
     results = [sub for res1 in results for sub in res1]
-    assert all([isinstance(res1, praw.models.Submission) for res1 in results])
-    assert all([res.subreddit.display_name in test_subreddits for res in results])
+    assert all(isinstance(res1, praw.models.Submission) for res1 in results)
+    assert all(res.subreddit.display_name in test_subreddits for res in results)
     assert len(results) <= max_expected_len
-    assert not any([isinstance(m, MagicMock) for m in results])
+    assert not any(isinstance(m, MagicMock) for m in results)
 
 
 @pytest.mark.online
@@ -249,7 +249,7 @@ def test_get_subreddit_time_verification(
     downloader_mock.reddit_instance = reddit_instance
     results = RedditConnector.get_subreddits(downloader_mock)
     results = [sub for res1 in results for sub in res1]
-    assert all([isinstance(res1, praw.models.Submission) for res1 in results])
+    assert all(isinstance(res1, praw.models.Submission) for res1 in results)
     nowtime = datetime.now()
     for result in results:
         result_time = datetime.fromtimestamp(result.created_utc)
@@ -287,12 +287,12 @@ def test_get_subreddit_search(
     downloader_mock.time_filter = RedditConnector.create_time_filter(downloader_mock)
     results = RedditConnector.get_subreddits(downloader_mock)
     results = [sub for res in results for sub in res]
-    assert all([isinstance(res, praw.models.Submission) for res in results])
-    assert all([res.subreddit.display_name in test_subreddits for res in results])
+    assert all(isinstance(res, praw.models.Submission) for res in results)
+    assert all(res.subreddit.display_name in test_subreddits for res in results)
     assert len(results) <= max_expected_len
     if max_expected_len != 0:
         assert results
-    assert not any([isinstance(m, MagicMock) for m in results])
+    assert not any(isinstance(m, MagicMock) for m in results)
 
 
 @pytest.mark.online
@@ -324,9 +324,9 @@ def test_get_multireddits_public(
     )
     results = RedditConnector.get_multireddits(downloader_mock)
     results = [sub for res in results for sub in res]
-    assert all([isinstance(res, praw.models.Submission) for res in results])
+    assert all(isinstance(res, praw.models.Submission) for res in results)
     assert len(results) == limit
-    assert not any([isinstance(m, MagicMock) for m in results])
+    assert not any(isinstance(m, MagicMock) for m in results)
 
 
 @pytest.mark.online
@@ -353,8 +353,8 @@ def test_get_user_submissions(test_user: str, limit: int, downloader_mock: Magic
     )
     results = RedditConnector.get_user_data(downloader_mock)
     results = assert_all_results_are_submissions(limit, results)
-    assert all([res.author.name == test_user for res in results])
-    assert not any([isinstance(m, MagicMock) for m in results])
+    assert all(res.author.name == test_user for res in results)
+    assert not any(isinstance(m, MagicMock) for m in results)
 
 
 @pytest.mark.online
@@ -394,7 +394,7 @@ def test_get_subscribed_subreddits(downloader_mock: MagicMock, authenticated_red
     downloader_mock.determine_sort_function.return_value = praw.models.Subreddit.hot
     downloader_mock.sort_filter = RedditTypes.SortType.HOT
     results = RedditConnector.get_subreddits(downloader_mock)
-    assert all([isinstance(s, praw.models.ListingGenerator) for s in results])
+    assert all(isinstance(s, praw.models.ListingGenerator) for s in results)
     assert results
 
 

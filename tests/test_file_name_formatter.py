@@ -354,7 +354,7 @@ def test_generate_dict_for_submission(test_submission_id: str, expected: dict, r
     test_submission = reddit_instance.submission(id=test_submission_id)
     test_formatter = FileNameFormatter("{TITLE}", "", "ISO")
     result = test_formatter._generate_name_dict_from_submission(test_submission)
-    assert all([result.get(key) == expected[key] for key in expected.keys()])
+    assert all(result.get(key) == expected[key] for key in expected.keys())
 
 
 @pytest.mark.online
@@ -377,7 +377,7 @@ def test_generate_dict_for_comment(test_comment_id: str, expected: dict, reddit_
     test_comment = reddit_instance.comment(id=test_comment_id)
     test_formatter = FileNameFormatter("{TITLE}", "", "ISO")
     result = test_formatter._generate_name_dict_from_comment(test_comment)
-    assert all([result.get(key) == expected[key] for key in expected.keys()])
+    assert all(result.get(key) == expected[key] for key in expected.keys())
 
 
 @pytest.mark.online

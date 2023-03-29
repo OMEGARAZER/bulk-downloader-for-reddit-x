@@ -201,7 +201,7 @@ class FileNameFormatter:
     def validate_string(test_string: str) -> bool:
         if not test_string:
             return False
-        result = any([f"{{{key}}}" in test_string.lower() for key in FileNameFormatter.key_terms])
+        result = any(f"{{{key}}}" in test_string.lower() for key in FileNameFormatter.key_terms)
         if result:
             if "POSTID" not in test_string:
                 logger.warning(

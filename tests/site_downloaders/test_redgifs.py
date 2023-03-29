@@ -86,7 +86,7 @@ def test_download_resource(test_url: str, expected_hashes: set[str]):
     mock_submission.url = test_url
     test_site = Redgifs(mock_submission)
     results = test_site.find_resources()
-    assert all([isinstance(res, Resource) for res in results])
+    assert all(isinstance(res, Resource) for res in results)
     [res.download() for res in results]
     hashes = {res.hash.hexdigest() for res in results}
     assert hashes == set(expected_hashes)
@@ -122,7 +122,7 @@ def test_hd_soft_fail(test_url: str, expected_link: set[str], expected_hash: set
     mock_submission.url = test_url
     test_site = Redgifs(mock_submission)
     results = test_site.find_resources()
-    assert all([isinstance(res, Resource) for res in results])
+    assert all(isinstance(res, Resource) for res in results)
     [res.download() for res in results]
     hashes = {res.hash.hexdigest() for res in results}
     assert hashes == set(expected_hash)
