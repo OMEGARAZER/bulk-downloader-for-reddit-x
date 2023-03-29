@@ -47,5 +47,4 @@ class Vidble(BaseDownloader):
 
     @staticmethod
     def change_med_url(url: str) -> str:
-        out = re.sub(r"_med(\..{3,4})$", r"\1", url)
-        return out
+        return re.sub(r"_med(\..{3,4})$", r"\1", url)

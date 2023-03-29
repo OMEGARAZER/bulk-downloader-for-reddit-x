@@ -18,7 +18,7 @@ def copy_test_config(run_path: Path):
 
 def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
     copy_test_config(run_path)
-    out = [  # noqa: RUF005
+    return [  # noqa: RUF005
         "download",
         str(run_path),
         "-v",
@@ -27,7 +27,6 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
         "--log",
         str(Path(run_path, "test_log.txt")),
     ] + test_args
-    return out
 
 
 @pytest.mark.online

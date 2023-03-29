@@ -73,10 +73,10 @@ class RedditDownloader(RedditConnector):
         if submission.id in self.excluded_submission_ids:
             logger.debug(f"Object {submission.id} in exclusion list, skipping")
             return
-        elif submission.subreddit.display_name.lower() in self.args.skip_subreddit:
+        if submission.subreddit.display_name.lower() in self.args.skip_subreddit:
             logger.debug(f"Submission {submission.id} in {submission.subreddit.display_name} in skip list")
             return
-        elif (submission.author and submission.author.name in self.args.ignore_user) or (
+        if (submission.author and submission.author.name in self.args.ignore_user) or (
             submission.author is None and "DELETED" in self.args.ignore_user
         ):
             logger.debug(
@@ -86,25 +86,25 @@ class RedditDownloader(RedditConnector):
                 ),
             )
             return
-        elif self.args.min_score and submission.score < self.args.min_score:
+        if self.args.min_score and submission.score < self.args.min_score:
             logger.debug(
                 f"Submission {submission.id} filtered due to score {submission.score} < [{self.args.min_score}]",
             )
             return
-        elif self.args.max_score and self.args.max_score < submission.score:
+        if self.args.max_score and self.args.max_score < submission.score:
             logger.debug(
                 f"Submission {submission.id} filtered due to score {submission.score} > [{self.args.max_score}]",
             )
             return
-        elif (self.args.min_score_ratio and submission.upvote_ratio < self.args.min_score_ratio) or (
+        if (self.args.min_score_ratio and submission.upvote_ratio < self.args.min_score_ratio) or (
             self.args.max_score_ratio and self.args.max_score_ratio < submission.upvote_ratio
         ):
             logger.debug(f"Submission {submission.id} filtered due to score ratio ({submission.upvote_ratio})")
             return
-        elif not isinstance(submission, praw.models.Submission):
+        if not isinstance(submission, praw.models.Submission):
             logger.warning(f"{submission.id} is not a submission")
             return
-        elif not self.download_filter.check_url(submission.url):
+        if not self.download_filter.check_url(submission.url):
             logger.debug(f"Submission {submission.id} filtered due to URL {submission.url}")
             return
 
@@ -128,7 +128,7 @@ class RedditDownloader(RedditConnector):
             if destination.exists():
                 logger.debug(f"File {destination} from submission {submission.id} already exists, continuing")
                 continue
-            elif not self.download_filter.check_resource(res):
+            if not self.download_filter.check_resource(res):
                 logger.debug(f"Download filter removed {submission.id} file with URL {submission.url}")
                 continue
             try:
@@ -155,16 +155,15 @@ class RedditDownloader(RedditConnector):
                     self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
                     logger.info(f"Hard link made linking {destination} to {hard_link} in submission {submission.id}")
                     return
-                else:
-                    self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
-                    self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
-                    logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")
-                    return
+                self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
+                self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
+                logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")
+                return
             if resource_hash in self.master_hash_list:
                 if self.args.no_dupes:
                     logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")
                     return
-                elif self.args.make_hard_links:
+                if self.args.make_hard_links:
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     try:
                         destination.hardlink_to(self.master_hash_list[resource_hash])
@@ -216,7 +215,5 @@ class RedditDownloader(RedditConnector):
             hashes = [(res[1], str(res[0])) for res in results]
             db.executemany("INSERT OR IGNORE INTO hash (hash, path) values(?, ?);", hashes)
             db.commit()
-            return
-        else:
-            hash_list = {res[1]: res[0] for res in results}
-            return hash_list
+            return None
+        return {res[1]: res[0] for res in results}

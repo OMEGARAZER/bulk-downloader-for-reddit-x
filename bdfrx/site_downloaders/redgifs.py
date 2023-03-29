@@ -22,8 +22,7 @@ class Redgifs(BaseDownloader):
     @staticmethod
     @cached(cache=TTLCache(maxsize=5, ttl=82080))
     def _get_auth_token() -> str:
-        token = json.loads(Redgifs.retrieve_url("https://api.redgifs.com/v2/auth/temporary").text)["token"]
-        return token
+        return json.loads(Redgifs.retrieve_url("https://api.redgifs.com/v2/auth/temporary").text)["token"]
 
     @staticmethod
     def _get_id(url: str) -> str:

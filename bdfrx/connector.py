@@ -229,12 +229,11 @@ class RedditConnector(metaclass=ABCMeta):
                 logger.debug(f"Loading DB from {self.args.db_file}")
                 self.db = sqlite3.connect(db_path)
                 return
-            else:
-                with importlib.resources.path("bdfrx", "bdfrx.db") as path:
-                    logger.info(f"DB not found at {self.args.db_file} loading clean DB")
-                    shutil.copy(path, Path(self.args.db_file))
-                    self.db = sqlite3.connect(self.args.db_file)
-                    return
+            with importlib.resources.path("bdfrx", "bdfrx.db") as path:
+                logger.info(f"DB not found at {self.args.db_file} loading clean DB")
+                shutil.copy(path, Path(self.args.db_file))
+                self.db = sqlite3.connect(self.args.db_file)
+                return
         possible_paths = [
             Path("./bdfrx.db"),
             Path(self.config_directory, "bdfrx.db"),
@@ -347,10 +346,9 @@ class RedditConnector(metaclass=ABCMeta):
                 resolved_name = self.reddit_instance.user.me().name
                 logger.log(9, f"Resolved user to {resolved_name}")
                 return resolved_name
-            else:
-                logger.warning("To use 'me' as a user, an authenticated Reddit instance must be used")
-        else:
-            return in_name
+            logger.warning("To use 'me' as a user, an authenticated Reddit instance must be used")
+            return None
+        return in_name
 
     def get_submissions_from_link(self) -> list[list[praw.models.Submission]]:
         supplied_submissions = []

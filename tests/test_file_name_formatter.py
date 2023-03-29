@@ -32,8 +32,7 @@ def submission() -> MagicMock:
 
 @pytest.fixture()
 def test_formatter() -> FileNameFormatter:
-    out = FileNameFormatter("{TITLE}", "", "ISO")
-    return out
+    return FileNameFormatter("{TITLE}", "", "ISO")
 
 
 def check_valid_windows_path(test_string: str):

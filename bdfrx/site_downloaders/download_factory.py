@@ -24,36 +24,35 @@ class DownloadFactory:
         sanitised_url = DownloadFactory.sanitise_url(url).lower()
         if re.match(r"(i\.|m\.|o\.)?imgur", sanitised_url):
             return Imgur
-        elif re.match(r"(i\.|thumbs\d\.|v\d\.)?(redgifs|gifdeliverynetwork)", sanitised_url):
+        if re.match(r"(i\.|thumbs\d\.|v\d\.)?(redgifs|gifdeliverynetwork)", sanitised_url):
             return Redgifs
-        elif re.match(r"(thumbs\.|giant\.)?gfycat\.", sanitised_url):
+        if re.match(r"(thumbs\.|giant\.)?gfycat\.", sanitised_url):
             return Gfycat
-        elif re.match(r".*/.*\.[a-zA-Z34]{3,4}(\?[\w;&=]*)?$", sanitised_url) and not DownloadFactory.is_web_resource(
+        if re.match(r".*/.*\.[a-zA-Z34]{3,4}(\?[\w;&=]*)?$", sanitised_url) and not DownloadFactory.is_web_resource(
             sanitised_url,
         ):
             return Direct
-        elif re.match(r"erome\.com.*", sanitised_url):
+        if re.match(r"erome\.com.*", sanitised_url):
             return Erome
-        elif re.match(r"delayforreddit\.com", sanitised_url):
+        if re.match(r"delayforreddit\.com", sanitised_url):
             return DelayForReddit
-        elif re.match(r"reddit\.com/gallery/.*", sanitised_url) or re.match(r"patreon\.com.*", sanitised_url):
+        if re.match(r"reddit\.com/gallery/.*", sanitised_url) or re.match(r"patreon\.com.*", sanitised_url):
             return Gallery
-        elif re.match(r"reddit\.com/r/", sanitised_url):
+        if re.match(r"reddit\.com/r/", sanitised_url):
             return SelfPost
-        elif re.match(r"(m\.)?youtu\.?be", sanitised_url):
+        if re.match(r"(m\.)?youtu\.?be", sanitised_url):
             return Youtube
-        elif re.match(r"i\.redd\.it.*", sanitised_url):
+        if re.match(r"i\.redd\.it.*", sanitised_url):
             return Direct
-        elif re.match(r"v\.redd\.it.*", sanitised_url):
+        if re.match(r"v\.redd\.it.*", sanitised_url):
             return VReddit
-        elif re.match(r"pornhub\.com.*", sanitised_url):
+        if re.match(r"pornhub\.com.*", sanitised_url):
             return PornHub
-        elif re.match(r"vidble\.com", sanitised_url):
+        if re.match(r"vidble\.com", sanitised_url):
             return Vidble
-        elif YtdlpFallback.can_handle_link(sanitised_url):
+        if YtdlpFallback.can_handle_link(sanitised_url):
             return YtdlpFallback
-        else:
-            raise NotADownloadableLinkError(f"No downloader module exists for url {url}")
+        raise NotADownloadableLinkError(f"No downloader module exists for url {url}")
 
     @staticmethod
     def sanitise_url(url: str) -> str:

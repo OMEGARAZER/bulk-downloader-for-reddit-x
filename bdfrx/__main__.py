@@ -150,8 +150,7 @@ def cli_completion(context: click.Context, **_) -> None:
 def make_console_logging_handler(verbosity: int) -> logging.StreamHandler:
     class StreamExceptionFilter(logging.Filter):
         def filter(self, record: logging.LogRecord) -> bool:  # noqa: A003
-            result = not (record.levelno == logging.ERROR and record.exc_info)
-            return result
+            return not (record.levelno == logging.ERROR and record.exc_info)
 
     logger.setLevel(1)
     stream = logging.StreamHandler(sys.stdout)

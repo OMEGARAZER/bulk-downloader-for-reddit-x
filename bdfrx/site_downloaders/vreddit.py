@@ -30,10 +30,9 @@ class VReddit(Youtube):
         result = VReddit.get_video_data(url)
         if "ext" in result:
             return result
-        else:
-            try:
-                result = result["entries"][0]
-                return result
-            except Exception as e:
-                logger.exception(e)
-                raise NotADownloadableLinkError(f"Video info extraction failed for {url}")
+        try:
+            result = result["entries"][0]
+            return result
+        except Exception as e:
+            logger.exception(e)
+            raise NotADownloadableLinkError(f"Video info extraction failed for {url}")

@@ -33,3 +33,4 @@ class YtdlpFallback(BaseFallbackDownloader, Youtube):
             return False
         if attributes:
             return True
+        return False

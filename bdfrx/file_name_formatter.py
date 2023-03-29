@@ -81,7 +81,7 @@ class FileNameFormatter:
         return in_string
 
     def _generate_name_dict_from_submission(self, submission: Submission) -> dict:
-        submission_attributes = {
+        return {
             "title": submission.title,
             "subreddit": submission.subreddit.display_name,
             "redditor": submission.author.name if submission.author else "DELETED",
@@ -90,7 +90,6 @@ class FileNameFormatter:
             "flair": submission.link_flair_text,
             "date": self._convert_timestamp(submission.created_utc),
         }
-        return submission_attributes
 
     def _convert_timestamp(self, timestamp: float) -> str:
         input_time = datetime.datetime.fromtimestamp(timestamp)
@@ -99,7 +98,7 @@ class FileNameFormatter:
         return input_time.strftime(self.time_format_string)
 
     def _generate_name_dict_from_comment(self, comment: Comment) -> dict:
-        comment_attributes = {
+        return {
             "title": comment.submission.title,
             "subreddit": comment.subreddit.display_name,
             "redditor": comment.author.name if comment.author else "DELETED",
@@ -108,7 +107,6 @@ class FileNameFormatter:
             "flair": "",
             "date": self._convert_timestamp(comment.created_utc),
         }
-        return comment_attributes
 
     def format_path(
         self,
@@ -172,8 +170,7 @@ class FileNameFormatter:
         except (ValueError, subprocess.CalledProcessError, OSError):
             if platform.system() == "Windows":
                 return FileNameFormatter.WINDOWS_MAX_PATH_LENGTH
-            else:
-                return FileNameFormatter.LINUX_MAX_PATH_LENGTH
+            return FileNameFormatter.LINUX_MAX_PATH_LENGTH
 
     def format_resource_paths(
         self,
@@ -223,5 +220,4 @@ class FileNameFormatter:
 
     @staticmethod
     def _strip_emojis(input_string: str) -> str:
-        result = input_string.encode("ascii", errors="ignore").decode("utf-8")
-        return result
+        return input_string.encode("ascii", errors="ignore").decode("utf-8")

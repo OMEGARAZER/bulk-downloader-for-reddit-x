@@ -10,12 +10,11 @@ from bdfrx.oauth2 import OAuth2TokenManager
 
 @pytest.fixture(scope="session")
 def reddit_instance():
-    rd = praw.Reddit(
+    return praw.Reddit(
         client_id="0vIJGSRQEHgi_r0esNWvjg",
         client_secret=None,
         user_agent="test",
     )
-    return rd
 
 
 @pytest.fixture(scope="session")
@@ -28,10 +27,9 @@ def authenticated_reddit_instance():
     if not cfg_parser.has_option("DEFAULT", "user_token"):
         pytest.skip("Refresh token must be provided to authenticate with OAuth2")
     token_manager = OAuth2TokenManager(cfg_parser, test_config_path)
-    reddit_instance = praw.Reddit(
+    return praw.Reddit(
         client_id=cfg_parser.get("DEFAULT", "client_id"),
         client_secret=None,
         user_agent=praw.const.USER_AGENT_FORMAT.format(":".join([platform.uname()[0], __package__, "test"])),
         token_manager=token_manager,
     )
-    return reddit_instance

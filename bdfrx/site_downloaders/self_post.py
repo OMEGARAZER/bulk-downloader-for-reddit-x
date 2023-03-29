@@ -22,7 +22,7 @@ class SelfPost(BaseDownloader):
 
     def export_to_string(self) -> str:
         """Self posts are formatted here"""
-        content = (
+        return (
             "## ["
             + self.post.fullname
             + "]("
@@ -40,4 +40,3 @@ class SelfPost(BaseDownloader):
             + (self.post.author.name if self.post.author else "DELETED")
             + ")"
         )
-        return content

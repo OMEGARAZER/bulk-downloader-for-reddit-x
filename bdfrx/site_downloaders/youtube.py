@@ -52,8 +52,7 @@ class Youtube(BaseDownloader):
                 else:
                     raise NotADownloadableLinkError(f"No media exists in the URL {self.post.url}")
                 with downloaded_file.open("rb") as file:
-                    content = file.read()
-                return content
+                    return file.read()
 
         return download
 
@@ -78,5 +77,4 @@ class Youtube(BaseDownloader):
         result = Youtube.get_video_data(url)
         if "ext" in result:
             return result
-        else:
-            raise NotADownloadableLinkError(f"Video info extraction failed for {url}")
+        raise NotADownloadableLinkError(f"Video info extraction failed for {url}")

@@ -60,6 +60,7 @@ class Resource:
         match = re.search(extension_pattern, stripped_url)
         if match:
             return match.group(1)
+        return None
 
     @staticmethod
     def http_download(url: str, download_parameters: dict) -> Optional[bytes]:
@@ -71,12 +72,11 @@ class Resource:
                 response = requests.get(url, headers=headers, timeout=16)
                 if re.match(r"^2\d{2}", str(response.status_code)) and response.content:
                     return response.content
-                elif response.status_code in (408, 429):
+                if response.status_code in (408, 429):
                     raise requests.exceptions.ConnectionError(f"Response code {response.status_code}")
-                else:
-                    raise BulkDownloaderException(
-                        f"Unrecoverable error requesting resource: HTTP Code {response.status_code}",
-                    )
+                raise BulkDownloaderException(
+                    f"Unrecoverable error requesting resource: HTTP Code {response.status_code}",
+                )
             except (
                 requests.exceptions.ConnectionError,
                 requests.exceptions.ChunkedEncodingError,
