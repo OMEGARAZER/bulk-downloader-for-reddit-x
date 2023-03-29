@@ -40,7 +40,7 @@ class Gfycat(Redgifs):
         response = Gfycat.retrieve_url(url)
         if re.search(r"(redgifs|gifdeliverynetwork)", response.url):
             url = url.lower()
-            return Redgifs._get_link(url)
+            return Redgifs._get_link(url)  # noqa: SLF001
 
         auth_token = Gfycat._get_auth_token()
         if not auth_token:

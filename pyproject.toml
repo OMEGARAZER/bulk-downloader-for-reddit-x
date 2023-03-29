@@ -100,38 +100,39 @@ flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
 format = "grouped"
 ignore = [
-    "ANN101",  # missing-type-self
-    "B904",  # raise-without-from-inside-except
-    "N818",  # error-suffix-on-exception-name
+    "ANN101",   # missing-type-self
+    "B904",     # raise-without-from-inside-except
+    "N818",     # error-suffix-on-exception-name
 ]
 line-length = 120
-per-file-ignores = {"tests/*" = ["ANN","FBT","S101","S105","S106"], "scripts/*" = ["INP","S105","S106"]}
+per-file-ignores = {"tests/*" = ["ANN", "FBT", "S101", "S105", "S106", "SLF"], "scripts/*" = ["INP", "S105", "S106"]}
 select = [
-    "A",  # flake8-builtins
+    "A",    # flake8-builtins
     "ANN",  # flake8-annotations
-    "B",  # flake8-bugbear
+    "B",    # flake8-bugbear
     "BLE",  # flake8-blind-except
-    "C4",  # flake8-comprehensions
+    "C4",   # flake8-comprehensions
     "COM",  # flake8-commas
-    "E",  # Pycodestyle
+    "E",    # Pycodestyle
     "ERA",  # eradicate
     "EXE",  # flake8-executable
-    "F",  # Pyflakes
+    "F",    # Pyflakes
     "FBT",  # flake8-boolean-trap
-    "I",  # Isort
+    "I",    # Isort
     "ICN",  # flake8-import-conventions
     "INP",  # flake8-no-pep420
     "ISC",  # flake8-implicit-str-concat
-    "N",  # pep8-naming
-    "PT",  # flake8-pytest-style
+    "N",    # pep8-naming
+    "PT",   # flake8-pytest-style
     "PTH",  # flake8-use-pathlib
-    "Q",  # flake8-quotes
+    "Q",    # flake8-quotes
     "RUF",  # Ruff
-    "S",  # flake8-bandit
+    "S",    # flake8-bandit
+    "SLF",  # flake8-self
     "T10",  # flake8-debugger
     "TID",  # flake8-tidy-imports
-    "UP",  # pyupgrade
-    "W",  # Pycodestyle
+    "UP",   # pyupgrade
+    "W",    # Pycodestyle
     "YTT",  # flake8-2020
 ]
 show-fixes = true
