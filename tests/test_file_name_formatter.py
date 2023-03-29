@@ -354,7 +354,7 @@ def test_generate_dict_for_submission(test_submission_id: str, expected: dict, r
     test_submission = reddit_instance.submission(id=test_submission_id)
     test_formatter = FileNameFormatter("{TITLE}", "", "ISO")
     result = test_formatter._generate_name_dict_from_submission(test_submission)
-    assert all(result.get(key) == expected[key] for key in expected.keys())
+    assert all(result.get(key) == expected[key] for key in expected)
 
 
 @pytest.mark.online
@@ -377,7 +377,7 @@ def test_generate_dict_for_comment(test_comment_id: str, expected: dict, reddit_
     test_comment = reddit_instance.comment(id=test_comment_id)
     test_formatter = FileNameFormatter("{TITLE}", "", "ISO")
     result = test_formatter._generate_name_dict_from_comment(test_comment)
-    assert all(result.get(key) == expected[key] for key in expected.keys())
+    assert all(result.get(key) == expected[key] for key in expected)
 
 
 @pytest.mark.online
@@ -493,13 +493,15 @@ def test_get_max_path_length():
 
 
 def test_windows_max_path(tmp_path: Path):
-    with unittest.mock.patch("platform.system", return_value="Windows"):
-        with unittest.mock.patch("bdfrx.file_name_formatter.FileNameFormatter.find_max_path_length", return_value=260):
-            mock = MagicMock()
-            mock.max_path = 260
-            result = FileNameFormatter.limit_file_name_length(mock, "test" * 100, "_1.png", tmp_path)
-            assert len(str(result)) <= 260
-            assert len(result.name) <= (260 - len(str(tmp_path)))
+    with unittest.mock.patch("platform.system", return_value="Windows") and unittest.mock.patch(
+        "bdfrx.file_name_formatter.FileNameFormatter.find_max_path_length",
+        return_value=260,
+    ):
+        mock = MagicMock()
+        mock.max_path = 260
+        result = FileNameFormatter.limit_file_name_length(mock, "test" * 100, "_1.png", tmp_path)
+        assert len(str(result)) <= 260
+        assert len(result.name) <= (260 - len(str(tmp_path)))
 
 
 @pytest.mark.online

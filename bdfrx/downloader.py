@@ -142,27 +142,24 @@ class RedditDownloader(RedditConnector):
                 )
                 return
             resource_hash = res.hash.hexdigest()
-            if self.args.db:
-                if hard_link := self.db.execute("SELECT path FROM hash WHERE hash=?;", (resource_hash,)).fetchone():
-                    if self.args.make_hard_links:
-                        destination.parent.mkdir(parents=True, exist_ok=True)
-                        hard_link = hard_link[0].strip()
-                        try:
-                            destination.hardlink_to(hard_link)
-                        except AttributeError:
-                            hard_link.link_to(destination)
-                        self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
-                        logger.info(
-                            f"Hard link made linking {destination} to {hard_link} in submission {submission.id}",
-                        )
-                        return
-                    else:
-                        self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
-                        self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
-                        logger.info(
-                            f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere",
-                        )
-                        return
+            if self.args.db and (
+                hard_link := self.db.execute("SELECT path FROM hash WHERE hash=?;", (resource_hash,)).fetchone()
+            ):
+                if self.args.make_hard_links:
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    hard_link = hard_link[0].strip()
+                    try:
+                        destination.hardlink_to(hard_link)
+                    except AttributeError:
+                        hard_link.link_to(destination)
+                    self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
+                    logger.info(f"Hard link made linking {destination} to {hard_link} in submission {submission.id}")
+                    return
+                else:
+                    self.db.execute("INSERT OR IGNORE INTO link (link) values(?);", (submission.url,))
+                    self.db.execute("INSERT OR IGNORE INTO post_id (post_id) values(?);", (submission.id,))
+                    logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")
+                    return
             if resource_hash in self.master_hash_list:
                 if self.args.no_dupes:
                     logger.info(f"Resource hash {resource_hash} from submission {submission.id} downloaded elsewhere")

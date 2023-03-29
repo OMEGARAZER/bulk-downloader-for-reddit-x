@@ -409,14 +409,13 @@ def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp
 def test_cli_download_user_reddit_server_error(test_args: list[str], response: int, tmp_path: Path):
     runner = CliRunner()
     test_args = create_basic_args_for_download_runner(test_args, tmp_path)
-    with patch("bdfrx.connector.sleep", return_value=None):
-        with patch(
-            "bdfrx.connector.RedditConnector.check_user_existence",
-            side_effect=prawcore.exceptions.ResponseException(MagicMock(status_code=response)),
-        ):
-            result = runner.invoke(cli, test_args)
-            assert result.exit_code == 0
-            assert f"received {response} HTTP response" in result.output
+    with patch("bdfrx.connector.sleep", return_value=None) and patch(
+        "bdfrx.connector.RedditConnector.check_user_existence",
+        side_effect=prawcore.exceptions.ResponseException(MagicMock(status_code=response)),
+    ):
+        result = runner.invoke(cli, test_args)
+        assert result.exit_code == 0
+        assert f"received {response} HTTP response" in result.output
 
 
 @pytest.mark.online

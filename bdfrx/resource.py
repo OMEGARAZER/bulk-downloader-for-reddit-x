@@ -65,10 +65,7 @@ class Resource:
     def http_download(url: str, download_parameters: dict) -> Optional[bytes]:
         headers = download_parameters.get("headers")
         current_wait_time = 60
-        if "max_wait_time" in download_parameters:
-            max_wait_time = download_parameters["max_wait_time"]
-        else:
-            max_wait_time = 300
+        max_wait_time = download_parameters.get("max_wait_time", 300)
         while True:
             try:
                 response = requests.get(url, headers=headers, timeout=16)

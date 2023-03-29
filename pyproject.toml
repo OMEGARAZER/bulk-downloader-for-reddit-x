@@ -123,6 +123,7 @@ select = [
     "INP",  # flake8-no-pep420
     "ISC",  # flake8-implicit-str-concat
     "N",    # pep8-naming
+    "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
     "PT",   # flake8-pytest-style
     "PTH",  # flake8-use-pathlib
@@ -131,6 +132,7 @@ select = [
     "RSE",  # flake8-raise
     "RUF",  # Ruff
     "S",    # flake8-bandit
+    "SIM",  # flake8-simplify
     "SLF",  # flake8-self
     "T10",  # flake8-debugger
     "TID",  # flake8-tidy-imports

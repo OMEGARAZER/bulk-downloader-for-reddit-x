@@ -56,7 +56,7 @@ class Configuration(Namespace):
     def process_click_arguments(self, context: click.Context) -> None:
         if context.params.get("opts") is not None:
             self.parse_yaml_options(context.params["opts"])
-        for arg_key in context.params.keys():
+        for arg_key in context.params:
             if not hasattr(self, arg_key):
                 logger.warning(f"Ignoring an unknown CLI argument: {arg_key!r}")
                 continue

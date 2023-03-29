@@ -53,7 +53,7 @@ class FileNameFormatter:
         else:
             raise BulkDownloaderException(f"Cannot name object {type(submission).__name__}")
         result = format_string
-        for key in attributes.keys():
+        for key in attributes:
             if re.search(rf"(?i).*{{{key}}}.*", result):
                 key_value = str(attributes.get(key, "unknown"))
                 key_value = FileNameFormatter._convert_unicode_escapes(key_value)
