@@ -62,7 +62,7 @@ class RedditDownloader(RedditConnector):
             self.db.commit()
             self.db.close()
 
-    def _download_submission(self, submission: praw.models.Submission) -> None:
+    def _download_submission(self, submission: praw.models.Submission) -> None:  # noqa: PLR0911,PLR0912,PLR0915
         if self.args.db:
             if self.db.execute("SELECT post_id FROM post_id WHERE post_id=?;", (submission.id,)).fetchone():
                 logger.debug(f"Object {submission.id} in the DB, skipping")

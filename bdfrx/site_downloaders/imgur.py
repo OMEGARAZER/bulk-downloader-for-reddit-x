@@ -25,11 +25,10 @@ class Imgur(BaseDownloader):
                     out.append(Resource(self.post, image["mp4"], Resource.retry_download(image["mp4"])))
                 else:
                     out.append(Resource(self.post, image["link"], Resource.retry_download(image["link"])))
+        elif "mp4" in self.raw_data:
+            out.append(Resource(self.post, self.raw_data["mp4"], Resource.retry_download(self.raw_data["mp4"])))
         else:
-            if "mp4" in self.raw_data:
-                out.append(Resource(self.post, self.raw_data["mp4"], Resource.retry_download(self.raw_data["mp4"])))
-            else:
-                out.append(Resource(self.post, self.raw_data["link"], Resource.retry_download(self.raw_data["link"])))
+            out.append(Resource(self.post, self.raw_data["link"], Resource.retry_download(self.raw_data["link"])))
         return out
 
     @staticmethod

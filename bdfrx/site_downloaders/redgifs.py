@@ -41,8 +41,6 @@ class Redgifs(BaseDownloader):
         redgif_id = Redgifs._get_id(url)
 
         auth_token = Redgifs._get_auth_token()
-        if not auth_token:
-            raise SiteDownloaderError("Unable to retrieve Redgifs API token")
 
         headers = {
             "referer": "https://www.redgifs.com/",

@@ -98,6 +98,7 @@ extend-exclude = ["scripts/tests"]
 external = ["FURB123"]
 flake8-annotations = {"allow-star-arg-any" = true, "suppress-dummy-args" = true}
 flake8-pytest-style = {"parametrize-values-type" = "tuple", "mark-parentheses" = false}
+pylint = {"allow-magic-value-types" = ["bytes", "int", "str"], "max-args" = 7}
 format = "grouped"
 ignore = [
     "ANN101",   # missing-type-self
@@ -125,9 +126,12 @@ select = [
     "N",    # pep8-naming
     "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
+    "PLC",  # Pylint Convention
+    "PLE",  # Pylint Error
+    "PLR",  # Pylint Refactor
+    "PLW",  # Pylint Warning
     "PT",   # flake8-pytest-style
     "PTH",  # flake8-use-pathlib
-    "PYI",  # flake8-pyi
     "Q",    # flake8-quotes
     "RET",  # flake8-return
     "RSE",  # flake8-raise

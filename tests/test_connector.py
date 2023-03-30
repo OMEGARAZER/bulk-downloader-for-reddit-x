@@ -207,6 +207,7 @@ def test_get_subreddit_normal(
 ):
     downloader_mock.args.limit = limit
     downloader_mock.args.sort = sort_type
+    downloader_mock.args.time = time_filter
     downloader_mock.time_filter = RedditConnector.create_time_filter(downloader_mock)
     downloader_mock.sort_filter = RedditConnector.create_sort_filter(downloader_mock)
     downloader_mock.determine_sort_function.return_value = RedditConnector.determine_sort_function(downloader_mock)

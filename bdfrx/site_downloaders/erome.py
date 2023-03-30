@@ -27,7 +27,7 @@ class Erome(BaseDownloader):
         out = []
         for link in links:
             if not re.match(r"https?://.*", link):
-                link = "https://" + link
+                link = "https://" + link  # noqa: PLW2901
             out.append(Resource(self.post, link, self.erome_download(link)))
         return out
 

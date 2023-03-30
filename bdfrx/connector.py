@@ -297,7 +297,7 @@ class RedditConnector(metaclass=ABCMeta):
             all_entries.extend([RedditConnector.sanitise_subreddit_name(name) for name in results])
         return set(all_entries)
 
-    def get_subreddits(self) -> list[praw.models.ListingGenerator]:
+    def get_subreddits(self) -> list[praw.models.ListingGenerator]:  # noqa: PLR0912
         out = []
         subscribed_subreddits = set()
         if self.args.subscribed:
@@ -310,12 +310,12 @@ class RedditConnector(metaclass=ABCMeta):
             else:
                 logger.error("Cannot find subscribed subreddits without an authenticated instance")
         if self.args.subreddit or subscribed_subreddits:
-            for reddit in self.split_args_input(self.args.subreddit) | subscribed_subreddits:
-                if reddit == "friends" and self.authenticated is False:
+            for subreddit in self.split_args_input(self.args.subreddit) | subscribed_subreddits:
+                if subreddit == "friends" and self.authenticated is False:
                     logger.error("Cannot read friends subreddit without an authenticated instance")
                     continue
                 try:
-                    reddit = self.reddit_instance.subreddit(reddit)
+                    reddit = self.reddit_instance.subreddit(subreddit)
                     try:
                         self.check_subreddit_status(reddit)
                     except errors.BulkDownloaderException as e:
@@ -378,9 +378,9 @@ class RedditConnector(metaclass=ABCMeta):
                 logger.error("Only 1 user can be supplied when retrieving from multireddits")
                 return []
             out = []
-            for multi in self.split_args_input(self.args.multireddit):
+            for multi_reddit in self.split_args_input(self.args.multireddit):
                 try:
-                    multi = self.reddit_instance.multireddit(redditor=self.args.user[0], name=multi)
+                    multi = self.reddit_instance.multireddit(redditor=self.args.user[0], name=multi_reddit)
                     if not multi.subreddits:
                         raise errors.BulkDownloaderException
                     out.append(self.create_filtered_listing_generator(multi))
@@ -493,8 +493,8 @@ class RedditConnector(metaclass=ABCMeta):
     @staticmethod
     def read_id_files(file_locations: list[str]) -> set[str]:
         out = []
-        for id_file in file_locations:
-            id_file = Path(id_file).resolve().expanduser()
+        for location in file_locations:
+            id_file = Path(location).resolve().expanduser()
             if not id_file.exists():
                 logger.warning(f"ID file at {id_file} does not exist")
                 continue
