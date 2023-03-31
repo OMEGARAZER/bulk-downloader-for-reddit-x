@@ -53,8 +53,6 @@ dev = [
 
 [project.scripts]
 bdfrx = "bdfrx.__main__:cli"
-bdfrx-archive = "bdfrx.__main__:cli_archive"
-bdfrx-clone = "bdfrx.__main__:cli_clone"
 bdfrx-download = "bdfrx.__main__:cli_download"
 
 [tool.black]
