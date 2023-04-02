@@ -498,7 +498,7 @@ class RedditConnector(metaclass=ABCMeta):
             if not id_file.exists():
                 logger.warning(f"ID file at {id_file} does not exist")
                 continue
-            with id_file.open("r") as file:
+            with id_file.open() as file:
                 for line in file:
                     out.append(line.strip())
         return set(out)
