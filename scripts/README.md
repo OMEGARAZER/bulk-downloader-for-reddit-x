@@ -85,7 +85,7 @@ Submissions from excluded subreddits: 0
 Now the script is ready tu run. Just execute it like this:
 
 ```bash
-python3 -m bdfrx download DOWNLOAD_DIR --authenticate --user me --saved --log LOGFILE_LOCATION
+bdfrx download DOWNLOAD_DIR --authenticate --user me --saved --log LOGFILE_LOCATION
 ./extract_successful_ids.sh LOGFILE_LOCATION > successfulids
 ./unsaveposts.py
 ```

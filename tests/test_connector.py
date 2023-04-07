@@ -435,7 +435,7 @@ def test_split_subreddit_entries(test_subreddit_entries: list[str], expected: se
     assert results == expected
 
 
-def test_read_submission_ids_from_file(downloader_mock: MagicMock, tmp_path: Path):
+def test_read_submission_ids_from_file(tmp_path: Path):
     test_file = tmp_path / "test.txt"
     test_file.write_text("aaaaaa\nbbbbbb")
     results = RedditConnector.read_id_files([str(test_file)])
