@@ -166,7 +166,7 @@ class FileNameFormatter:
     @staticmethod
     def find_max_path_length() -> int:
         try:
-            return int(subprocess.check_output(["getconf", "PATH_MAX", "/"]))
+            return int(subprocess.check_output(["/usr/bin/getconf", "PATH_MAX", "/"]))  # noqa: S603
         except (ValueError, subprocess.CalledProcessError, OSError):
             if platform.system() == "Windows":
                 return FileNameFormatter.WINDOWS_MAX_PATH_LENGTH
