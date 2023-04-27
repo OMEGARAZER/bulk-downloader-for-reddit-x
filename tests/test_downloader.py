@@ -1,5 +1,6 @@
 import logging
 import re
+import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -156,6 +157,7 @@ def test_download_submission_hash_exists(
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.skipif(sys.platform == "win32", reason="Hangs on Github Windows.")
 def test_download_submission_file_exists(
     downloader_mock: MagicMock,
     reddit_instance: praw.Reddit,

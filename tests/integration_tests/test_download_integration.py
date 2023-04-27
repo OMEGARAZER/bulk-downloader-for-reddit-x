@@ -32,6 +32,7 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -68,6 +69,7 @@ def test_cli_download_subreddits(test_args: list[str], tmp_path: Path):
 @pytest.mark.slow
 @pytest.mark.authenticated
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -100,6 +102,7 @@ def test_cli_download_user_specific_subreddits(test_args: list[str], tmp_path: P
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -119,6 +122,7 @@ def test_cli_download_links(test_args: list[str], tmp_path: Path):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -153,6 +157,7 @@ def test_cli_download_multireddit_nonexistent(test_args: list[str], tmp_path: Pa
 @pytest.mark.reddit
 @pytest.mark.authenticated
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -440,6 +445,7 @@ def test_cli_download_explicit_filename_restriction_scheme(test_args: list[str],
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
+@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize("test_args", (["--link", "ehqt2g", "--link", "ehtuv8", "--no-dupes"],))
 def test_cli_download_no_empty_dirs(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
