@@ -3,6 +3,7 @@ import urllib.parse
 
 from bdfrx.exceptions import NotADownloadableLinkError
 from bdfrx.site_downloaders.base_downloader import BaseDownloader
+from bdfrx.site_downloaders.catbox import Catbox
 from bdfrx.site_downloaders.delay_for_reddit import DelayForReddit
 from bdfrx.site_downloaders.direct import Direct
 from bdfrx.site_downloaders.erome import Erome
@@ -34,6 +35,8 @@ class DownloadFactory:
             return Direct
         if re.match(r"erome\.com.*", sanitised_url):
             return Erome
+        if re.match(r"catbox\.moe", sanitised_url):
+            return Catbox
         if re.match(r"delayforreddit\.com", sanitised_url):
             return DelayForReddit
         if re.match(r"reddit\.com/gallery/.*", sanitised_url) or re.match(r"patreon\.com.*", sanitised_url):
