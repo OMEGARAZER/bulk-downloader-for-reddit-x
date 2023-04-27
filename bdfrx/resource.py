@@ -57,7 +57,7 @@ class Resource:
     def _determine_extension(self) -> Optional[str]:
         extension_pattern = re.compile(r".*(\..{3,5})$")
         stripped_url = urllib.parse.urlsplit(self.url).path
-        match = re.search(extension_pattern, stripped_url)
+        match = extension_pattern.search(stripped_url)
         if match:
             return match.group(1)
         return None

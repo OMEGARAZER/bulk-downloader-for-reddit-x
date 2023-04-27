@@ -27,7 +27,7 @@ class DownloadFilter:
             return True
         combined_extensions = "|".join(self.excluded_extensions)
         pattern = re.compile(rf".*({combined_extensions})$")
-        if re.match(pattern, resource_extension):
+        if pattern.match(resource_extension):
             logger.log(9, f"Url extension {resource_extension!r} matched with {pattern!r}")
             return False
         return True
@@ -37,7 +37,7 @@ class DownloadFilter:
             return True
         combined_domains = "|".join(self.excluded_domains)
         pattern = re.compile(rf"https?://.*({combined_domains}).*")
-        if re.match(pattern, url):
+        if pattern.match(url):
             logger.log(9, f"Url domain {url!r} matched with {pattern!r}")
             return False
         return True

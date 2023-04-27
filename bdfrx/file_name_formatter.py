@@ -73,7 +73,7 @@ class FileNameFormatter:
     @staticmethod
     def _convert_unicode_escapes(in_string: str) -> str:
         pattern = re.compile(r"(\\u\d{4})")
-        matches = re.search(pattern, in_string)
+        matches = pattern.search(in_string)
         if matches:
             for match in matches.groups():
                 converted_match = bytes(match, "utf-8").decode("unicode-escape")

@@ -62,7 +62,7 @@ class DownloadFactory:
         beginning_regex = re.compile(r"\s*(www\.?)?")
         split_url = urllib.parse.urlsplit(url)
         split_url = split_url.netloc + split_url.path
-        split_url = re.sub(beginning_regex, "", split_url)
+        split_url = beginning_regex.sub("", split_url)
         return split_url
 
     @staticmethod

@@ -283,7 +283,7 @@ class RedditConnector(metaclass=ABCMeta):
     @staticmethod
     def sanitise_subreddit_name(subreddit: str) -> str:
         pattern = re.compile(r"^(?:https://www\.reddit\.com/)?(?:r/)?(.*?)/?$")
-        match = re.match(pattern, subreddit)
+        match = pattern.match(subreddit)
         if not match:
             raise errors.BulkDownloaderException(f"Could not find subreddit name in string {subreddit!r}")
         return match.group(1)
@@ -293,7 +293,7 @@ class RedditConnector(metaclass=ABCMeta):
         all_entries = []
         split_pattern = re.compile(r"[,;]\s?")
         for entry in entries:
-            results = re.split(split_pattern, entry)
+            results = split_pattern.split(entry)
             all_entries.extend([RedditConnector.sanitise_subreddit_name(name) for name in results])
         return set(all_entries)
 
