@@ -23,6 +23,7 @@ def test_auth_cache():
         ("https://thumbs4.redgifs.com/DismalIgnorantDrongo.mp4", "dismalignorantdrongo"),
         ("https://thumbs4.redgifs.com/DismalIgnorantDrongo-mobile.mp4", "dismalignorantdrongo"),
         ("https://v3.redgifs.com/watch/newilliteratemeerkat#rel=user%3Atastynova", "newilliteratemeerkat"),
+        ("https://thumbs46.redgifs.com/BabyishCharmingAidi-medium.jpg", "babyishcharmingaidi"),
     ),
 )
 def test_get_id(test_url: str, expected: str):
@@ -79,6 +80,7 @@ def test_get_link(test_url: str, expected: set[str]):
                 "44fb28f72ec9a5cca63fa4369ab4f672",
             },
         ),
+        ("https://thumbs46.redgifs.com/BabyishCharmingAidi-medium.jpg", {"bf14b9f3d5b630cb5fd271661226f1af"}),
     ),
 )
 def test_download_resource(test_url: str, expected_hashes: set[str]):
