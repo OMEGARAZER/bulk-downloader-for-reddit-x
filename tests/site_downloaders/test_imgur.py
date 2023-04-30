@@ -6,7 +6,41 @@ from bdfrx.resource import Resource
 from bdfrx.site_downloaders.imgur import Imgur
 
 
+@pytest.mark.parametrize(
+    ("test_url", "expected"),
+    (
+        ("https://imgur.com/a/xWZsDDP", "xWZsDDP"),
+        ("https://imgur.com/gallery/IjJJdlC", "IjJJdlC"),
+        ("https://imgur.com/gallery/IjJJdlC/", "IjJJdlC"),
+        ("https://imgur.com/a/dcc84Gt", "dcc84Gt"),
+        ("https://imgur.com/a/eemHCCK", "eemHCCK"),
+        ("https://o.imgur.com/jZw9gq2.jpg", "jZw9gq2"),
+        ("https://i.imgur.com/lFJai6i.gifv", "lFJai6i"),
+        ("https://i.imgur.com/ywSyILa.gifv?", "ywSyILa"),
+        ("https://imgur.com/ubYwpbk.GIFV", "ubYwpbk"),
+        ("https://i.imgur.com/j1CNCZY.gifv", "j1CNCZY"),
+        ("https://i.imgur.com/uTvtQsw.gifv", "uTvtQsw"),
+        ("https://i.imgur.com/OGeVuAe.giff", "OGeVuAe"),
+        ("https://i.imgur.com/OGeVuAe.gift", "OGeVuAe"),
+        ("https://i.imgur.com/3SKrQfK.jpg?1", "3SKrQfK"),
+        ("https://i.imgur.com/cbivYRW.jpg?3", "cbivYRW"),
+        ("http://i.imgur.com/s9uXxlq.jpg?5.jpg", "s9uXxlq"),
+        ("http://i.imgur.com/s9uXxlqb.jpg", "s9uXxlqb"),
+        ("https://i.imgur.com/2TtN68l_d.webp", "2TtN68l"),
+        ("https://imgur.com/a/1qzfWtY/gifv", "1qzfWtY"),
+        ("https://imgur.com/a/1qzfWtY/mp4", "1qzfWtY"),
+        ("https://imgur.com/a/1qzfWtY/spqr", "1qzfWtY"),
+        ("https://i.imgur.com/expO7Rc.gifv", "expO7Rc"),
+        ("https://i.imgur.com/a/aqpiMuL.gif", "aqpiMuL"),
+    ),
+)
+def test_get_id(test_url: str, expected: str):
+    result = Imgur._get_id(test_url)
+    assert result == expected
+
+
 @pytest.mark.online
+@pytest.mark.slow
 @pytest.mark.parametrize(
     ("test_url", "expected_hashes"),
     (

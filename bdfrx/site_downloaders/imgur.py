@@ -32,18 +32,20 @@ class Imgur(BaseDownloader):
         return out
 
     @staticmethod
-    def _get_data(link: str) -> dict:
+    def _get_id(link: str) -> str:
         try:
-            if link.endswith("/"):
-                link = link.removesuffix("/")
-            if re.search(r".*/(.*?)(gallery/|a/)", link):
-                imgur_id = re.match(r".*/(?:gallery/|a/)(.*?)(?:/.*|\..{3,4})?$", link).group(1)
-                api = f"https://api.imgur.com/3/album/{imgur_id}"
-            else:
-                imgur_id = re.match(r".*/(.*?)(?:_d)?(?:\..{0,})?$", link).group(1)
-                api = f"https://api.imgur.com/3/image/{imgur_id}"
+            imgur_id = re.search(r"imgur\.com/(?:a/|gallery/)?([a-zA-Z0-9]+)", link).group(1)
         except AttributeError:
             raise SiteDownloaderError(f"Could not extract Imgur ID from {link}")
+        return imgur_id
+
+    @staticmethod
+    def _get_data(link: str) -> dict:
+        imgur_id = Imgur._get_id(link)
+        if re.search(r"/(gallery|a)/", link):
+            api = f"https://api.imgur.com/3/album/{imgur_id}"
+        else:
+            api = f"https://api.imgur.com/3/image/{imgur_id}"
 
         headers = {
             "referer": "https://imgur.com/",
