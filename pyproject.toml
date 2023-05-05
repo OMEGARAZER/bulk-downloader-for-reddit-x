@@ -28,7 +28,7 @@ dependencies = [
     "click>=8.0.0",
     "praw>=7.2.0",
     "pyyaml>=5.4.1",
-    "requests>=2.28.2",
+    "requests>=2.30.0",
     "yt-dlp>=2023.3.4",
 ]
 dynamic = ["version"]
@@ -40,10 +40,11 @@ package-data = {"bdfrx" = ["default_config.cfg", "bdfrx.db",]}
 
 [project.optional-dependencies]
 dev = [
-    "black>=23.1.0",
-    "pre-commit>=3.0.4",
-    "pytest>=7.2.1",
-    "ruff>=0.0.262",
+    "black>=23.3.0",
+    "pre-commit>=3.3.1",
+    "pytest>=7.3.1",
+    "refurb>=1.16.0",
+    "ruff>=0.0.264",
 ]
 
 [project.urls]

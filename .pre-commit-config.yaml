@@ -16,20 +16,20 @@ repos:
         args: ["--preview"]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.262
+    rev: v0.0.264
     hooks:
       - id: ruff
         name: ruff
         args: ["--fixable=I","--fix"]
 
   - repo: https://github.com/dosisod/refurb
-    rev: v1.15.0
+    rev: v1.16.0
     hooks:
       - id: refurb
         name: refurb
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.33.0
+    rev: v0.34.0
     hooks:
       - id: markdownlint
         name: markdownlint
