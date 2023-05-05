@@ -364,6 +364,7 @@ def test_get_user_submissions(test_user: str, limit: int, downloader_mock: Magic
 @pytest.mark.parametrize(
     "test_flag",
     (
+        "downvoted",
         "upvoted",
         "saved",
     ),

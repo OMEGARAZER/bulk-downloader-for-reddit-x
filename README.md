@@ -128,6 +128,9 @@ In cases when the same option is specified both in the YAML file and in as a com
     - Can be specified multiple times
     - Disables certain modules from being used
     - See [Disabling Modules](#disabling-modules) for more information and a list of module names
+- `--downvoted`
+    - This will use a user's downvoted posts as a source of posts to scrape
+    - This requires an authenticated Reddit instance, using the `--authenticate` flag, as well as `--user` set to `me`
 - `--exclude-id`
     - This will skip the download of any submission with the ID provided
     - Can be specified multiple times
@@ -216,7 +219,7 @@ In cases when the same option is specified both in the YAML file and in as a com
     - Also accepts CSV subreddit names
 - `-S, --sort`
     - This is the sort type for each applicable submission source supplied to BDFRx
-    - This option does not apply to upvoted or saved posts when scraping from these sources
+    - This option does not apply to upvoted, downvoted or saved posts when scraping from these sources
     - The following options are available:
         - `controversial`
         - `hot` (default)
@@ -234,7 +237,7 @@ In cases when the same option is specified both in the YAML file and in as a com
         - Subreddits can also be used to provide CSV subreddits e.g. `-m "all, python, mindustry"`
 - `-t, --time`
     - This is the time filter that will be applied to all applicable sources
-    - This option does not apply to upvoted or saved posts when scraping from these sources
+    - This option does not apply to upvoted, downvoted or saved posts when scraping from these sources
     - This option only applies if sorting by top or controversial.  See --sort for more detail.
     - The following options are available:
         - `all` (default)
@@ -273,9 +276,9 @@ The part `-L 50` is to make sure that the character limit for a single line isn'
 
 ## Authentication and Security
 
-BDFRx uses OAuth2 authentication to connect to Reddit if authentication is required. This means that it is a secure, token-based system for making requests. This also means that BDFRx only has access to specific parts of the account authenticated, by default only saved posts, upvoted posts, and the identity of the authenticated account. Note that authentication is not required unless accessing private things like upvoted posts, saved posts, and private multireddits.
+BDFRx uses OAuth2 authentication to connect to Reddit if authentication is required. This means that it is a secure, token-based system for making requests. This also means that BDFRx only has access to specific parts of the account authenticated, by default only saved posts, upvoted posts, downvoted posts, and the identity of the authenticated account. Note that authentication is not required unless accessing private things like upvoted posts, downvoted posts, saved posts, and private multireddits.
 
-To authenticate, BDFRx will first look for a token in the configuration file that signals that there's been a previous authentication. If this is not there, then BDFRx will attempt to register itself with your account. This is normal, and if you run the program, it will pause and show a Reddit URL. Click on this URL and it will take you to Reddit, where the permissions being requested will be shown. Read this and **confirm that there are no more permissions than needed to run the program**. You should not grant unneeded permissions; by default, BDFRx only requests permission to read your saved or upvoted submissions and identify as you.
+To authenticate, BDFRx will first look for a token in the configuration file that signals that there's been a previous authentication. If this is not there, then BDFRx will attempt to register itself with your account. This is normal, and if you run the program, it will pause and show a Reddit URL. Click on this URL and it will take you to Reddit, where the permissions being requested will be shown. Read this and **confirm that there are no more permissions than needed to run the program**. You should not grant unneeded permissions; by default, BDFRx only requests permission to read your saved, upvoted, or downvoted submissions and identify as you.
 
 If the permissions look safe, confirm it, and BDFRx will save a token that will allow it to authenticate with Reddit from then on.
 

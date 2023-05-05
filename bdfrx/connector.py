@@ -400,7 +400,7 @@ class RedditConnector(metaclass=ABCMeta):
         return sort_function(reddit_source, limit=self.args.limit)
 
     def get_user_data(self) -> list[Iterator]:
-        if any([self.args.submitted, self.args.upvoted, self.args.saved]):
+        if any([self.args.downvoted, self.args.saved, self.args.submitted, self.args.upvoted]):
             if not self.args.user:
                 logger.warning("At least one user must be supplied to download user data")
                 return []
@@ -419,7 +419,7 @@ class RedditConnector(metaclass=ABCMeta):
                                 self.reddit_instance.redditor(user).submissions,
                             ),
                         )
-                    if not self.authenticated and any((self.args.upvoted, self.args.saved)):
+                    if not self.authenticated and any((self.args.downvoted, self.args.saved, self.args.upvoted)):
                         logger.warning("Accessing user lists requires authentication")
                     else:
                         if self.args.upvoted:
@@ -428,6 +428,9 @@ class RedditConnector(metaclass=ABCMeta):
                         if self.args.saved:
                             logger.debug(f"Retrieving saved posts of user {user}")
                             generators.append(self.reddit_instance.redditor(user).saved(limit=self.args.limit))
+                        if self.args.downvoted:
+                            logger.debug(f"Retrieving downvoted posts of user {user}")
+                            generators.append(self.reddit_instance.redditor(user).downvoted(limit=self.args.limit))
                 except prawcore.PrawcoreException as e:
                     logger.error(f"User {user} failed to be retrieved due to a PRAW exception: {e}")
                     logger.debug("Waiting 60 seconds to continue")

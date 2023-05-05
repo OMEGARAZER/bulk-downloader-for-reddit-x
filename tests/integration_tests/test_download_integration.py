@@ -162,6 +162,7 @@ def test_cli_download_multireddit_nonexistent(test_args: list[str], tmp_path: Pa
     "test_args",
     (
         ["--user", "djnish", "--submitted", "--user", "FriesWithThat", "-L", 10],
+        ["--user", "me", "--downvoted", "--authenticate", "-L", 10],
         ["--user", "me", "--upvoted", "--authenticate", "-L", 10],
         ["--user", "me", "--saved", "--authenticate", "-L", 10],
         ["--user", "me", "--submitted", "--authenticate", "-L", 10],

@@ -18,6 +18,7 @@ class Configuration(Namespace):
         self.db_file: Optional[str] = None
         self.directory: str = "."
         self.disable_module: list[str] = []
+        self.downvoted: bool = False
         self.exclude_id = []
         self.exclude_id_file = []
         self.file_scheme: str = "{REDDITOR}_{TITLE}_{POSTID}"
