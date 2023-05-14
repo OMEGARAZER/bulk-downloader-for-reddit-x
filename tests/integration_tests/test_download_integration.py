@@ -31,8 +31,8 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.slow
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
-@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -121,8 +121,8 @@ def test_cli_download_links(test_args: list[str], tmp_path: Path):
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.slow
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
-@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -155,9 +155,9 @@ def test_cli_download_multireddit_nonexistent(test_args: list[str], tmp_path: Pa
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.slow
 @pytest.mark.authenticated
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
-@pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize(
     "test_args",
     (
@@ -445,6 +445,7 @@ def test_cli_download_explicit_filename_restriction_scheme(test_args: list[str],
 
 @pytest.mark.online
 @pytest.mark.reddit
+@pytest.mark.slow  # Marking slow as github 429'd by imgur right now.
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
 @pytest.mark.skipif(platform == "win32", reason="Hangs on Github windows.")
 @pytest.mark.parametrize("test_args", (["--link", "ehqt2g", "--link", "ehtuv8", "--no-dupes"],))
