@@ -148,7 +148,7 @@ class RedditConnector(metaclass=ABCMeta):
                 scopes = self.cfg_parser.get("DEFAULT", "scopes", fallback="identity, history, read, save")
                 scopes = OAuth2Authenticator.split_scopes(scopes)
                 oauth2_authenticator = OAuth2Authenticator(
-                    scopes=scopes,
+                    wanted_scopes=scopes,
                     client_id=client_id,
                     client_secret=client_secret,
                     user_agent=self.user_agent,
