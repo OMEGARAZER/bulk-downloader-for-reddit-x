@@ -3,7 +3,7 @@
 [![PyPI Status](https://img.shields.io/pypi/status/bdfrx?logo=PyPI)](https://pypi.python.org/pypi/bdfrx)
 [![PyPI version](https://img.shields.io/pypi/v/bdfrx.svg?logo=PyPI)](https://pypi.python.org/pypi/bdfrx)
 [![Python Test](https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/OMEGARAZER/bulk-downloader-for-reddit-x/actions/workflows/test.yml)
-[![linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json&label=linting)](https://github.com/charliermarsh/ruff)
+[![linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json&label=linting)](https://github.com/charliermarsh/ruff)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=Python)](https://github.com/psf/black)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
