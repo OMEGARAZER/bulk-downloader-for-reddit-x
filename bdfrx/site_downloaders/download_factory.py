@@ -10,6 +10,7 @@ from bdfrx.site_downloaders.erome import Erome
 from bdfrx.site_downloaders.fallback_downloaders.ytdlp_fallback import YtdlpFallback
 from bdfrx.site_downloaders.gallery import Gallery
 from bdfrx.site_downloaders.gfycat import Gfycat
+from bdfrx.site_downloaders.imgchest import Imgchest
 from bdfrx.site_downloaders.imgur import Imgur
 from bdfrx.site_downloaders.pornhub import PornHub
 from bdfrx.site_downloaders.redgifs import Redgifs
@@ -41,6 +42,8 @@ class DownloadFactory:
             return DelayForReddit
         if re.match(r"reddit\.com/gallery/.*", sanitised_url) or re.match(r"patreon\.com.*", sanitised_url):
             return Gallery
+        if re.match(r"imgchest\.com/p/", sanitised_url):
+            return Imgchest
         if re.match(r"reddit\.com/r/", sanitised_url):
             return SelfPost
         if re.match(r"(m\.)?youtu\.?be", sanitised_url):

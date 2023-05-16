@@ -25,7 +25,7 @@ from bdfrx.site_downloaders.catbox import Catbox
     ),
 )
 def test_get_links(test_url: str, expected: set[str]):
-    results = Catbox.get_links(test_url)
+    results = Catbox._get_links(test_url)
     assert results == expected
 
 

@@ -25,7 +25,7 @@ class Catbox(BaseDownloader):
         return links
 
     @staticmethod
-    def get_links(url: str) -> set[str]:
+    def _get_links(url: str) -> set[str]:
         content = Catbox.retrieve_url(url)
         soup = bs4.BeautifulSoup(content.text, "html.parser")
         collection_div = soup.find("div", attrs={"class": "imagecontainer"})
