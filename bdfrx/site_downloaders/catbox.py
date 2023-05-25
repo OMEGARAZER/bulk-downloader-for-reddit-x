@@ -18,7 +18,7 @@ class Catbox(BaseDownloader):
         super().__init__(post)
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
-        links = self.get_links(self.post.url)
+        links = self._get_links(self.post.url)
         if not links:
             raise SiteDownloaderError("Catbox parser could not find any links")
         links = [Resource(self.post, link, Resource.retry_download(link)) for link in links]
