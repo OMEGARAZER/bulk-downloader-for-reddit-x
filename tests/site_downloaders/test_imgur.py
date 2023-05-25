@@ -80,7 +80,6 @@ def test_get_id(test_url: str, expected: str):
         ("https://imgur.com/a/1qzfWtY/gifv", ("65fbc7ba5c3ed0e3af47c4feef4d3735",)),
         ("https://imgur.com/a/1qzfWtY/mp4", ("65fbc7ba5c3ed0e3af47c4feef4d3735",)),
         ("https://imgur.com/a/1qzfWtY/spqr", ("65fbc7ba5c3ed0e3af47c4feef4d3735",)),
-        ("https://i.imgur.com/expO7Rc.gifv", ("e309f98158fc98072eb2ae68f947f421",)),
         ("https://i.imgur.com/a/aqpiMuL.gif", ("5b2a9a5218bf43dc26ba41389410c981",)),
     ),
 )

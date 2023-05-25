@@ -23,6 +23,8 @@ from bdfrx.site_downloaders.youtube import Youtube
 class DownloadFactory:
     @staticmethod
     def pull_lever(url: str) -> type[BaseDownloader]:  # noqa: PLR0911,PLR0912
+        if not url:
+            raise NotADownloadableLinkError("No url provided by the reddit API")
         sanitised_url = DownloadFactory.sanitise_url(url).lower()
         if re.match(r"(i\.|m\.|o\.)?imgur", sanitised_url):
             return Imgur
