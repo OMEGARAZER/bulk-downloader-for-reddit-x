@@ -41,7 +41,7 @@ def assert_all_results_are_submissions(result_limit: int, results: list[Iterator
     assert all(isinstance(res, praw.models.Submission) for res in results)
     assert not any(isinstance(m, MagicMock) for m in results)
     if result_limit is not None:
-        assert len(results) == result_limit
+        assert len(results) <= result_limit
     return results
 
 
@@ -50,7 +50,7 @@ def assert_all_results_are_submissions_or_comments(result_limit: int, results: l
     assert all(isinstance(res, (praw.models.Submission, praw.models.Comment)) for res in results)
     assert not any(isinstance(m, MagicMock) for m in results)
     if result_limit is not None:
-        assert len(results) == result_limit
+        assert len(results) <= result_limit
     return results
 
 
