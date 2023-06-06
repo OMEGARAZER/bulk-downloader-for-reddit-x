@@ -403,7 +403,6 @@ def test_format_archive_entry_comment(
     assert do_test_string_equality(result, expected_name)
 
 
-@pytest.mark.skipif(sys.platform == "win32", reason="Hangs on Github Windows.")
 @pytest.mark.parametrize(
     ("test_folder_scheme", "expected"),
     (
