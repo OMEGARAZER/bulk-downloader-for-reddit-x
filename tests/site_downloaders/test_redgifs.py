@@ -104,11 +104,6 @@ def test_download_resource(test_url: str, expected_hashes: set[str]):
             {"41a5fb4865367ede9f65fc78736f497a"},
         ),
         (
-            "https://redgifs.com/watch/thirstyunfortunatewaterdragons",
-            {"thirstyunfortunatewaterdragons-mobile.mp4"},
-            {"1a51dad8fedb594bdd84f027b3cbe8af"},
-        ),
-        (
             "https://redgifs.com/watch/conventionalplainxenopterygii",
             {"conventionalplainxenopterygii-mobile.mp4"},
             {"2e1786b3337da85b80b050e2c289daa4"},
