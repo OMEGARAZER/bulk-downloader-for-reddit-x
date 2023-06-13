@@ -78,6 +78,7 @@ def test_get_user_id(test_id: str, expected_user: str):
                 "addb62d788c542383d1ad47914bbefb3",
             },
         ),
+        ("https://www.flickr.com/photos/eerokiuru/52902303276", {"adfd8175f398f87744285da2591c8215"}),  # Single video
     ),
 )
 def test_download_resource(test_url: str, expected_hashes: set[str]):

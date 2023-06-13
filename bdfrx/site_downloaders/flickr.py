@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from cachetools import TTLCache, cached
 from praw.models import Submission
 
-from bdfrx.exceptions import SiteDownloaderError
+from bdfrx.exceptions import ResourceNotFound, SiteDownloaderError
 from bdfrx.resource import Resource
 from bdfrx.site_authenticator import SiteAuthenticator
 from bdfrx.site_downloaders.base_downloader import BaseDownloader
@@ -27,8 +27,8 @@ class Flickr(BaseDownloader):
     @cached(cache=TTLCache(maxsize=5, ttl=10260))
     def _get_api_key() -> str:
         key_regex = re.compile(r".*api_key=(\w*)(&.*)?")
-        req = Flickr.retrieve_url("https://www.flickr.com/services/api/response.json.html").text
-        elements = BeautifulSoup(req, "html.parser")
+        res = Flickr.retrieve_url("https://www.flickr.com/services/api/response.json.html").text
+        elements = BeautifulSoup(res, "html.parser")
         links = elements.find_all("a", href=True, string="here")
         return key_regex.search(str(links[0])).group(1)
 
@@ -49,11 +49,29 @@ class Flickr(BaseDownloader):
         image_id = image_dict["photo"]["id"]
         secret = image_dict["photo"]["secret"]
         server = image_dict["photo"]["server"]
+        user = image_dict["photo"]["owner"]["nsid"]
         originalsecret = None
         if "originalsecret" in image_dict["photo"]:
             originalsecret = image_dict["photo"]["originalsecret"]
         if "originalformat" in image_dict["photo"]:
             originalformat = image_dict["photo"]["originalformat"]
+        if image_dict["photo"]["media"] == "video":
+            if originalsecret:
+                return Flickr.retrieve_url(
+                    f"https://flickr.com/photos/{user}/{image_id}/play/orig/{originalsecret}/",
+                ).url
+            try:
+                return Flickr.retrieve_url(f"https://flickr.com/photos/{user}/{image_id}/play/1080p/{secret}/").url
+            except ResourceNotFound:
+                try:
+                    return Flickr.retrieve_url(f"https://flickr.com/photos/{user}/{image_id}/play/720p/{secret}/").url
+                except ResourceNotFound:
+                    try:
+                        return Flickr.retrieve_url(
+                            f"https://flickr.com/photos/{user}/{image_id}/play/360p/{secret}/",
+                        ).url
+                    except ResourceNotFound:
+                        raise SiteDownloaderError("Could not find correct video from Flickr")
         if originalsecret:
             return f"https://live.staticflickr.com/{server}/{image_id}_{originalsecret}_o.{originalformat}"
         return f"https://live.staticflickr.com/{server}/{image_id}_{secret}_b.jpg"
@@ -70,10 +88,10 @@ class Flickr(BaseDownloader):
     @staticmethod
     def _get_user_id(user: str, api_string: str) -> str:
         try:
-            req = Flickr.retrieve_url(
+            res = Flickr.retrieve_url(
                 f"{api_string}method=flickr.urls.lookupUser&url=https://flickr.com/photos/{user}",
             ).text
-            return json.loads(req)["user"]["id"]
+            return json.loads(res)["user"]["id"]
         except json.JSONDecodeError as e:
             raise SiteDownloaderError(f"Could not parse flickr user ID from API: {e}")
 
