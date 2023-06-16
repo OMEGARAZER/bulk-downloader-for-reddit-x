@@ -46,6 +46,8 @@ class Flickr(BaseDownloader):
 
     @staticmethod
     def _construct_direct_link(image_dict: json) -> str:
+        if image_dict["stat"] == "fail":
+            raise SiteDownloaderError("Flickr API returned an error")
         image_id = image_dict["photo"]["id"]
         secret = image_dict["photo"]["secret"]
         server = image_dict["photo"]["server"]
@@ -88,10 +90,8 @@ class Flickr(BaseDownloader):
     @staticmethod
     def _get_user_id(user: str, api_string: str) -> str:
         try:
-            res = Flickr.retrieve_url(
-                f"{api_string}method=flickr.urls.lookupUser&url=https://flickr.com/photos/{user}",
-            ).text
-            return json.loads(res)["user"]["id"]
+            res = Flickr.retrieve_url(f"{api_string}method=flickr.urls.lookupUser&url=https://flickr.com/photos/{user}")
+            return json.loads(res.text)["user"]["id"]
         except json.JSONDecodeError as e:
             raise SiteDownloaderError(f"Could not parse flickr user ID from API: {e}")
 
