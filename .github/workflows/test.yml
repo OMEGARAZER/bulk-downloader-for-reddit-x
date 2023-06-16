@@ -43,6 +43,7 @@ jobs:
 
     - name: Make configuration for tests
       env:
+        REDDIT_CLIENT: ${{ secrets.REDDIT_CLIENT_ID }}
         REDDIT_TOKEN: ${{ secrets.REDDIT_TEST_TOKEN }}
       run: |
         ./devscripts/configure${{ matrix.ext }}
