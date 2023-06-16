@@ -45,8 +45,15 @@ BDFRx differs from the base BDFR in a few ways:
 
 - Does not contain the Archive and Clone modes (If you require these modes you can try v0.9.1, provided *as is* or use the base [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) project)
 - Option to use an Sqlite3 database to store hashes, links and post ID's to be filtered in future runs
-- Uses the `bdfrx` config directory by default as well as a different client_id which does not require the use of the client_secret
-    - You will not be able to use the BDFR id/secret/token, you will need to authorize with the new client_id
+- Uses the `bdfrx` config directory by default
+
+## Reddit API Changes
+
+Starting July 1st 2023 ([along with the other changes](https://reddit.com/12qwagm)) rate limits will be [applied ***per client id*** rather than by client id/user combination](https://reddit.com/13wsiks). Therefore it is no longer tenable to ship BDFRx with an installed client id as it will cause rate limiting for all users. **The shipped client id will no longer be valid after the changes.**
+
+To create your own for use with BDFRx go [here](https://old.reddit.com/prefs/apps/) and click "create an app". It's recommended to choose "Installed App" and use "http://localhost:7634" as the redirect url. <!-- markdownlint-disable-line MD034 -->
+
+Once you have your personal client id add it to your [config.cfg](bdfrx/default_config.cfg) at the location in the [configuration](#configuration) section.
 
 ## Usage
 
@@ -337,6 +344,10 @@ The `config.cfg` is the file that supplies BDFRx with the configuration to use. 
 
 - `client_id`
 - `scopes`
+
+The following key may be required depending on the type of client id you created.
+
+- `client_secret`
 
 The following keys are optional, and defaults will be used if they cannot be found.
 
