@@ -16,7 +16,7 @@ repos:
         args: ["--preview"]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.271
+    rev: v0.0.272
     hooks:
       - id: ruff
         name: ruff
@@ -35,7 +35,7 @@ repos:
         name: markdownlint
 
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.13.0
+    rev: 1.14.0
     hooks:
       - id: blacken-docs
         name: blacken-docs

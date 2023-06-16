@@ -43,7 +43,7 @@ dev = [
     "black>=23.3.0",
     "pre-commit>=3.3.1",
     "pytest>=7.3.1",
-    "ruff>=0.0.271",
+    "ruff>=0.0.272",
 ]
 
 [project.urls]
