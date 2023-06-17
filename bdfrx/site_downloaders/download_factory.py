@@ -13,6 +13,7 @@ from bdfrx.site_downloaders.gallery import Gallery
 from bdfrx.site_downloaders.gfycat import Gfycat
 from bdfrx.site_downloaders.imgchest import Imgchest
 from bdfrx.site_downloaders.imgur import Imgur
+from bdfrx.site_downloaders.nsfw_pics import NsfwPics
 from bdfrx.site_downloaders.pornhub import PornHub
 from bdfrx.site_downloaders.redgifs import Redgifs
 from bdfrx.site_downloaders.self_post import SelfPost
@@ -49,6 +50,8 @@ class DownloadFactory:
             return Gallery
         if re.match(r"imgchest\.com/p/", sanitised_url):
             return Imgchest
+        if re.match(r"nsfw\.pics", sanitised_url):
+            return NsfwPics
         if re.match(r"reddit\.com/r/", sanitised_url):
             return SelfPost
         if re.match(r"(m\.)?youtu\.?be", sanitised_url):
