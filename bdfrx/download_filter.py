@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import Optional
 
 from bdfrx.resource import Resource
 
@@ -7,7 +8,11 @@ logger = logging.getLogger(__name__)
 
 
 class DownloadFilter:
-    def __init__(self, excluded_extensions: list[str] = None, excluded_domains: list[str] = None) -> None:
+    def __init__(
+        self,
+        excluded_extensions: Optional[list[str]] = None,
+        excluded_domains: Optional[list[str]] = None,
+    ) -> None:
         self.excluded_extensions = excluded_extensions
         self.excluded_domains = excluded_domains
 

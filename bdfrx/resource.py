@@ -21,7 +21,7 @@ class Resource:
         source_submission: Submission,
         url: str,
         download_function: Callable,
-        extension: str = None,
+        extension: Optional[str] = None,
     ) -> None:
         self.source_submission = source_submission
         self.content: Optional[bytes] = None
