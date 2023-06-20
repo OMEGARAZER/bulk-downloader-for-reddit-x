@@ -122,8 +122,4 @@ class Flickr(BaseDownloader):
         except json.JSONDecodeError as e:
             raise SiteDownloaderError(f"Could not parse received response as JSON: {e}")
 
-        image_dict = (
-            Flickr._get_album_links(image_dict, api_string) if album else [Flickr._construct_direct_link(image_dict)]
-        )
-
-        return image_dict
+        return Flickr._get_album_links(image_dict, api_string) if album else [Flickr._construct_direct_link(image_dict)]

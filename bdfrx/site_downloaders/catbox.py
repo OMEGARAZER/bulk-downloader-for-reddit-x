@@ -21,8 +21,7 @@ class Catbox(BaseDownloader):
         links = self._get_links(self.post.url)
         if not links:
             raise SiteDownloaderError("Catbox parser could not find any links")
-        links = [Resource(self.post, link, Resource.retry_download(link)) for link in links]
-        return links
+        return [Resource(self.post, link, Resource.retry_download(link)) for link in links]
 
     @staticmethod
     def _get_links(url: str) -> set[str]:

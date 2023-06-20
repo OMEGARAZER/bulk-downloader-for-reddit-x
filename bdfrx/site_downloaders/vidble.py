@@ -25,8 +25,7 @@ class Vidble(BaseDownloader):
             raise SiteDownloaderError(f"Could not read page at {self.post.url}")
         if not res:
             raise SiteDownloaderError(rf"No resources found at {self.post.url}")
-        res = [Resource(self.post, r, Resource.retry_download(r)) for r in res]
-        return res
+        return [Resource(self.post, r, Resource.retry_download(r)) for r in res]
 
     @staticmethod
     def get_links(url: str) -> set[str]:
