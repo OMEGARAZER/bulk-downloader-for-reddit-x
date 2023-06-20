@@ -138,6 +138,7 @@ select = [
     "SIM",  # flake8-simplify
     "SLF",  # flake8-self
     "T10",  # flake8-debugger
+    "TCH",  # flake8-type-checking
     "TID",  # flake8-tidy-imports
     "UP",   # pyupgrade
     "W",    # Pycodestyle

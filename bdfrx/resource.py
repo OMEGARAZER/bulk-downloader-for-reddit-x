@@ -4,13 +4,15 @@ import re
 import time
 import urllib.parse
 from collections.abc import Callable
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
-import _hashlib
 import requests
 from praw.models import Submission
 
 from bdfrx.exceptions import BulkDownloaderException
+
+if TYPE_CHECKING:
+    import _hashlib
 
 logger = logging.getLogger(__name__)
 
