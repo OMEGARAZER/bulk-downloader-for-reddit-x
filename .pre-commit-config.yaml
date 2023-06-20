@@ -16,7 +16,7 @@ repos:
         args: ["--preview"]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.272
+    rev: v0.0.275
     hooks:
       - id: ruff
         name: ruff
@@ -29,7 +29,7 @@ repos:
         name: refurb
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.34.0
+    rev: v0.35.0
     hooks:
       - id: markdownlint
         name: markdownlint

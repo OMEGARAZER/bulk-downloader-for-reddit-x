@@ -29,7 +29,7 @@ dependencies = [
     "praw>=7.2.0",
     "pyyaml>=5.4.1",
     "requests>=2.30.0",
-    "yt-dlp>=2023.3.4",
+    "yt-dlp>=2023.6.22",
 ]
 dynamic = ["version"]
 
@@ -43,7 +43,7 @@ dev = [
     "black>=23.3.0",
     "pre-commit>=3.3.1",
     "pytest>=7.3.1",
-    "ruff>=0.0.272",
+    "ruff>=0.0.275",
 ]
 
 [project.urls]
@@ -117,11 +117,15 @@ select = [
     "EXE",  # flake8-executable
     "F",    # Pyflakes
     "FBT",  # flake8-boolean-trap
+    "FIX",  # flake8-fixme
+    "FLY",  # flynt
     "I",    # Isort
     "ICN",  # flake8-import-conventions
     "INP",  # flake8-no-pep420
+    "INT",  # flake8-gettext
     "ISC",  # flake8-implicit-str-concat
     "N",    # pep8-naming
+    "PERF", # Perflint
     "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
     "PLC",  # Pylint Convention
@@ -139,6 +143,7 @@ select = [
     "SLF",  # flake8-self
     "T10",  # flake8-debugger
     "TCH",  # flake8-type-checking
+    "TD",   # flake8-todos
     "TID",  # flake8-tidy-imports
     "UP",   # pyupgrade
     "W",    # Pycodestyle
