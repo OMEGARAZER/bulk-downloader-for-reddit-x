@@ -73,7 +73,10 @@ class OAuth2Authenticator:
         refresh_token = reddit.auth.authorize(params["code"])
         self.send_message(
             client,
-            f"Refresh token: {refresh_token}<script>alert('You can go back to terminal window now.')</script>",
+            (
+                f"<html><body>Refresh token: {refresh_token}<script>alert('You can go back to terminal window"
+                " now.')</script></body></html>"
+            ),
         )
         return refresh_token
 
