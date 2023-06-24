@@ -186,7 +186,7 @@ def test_get_submissions_from_link(
     ("test_subreddits", "limit", "sort_type", "time_filter", "max_expected_len"),
     (
         (("Futurology",), 10, "hot", "all", 10),
-        (("Futurology", "Mindustry, Python"), 10, "hot", "all", 30),
+        (("Futurology", "EmpireDidNothingWrong, Python"), 10, "hot", "all", 30),
         (("Futurology",), 20, "hot", "all", 20),
         (("Futurology", "Python"), 10, "hot", "all", 20),
         (("Futurology",), 100, "hot", "all", 100),
@@ -516,7 +516,7 @@ def test_check_subreddit_status_bad(test_subreddit_name: str, expected_message: 
     "test_subreddit_name",
     (
         "Python",
-        "Mindustry",
+        "EmpireDidNothingWrong",
         "TrollXChromosomes",
         "all",
     ),

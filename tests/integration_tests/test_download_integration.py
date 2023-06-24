@@ -37,16 +37,16 @@ def create_basic_args_for_download_runner(test_args: list[str], run_path: Path):
 @pytest.mark.parametrize(
     "test_args",
     (
-        ["-s", "Mindustry", "-L", 3],
-        ["-s", "r/Mindustry", "-L", 3],
-        ["-s", "r/mindustry", "-L", 3],
-        ["-s", "mindustry", "-L", 3],
+        ["-s", "EmpireDidNothingWrong", "-L", 3],
+        ["-s", "r/EmpireDidNothingWrong", "-L", 3],
+        ["-s", "r/EmpireDidNothingWrong", "-L", 3],
+        ["-s", "EmpireDidNothingWrong", "-L", 3],
         ["-s", "https://www.reddit.com/r/TrollXChromosomes/", "-L", 3],
         ["-s", "r/TrollXChromosomes/", "-L", 3],
         ["-s", "TrollXChromosomes/", "-L", 3],
         ["-s", "trollxchromosomes", "-L", 3],
-        ["-s", "trollxchromosomes,mindustry,python", "-L", 3],
-        ["-s", "trollxchromosomes, mindustry, python", "-L", 3],
+        ["-s", "trollxchromosomes,EmpireDidNothingWrong,python", "-L", 3],
+        ["-s", "trollxchromosomes, EmpireDidNothingWrong, python", "-L", 3],
         ["-s", "trollxchromosomes", "-L", 3, "--time", "day"],
         ["-s", "trollxchromosomes", "-L", 3, "--sort", "new"],
         ["-s", "trollxchromosomes", "-L", 3, "--time", "day", "--sort", "new"],
@@ -386,10 +386,10 @@ def test_cli_download_ignore_user(test_args: list[str], tmp_path: Path):
 @pytest.mark.parametrize(
     ("test_args", "was_filtered"),
     (
-        (["-l", "ljyy27", "--min-score", "50"], True),
-        (["-l", "ljyy27", "--min-score", "1"], False),
-        (["-l", "ljyy27", "--max-score", "1"], True),
-        (["-l", "ljyy27", "--max-score", "100"], False),
+        (["-l", "w22m5l", "--min-score", "50000"], True),
+        (["-l", "w22m5l", "--min-score", "1"], False),
+        (["-l", "w22m5l", "--max-score", "1"], True),
+        (["-l", "w22m5l", "--max-score", "50000"], False),
     ),
 )
 def test_cli_download_score_filter(test_args: list[str], was_filtered: bool, tmp_path: Path):

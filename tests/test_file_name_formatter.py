@@ -341,10 +341,10 @@ def test_strip_emojies(test_string: str, expected: str):
     ("test_submission_id", "expected"),
     (
         (
-            "mfuteh",
+            "718ifq",
             {
-                "title": "Why Do Interviewers Ask Linked List Questions?",
-                "redditor": "mjgardner",
+                "title": "Wood Stormtrooper Carving",
+                "redditor": "deathakissaway",
             },
         ),
     ),
@@ -362,11 +362,11 @@ def test_generate_dict_for_submission(test_submission_id: str, expected: dict, r
     ("test_comment_id", "expected"),
     (
         (
-            "gsq0yuw",
+            "dn8xwh1",
             {
-                "title": "Why Do Interviewers Ask Linked List Questions?",
-                "redditor": "Doctor-Dapper",
-                "postid": "gsq0yuw",
+                "title": "Wood Stormtrooper Carving",
+                "redditor": "lemonman37",
+                "postid": "dn8xwh1",
                 "flair": "",
             },
         ),
