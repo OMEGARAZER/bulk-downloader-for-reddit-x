@@ -12,20 +12,20 @@ from bdfrx.site_downloaders.base_downloader import BaseDownloader
 logger = logging.getLogger(__name__)
 
 
-class NsfwPics(BaseDownloader):
+class Chevereto(BaseDownloader):
     def __init__(self, post: Submission) -> None:
         super().__init__(post)
 
     def find_resources(self, authenticator: Optional[SiteAuthenticator] = None) -> list[Resource]:
         links = self._get_links(self.post.url)
         if not links:
-            raise SiteDownloaderError("nsfw.pics parser could not find any links")
+            raise SiteDownloaderError("Chevereto parser could not find any links")
         return [Resource(self.post, link, Resource.retry_download(link)) for link in links]
 
     @staticmethod
     def _get_album_links(url: str) -> list:
         image_pages = []
-        album = NsfwPics.retrieve_url(f"{url}")
+        album = Chevereto.retrieve_url(f"{url}")
         soup = bs4.BeautifulSoup(album.text, "html.parser")
         album_divs = soup.find("div", attrs={"class": "pad-content-listing"})
         links = album_divs.find_all("div", {"data-type": "image"})
@@ -36,10 +36,10 @@ class NsfwPics(BaseDownloader):
     @staticmethod
     def _get_links(url: str) -> set[str]:
         resources = []
-        urls = NsfwPics._get_album_links(url) if "/album/" in url else [url]
+        urls = Chevereto._get_album_links(url) if "/album/" in url or "/a/" in url else [url]
         for url in urls:
-            page = NsfwPics.retrieve_url(url)
+            page = Chevereto.retrieve_url(url)
             soup = bs4.BeautifulSoup(page.text, "html.parser")
-            image_link = soup.find("input", attrs={"id": "embed-code-2"}).get("value")
+            image_link = soup.find("a", attrs={"data-action": lambda x: x and x.lower() == "download"}).get("href")
             resources.append(image_link)
         return set(resources)
