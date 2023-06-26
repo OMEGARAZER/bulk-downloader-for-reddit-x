@@ -17,6 +17,8 @@ Included in this README are a few example Bash tricks to get certain behaviour. 
 
 *Bulk Downloader for Reddit x* needs Python version 3.9 or above. Please update Python before installation to meet the requirement.
 
+- Approximately Dec 10, 2023 the minimum version is expected to move to 3.10 at the six month mark of Debian 12's release.
+
 Then, you can install it via [pipx](https://pypa.github.io/pipx) with:
 
 ```bash

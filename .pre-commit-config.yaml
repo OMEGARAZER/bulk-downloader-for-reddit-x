@@ -23,7 +23,7 @@ repos:
         args: ["--fixable=I","--fix"]
 
   - repo: https://github.com/dosisod/refurb
-    rev: v1.16.0
+    rev: v1.17.0
     hooks:
       - id: refurb
         name: refurb
