@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 
 from bdfrx.resource import Resource
-from bdfrx.site_downloaders.nsfw_pics import NsfwPics
+from bdfrx.site_downloaders.chevereto import Chevereto
 
 
 @pytest.mark.online
@@ -20,10 +20,20 @@ from bdfrx.site_downloaders.nsfw_pics import NsfwPics
                 "https://nsfw.pics/image/O6du",
             },
         ),
+        (
+            "https://lensdump.com/a/Vb411",  # Album
+            {
+                "https://lensdump.com/i/CDIUci",
+                "https://lensdump.com/i/CDIXZo",
+                "https://lensdump.com/i/CDIwD2",
+                "https://lensdump.com/i/CDI5VC",
+                "https://lensdump.com/i/CDIGn5",
+            },
+        ),
     ),
 )
 def test_get_album(test_url: str, expected: set[str]):
-    results = NsfwPics._get_album_links(test_url)
+    results = Chevereto._get_album_links(test_url)
     assert len(results) == len(expected)
     assert sorted(results) == sorted(expected)
 
@@ -43,13 +53,27 @@ def test_get_album(test_url: str, expected: set[str]):
             },
         ),
         (
+            "https://lensdump.com/a/Vb411",  # Album
+            {
+                "https://i3.lensdump.com/i/CDIUci.gif?open=true",
+                "https://i.lensdump.com/i/CDIXZo.jpeg?open=true",
+                "https://i1.lensdump.com/i/CDIwD2.jpeg?open=true",
+                "https://i3.lensdump.com/i/CDI5VC.gif?open=true",
+                "https://i1.lensdump.com/i/CDIGn5.jpeg?open=true",
+            },
+        ),
+        (
             "https://nsfw.pics/image/OdfV",  # Single image
             {"https://i.nsfw.pics/b8007b506022132fe857eead3dc98a92.gif"},
+        ),
+        (
+            "https://lensdump.com/i/CDIUci",  # Single image
+            {"https://i3.lensdump.com/i/CDIUci.gif?open=true"},
         ),
     ),
 )
 def test_get_links(test_url: str, expected: set[str]):
-    results = NsfwPics._get_links(test_url)
+    results = Chevereto._get_links(test_url)
     assert sorted(results) == sorted(expected)
 
 
@@ -69,7 +93,21 @@ def test_get_links(test_url: str, expected: set[str]):
             },
         ),
         (
+            "https://lensdump.com/a/Vb411",  # Album
+            {
+                "9ceac1e26c4799b0a6b7d5453a73f53b",
+                "54391b5210286bd01224f1f513159e82",
+                "907f92b1c295d5f84f4f64aacc960079",
+                "14d911ebc49fb82e5657c8ac827a2b32",
+                "a66d093b4fe19a1cb4b5e10bc34d17bb",
+            },
+        ),
+        (
             "https://nsfw.pics/image/OdfV",  # Single image
+            {"9ceac1e26c4799b0a6b7d5453a73f53b"},
+        ),
+        (
+            "https://lensdump.com/i/CDIUci",  # Single image
             {"9ceac1e26c4799b0a6b7d5453a73f53b"},
         ),
     ),
@@ -77,7 +115,7 @@ def test_get_links(test_url: str, expected: set[str]):
 def test_download_resources(test_url: str, expected_hashes: set[str]):
     mock_download = Mock()
     mock_download.url = test_url
-    downloader = NsfwPics(mock_download)
+    downloader = Chevereto(mock_download)
     results = downloader.find_resources()
     assert all(isinstance(res, Resource) for res in results)
     [res.download() for res in results]
