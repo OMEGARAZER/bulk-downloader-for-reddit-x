@@ -12,7 +12,7 @@ body:
       value: Thank you for submitting a bug report for BDFRx. Please fill out the information below so we can fix your issue as quickly as possible.
 
   - type: checkboxes
-    id: tested-development
+    id: tested-master
     attributes:
       label: Has your issue been fixed on the master branch?
       description: It is possible that your issue has already been fixed on `master`, but not released to pypi. There could also already be an issue open for your issue.
@@ -24,22 +24,30 @@ body:
     id: description
     attributes:
       label: The Bug
-      description: Please decribe the issue you are having. The ID of the post causing the issue and the last ~50 lines of the log file will greatly assist in resolving the issue.
-      value: |
-        Running BDFRx with this command:
+      description: Please decribe the issue you are having. The ID of the post causing the issue if available will greatly assist in resolving the issue.
+      placeholder: |
+        This is what happens:
 
-        ```bash
-        # Your BDFRx command here
-        ```
+        But it should do this:
 
-        Causes this error:
+    validations:
+      required: true
 
-        ```
-        # The last lines of your log file here
-        ```
+  - type: textarea
+    id: bdfrx-command
+    attributes:
+      label: BDFRx command
+      description: What was the command used to run BDFRx?
+      render: Shell
+    validations:
+      required: true
 
-        But it should...
-
+  - type: textarea
+    id: bdfrx-log
+    attributes:
+      label: BDFRx log
+      description: The last ~50 lines of the log file
+      render: Text
     validations:
       required: true
 
@@ -48,6 +56,7 @@ body:
     attributes:
       label: BDFRx version
       description: What is the output of `bdfrx --version`?
+      placeholder: You are currently using vX.X.X the latest is vX.X.X
     validations:
       required: true
 
@@ -56,6 +65,7 @@ body:
     attributes:
       label: Python version
       description: What is the output of `python --version`?
+      placeholder: Python 3.XX.X
     validations:
       required: true
 
@@ -64,6 +74,7 @@ body:
     attributes:
       label: OS type
       description: What Operating System are you using?
+      placeholder: Ubuntu 2X.XX
     validations:
       required: true
 
