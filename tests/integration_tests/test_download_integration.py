@@ -107,7 +107,7 @@ def test_cli_download_user_specific_subreddits(test_args: list[str], tmp_path: P
     (
         ["-l", "6l7778"],
         ["-l", "https://reddit.com/r/EmpireDidNothingWrong/comments/6l7778/technically_true/"],
-        ["-l", "m3hxzd"],  # Really long title used to overflow filename limit
+        ["-l", "14n7cms"],  # Really long title used to overflow filename limit
         ["-l", "m5bqkf"],  # Resource leading to a 404
     ),
 )
@@ -370,7 +370,7 @@ def test_cli_download_include_id_file(tmp_path: Path):
 @pytest.mark.online
 @pytest.mark.reddit
 @pytest.mark.skipif(not does_test_config_exist, reason="A test config file is required for integration tests")
-@pytest.mark.parametrize("test_args", (["--ignore-user", "ArjanEgges", "-l", "m3hxzd"],))
+@pytest.mark.parametrize("test_args", (["--ignore-user", "RexSueciae", "-l", "14n7cms"],))
 def test_cli_download_ignore_user(test_args: list[str], tmp_path: Path):
     runner = CliRunner()
     test_args = create_basic_args_for_download_runner(test_args, tmp_path)
@@ -430,7 +430,7 @@ def test_cli_download_user_reddit_server_error(test_args: list[str], response: i
     "test_args",
     (
         ["-l", "102vd5i", "--filename-restriction-scheme", "windows"],
-        ["-l", "m3hxzd", "--filename-restriction-scheme", "windows"],
+        ["-l", "14n7cms", "--filename-restriction-scheme", "windows"],
     ),
 )
 def test_cli_download_explicit_filename_restriction_scheme(test_args: list[str], tmp_path: Path):

@@ -186,9 +186,9 @@ def test_get_submissions_from_link(
     ("test_subreddits", "limit", "sort_type", "time_filter", "max_expected_len"),
     (
         (("Futurology",), 10, "hot", "all", 10),
-        (("Futurology", "EmpireDidNothingWrong, Python"), 10, "hot", "all", 30),
+        (("Futurology", "EmpireDidNothingWrong, news"), 10, "hot", "all", 30),
         (("Futurology",), 20, "hot", "all", 20),
-        (("Futurology", "Python"), 10, "hot", "all", 20),
+        (("Futurology", "news"), 10, "hot", "all", 20),
         (("Futurology",), 100, "hot", "all", 100),
         (("Futurology",), 0, "hot", "all", 0),
         (("Futurology",), 10, "top", "all", 10),
@@ -263,10 +263,10 @@ def test_get_subreddit_time_verification(
 @pytest.mark.parametrize(
     ("test_subreddits", "search_term", "limit", "time_filter", "max_expected_len"),
     (
-        (("Python",), "scraper", 10, "all", 10),
-        (("Python",), "", 10, "all", 0),
-        (("Python",), "djsdsgewef", 10, "all", 0),
-        (("Python",), "scraper", 10, "year", 10),
+        (("EmpireDidNothingWrong",), "troopers", 10, "all", 10),
+        (("EmpireDidNothingWrong",), "", 10, "all", 0),
+        (("EmpireDidNothingWrong",), "djsdsgewef", 10, "all", 0),
+        (("EmpireDidNothingWrong",), "troopers", 10, "year", 10),
     ),
 )
 def test_get_subreddit_search(
@@ -515,7 +515,7 @@ def test_check_subreddit_status_bad(test_subreddit_name: str, expected_message: 
 @pytest.mark.parametrize(
     "test_subreddit_name",
     (
-        "Python",
+        "news",
         "EmpireDidNothingWrong",
         "TrollXChromosomes",
         "all",
